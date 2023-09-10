@@ -1,45 +1,547 @@
 function App() {
   return (
       
-<nav className="bg-white border-gray-200 dark:bg-gray-900">
-  <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-    <a href="https://flowbite.com/" className="flex items-center">
-        <img src="https://flowbite.com/docs/images/logo.svg" className="h-8 mr-3" alt="Flowbite Logo" />
-        <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
-    </a>
-    <button data-collapse-toggle="navbar-default" type="button" className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
-        <span className="sr-only">Open main menu</span>
-        <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
-        </svg>
-    </button>
-    <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-      <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-        <li>
-          <a href="#" className="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500" aria-current="page">หน้าหลัก</a>
-        </li>
-        <li>
-          <a href="#" className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">ประวัติรายได้</a>
-        </li>
-        <li>
-          <a href="#" className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">จัดการบัญชี</a>
-        </li>
-        <li>
-          <a href="#" className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">อายุการใช้งาน : 45 วัน</a>
-        </li>
-        <li>
-          <a href="#" className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
-          <label className="relative inline-flex items-center cursor-pointer">
-  <input type="checkbox" value="" className="sr-only peer" checked/>
-  <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-  <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">เปิดระบบ</span>
-</label>
-          </a>
-        </li>
-      </ul>
+<div
+  className="overflow-hidden bg-[#eee0cb] flex flex-col pb-8 gap-6 w-full"
+  id="DesktopRoot"
+>
+  <div
+    className="shadow-[0px_4px_4px_0px_rgba(0,_0,_0,_0.25)] flex flex-col"
+    id="NavBar"
+  >
+    <div
+      className="bg-[#ffb7b2] flex flex-row justify-between h-24 shrink-0 items-center pl-3 pr-20"
+      id="BarBg"
+    >
+      <button className="flex flex-row gap-8 items-start" id="Button1">
+        <img
+          src="https://file.rendit.io/n/cRFKzP03D2tCKYfc7bYH.svg"
+          className="mr-2"
+          id="Logo"
+        />
+        <div className="text-2xl font-['Kanit'] text-[#e11584] mt-px">
+          หน้าหลัก
+        </div>
+        <div className="text-2xl font-['Kanit'] text-[#393939] mt-px">
+          ประวัติรายได้
+        </div>
+        <div className="text-2xl font-['Kanit'] text-[#393939] mt-px">
+          จัดการบัญชี
+        </div>
+      </button>
+      <div className="flex flex-row gap-2 items-start">
+        <img
+          src="https://file.rendit.io/n/8D9xjiitHOwZX8GkODep.svg"
+          className="mt-1 w-10 shrink-0"
+        />
+        <div className="text-xl font-['Kanit']">เปิดระบบ</div>
+      </div>
     </div>
   </div>
-</nav>
+  <div className="flex flex-row justify-between items-center mb-px ml-16 mr-12">
+    <div className="flex flex-row gap-2 items-start">
+      <img
+        src="https://file.rendit.io/n/SphtrVAe7qwa3uFUmj3s.svg"
+        className="mt-px w-4 shrink-0"
+        id="Grommeticonsupdate"
+      />
+      <div className="text-xs font-['Kanit'] text-[#a3a0a0]">
+        อัปเดต เมื่อ 8/9/2023 23:35:56
+      </div>
+    </div>
+    <div className="font-['Kanit'] self-start" id="Element28">
+      อายุการใช้งานคงเหลือ{" "}
+      <div className="text-[#e11584] contents" id="Element27">
+        45 วัน
+      </div>
+    </div>
+  </div>
+  <div className="flex flex-row gap-5 items-start ml-16 mr-12">
+    <div className="flex flex-col mr-1 gap-8 items-start">
+      <div
+        className="shadow-[0px_1px_5px_0px_rgba(0,_0,_0,_0.25)] flex flex-col w-[320px]"
+        id="TodayRevenue"
+      >
+        <div className="bg-white flex flex-row justify-center gap-2 items-start py-3 rounded-lg">
+          <div className="relative flex flex-col justify-end pt-8 w-32 shrink-0 items-start mt-px mb-12">
+            <div className="text-2xl font-['Kanit'] absolute top-0 left-px h-8 w-24">
+              รายได้วันนี้
+            </div>
+            <div className="text-4xl font-['Kanit'] text-[#98d588] relative">
+              124,500
+            </div>
+          </div>
+          <div className="self-end flex flex-col gap-1 w-1/2 items-start">
+            <div className="text-xl font-['Kanit'] text-[#98d588] ml-2">
+              +4,500 (+3.75%)
+            </div>
+            <div className="shadow-[1px_4px_5px_0px_rgba(0,_0,_0,_0.25)] bg-[#ffb7b2] self-stretch flex flex-col h-12 shrink-0 items-center py-2 rounded-lg">
+              <div className="text-xl font-['Kanit'] text-white">
+                ผู้ Donate วันนี้
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="shadow-[0px_1px_5px_0px_rgba(0,_0,_0,_0.25)] flex flex-col w-[320px]"
+        id="TopDonater"
+      >
+        <div className="bg-white flex flex-col gap-5 h-[524px] shrink-0 pt-6 pb-8 px-5 rounded-lg">
+          <div className="text-2xl font-['Kanit'] self-start">
+            ยอด Donate สูงสุด
+          </div>
+          <div className="flex flex-row gap-2 items-start mb-1 ml-px mr-4">
+            <img
+              src="https://file.rendit.io/n/6VZUnWLZaIKBFlCHDzOn.png"
+              className="w-12 shrink-0"
+              id="User5"
+            />
+            <div className="flex flex-row mt-2 gap-16 w-48 items-start">
+              <div className="text-lg font-['Kanit']">ชื่อผู้ใช้งาน1</div>
+              <div className="text-lg font-['Kanit'] text-[#e11584]">
+                20,000
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-row gap-2 items-start mb-1 ml-px mr-6">
+            <img
+              src="https://file.rendit.io/n/g1dv0AgQxJm3PycmoO9W.png"
+              className="w-12 shrink-0"
+              id="User4"
+            />
+            <div className="flex flex-row mt-2 gap-12 w-48 items-start">
+              <div className="text-lg font-['Kanit']">ชื่อผู้ใช้งาน2</div>
+              <div className="text-lg font-['Kanit'] text-[#e11584]">
+                19,999
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-row gap-2 items-center mb-1 ml-px mr-6">
+            <img
+              src="https://file.rendit.io/n/Evpso63S2DAcFZ4YEcaB.png"
+              className="self-start w-12 shrink-0"
+              id="User3"
+            />
+            <div className="flex flex-row gap-12 w-48 items-start">
+              <div className="text-lg font-['Kanit']">ชื่อผู้ใช้งาน3</div>
+              <div className="text-lg font-['Kanit'] text-[#e11584]">
+                13,599
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-row gap-2 items-start mb-1 ml-px mr-5">
+            <img
+              src="https://file.rendit.io/n/xHD4iFonKf8lZBiGsYjG.png"
+              className="w-12 shrink-0"
+              id="User2"
+            />
+            <div className="flex flex-row mt-2 gap-12 w-48 items-start">
+              <div className="text-lg font-['Kanit']">ชื่อผู้ใช้งาน4</div>
+              <div className="text-lg font-['Kanit'] text-[#e11584]">
+                10,000
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-row gap-2 items-center mb-1 ml-px mr-8">
+            <img
+              src="https://file.rendit.io/n/YGoHRg0f8NyVxKhmL2Dv.png"
+              className="self-start w-12 shrink-0"
+              id="User1"
+            />
+            <div className="flex flex-row gap-12 w-48 items-start">
+              <div className="text-lg font-['Kanit']">ชื่อผู้ใช้งาน5</div>
+              <div className="text-lg font-['Kanit'] text-[#e11584]">9,999</div>
+            </div>
+          </div>
+          <div className="flex flex-row gap-2 items-start ml-px mr-8">
+            <img
+              src="https://file.rendit.io/n/rZ0dGi489bT6lxQun4IT.png"
+              className="w-12 shrink-0"
+              id="User"
+            />
+            <div className="flex flex-row mt-3 gap-12 w-48 items-start">
+              <div className="text-lg font-['Kanit']">ชื่อผู้ใช้งาน6</div>
+              <div className="text-lg font-['Kanit'] text-[#e11584]">3,599</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div className="flex flex-col gap-5 w-2/5">
+      <div
+        className="shadow-[0px_1px_5px_0px_rgba(0,_0,_0,_0.25)] flex flex-col"
+        id="CurrentMessage"
+      >
+        <div className="bg-white flex flex-row gap-10 items-center px-3 py-4 rounded-lg">
+          <div className="flex flex-col mr-px gap-2 w-2/5 h-56 items-end">
+            <div className="text-2xl font-['Kanit'] self-start mb-6 ml-4">
+              ข้อความปัจจุบัน
+            </div>
+            <div className="text-xl font-['Kanit'] font-light mr-10">
+              iamchalisa_624
+            </div>
+            <div
+              className="text-center text-xl font-['Kanit'] font-light mb-6"
+              id="Element22"
+            >
+              ไปจรัญทำไม? รังสิต ก็เด็ด
+              <br />
+              ค้าบเตง
+            </div>
+            <div className="self-stretch flex flex-row mr-16 gap-5 items-start">
+              <div className="flex flex-row gap-1 w-3/5 items-start">
+                <img
+                  src="https://file.rendit.io/n/L7O1l7ziyQqzvPu1ManC.svg"
+                  className="w-6 shrink-0"
+                  id="Icsharpaccesstime"
+                />
+                <div className="font-['Kanit']">เวลาที่เหลือ</div>
+              </div>
+              <div className="font-['Kanit']">00 : 56</div>
+            </div>
+          </div>
+          <img
+            src="https://file.rendit.io/n/92KoikPJPxEQ4dNt1WYY.png"
+            className="self-end mb-6 w-24 shrink-0"
+          />
+          <div className="self-start flex flex-col mt-12 gap-6 items-start">
+            <div className="shadow-[1px_4px_5px_0px_rgba(0,_0,_0,_0.25)] overflow-hidden bg-[#ddd51d] flex flex-row justify-center gap-2 w-[114px] h-12 shrink-0 items-center rounded-[32px]">
+              <img
+                src="https://file.rendit.io/n/OxlPl2C4XEI9BQYgmz9K.svg"
+                className="w-6 shrink-0"
+                id="Tableredit"
+              />
+              <div className="text-xl font-['Kanit'] text-white">แก้ไข</div>
+            </div>
+            <div className="shadow-[1px_4px_5px_0px_rgba(0,_0,_0,_0.25)] overflow-hidden bg-[#ffb7b2] flex flex-row justify-center gap-2 w-[114px] h-12 shrink-0 items-center rounded-[32px]">
+              <img
+                src="https://file.rendit.io/n/58RYIqpmuxcccQG8Q34X.svg"
+                className="w-6 shrink-0"
+              />
+              <div className="text-xl font-['Kanit'] text-white">ลบ</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="shadow-[0px_1px_5px_0px_rgba(0,_0,_0,_0.25)] bg-white flex flex-col gap-2 pt-5 pb-4 px-5 rounded-lg">
+        <div className="text-2xl font-['Kanit'] self-start mb-2">
+          ข้อความถัดไป
+        </div>
+        <div className="border-solid flex flex-row gap-6 items-start ml-px mr-2 pt-2 px-2 border-black border rounded-lg">
+          <div className="flex flex-col gap-1 w-1/2 items-start">
+            <div className="flex flex-row gap-1 w-2/5 items-start">
+              <img
+                src="https://file.rendit.io/n/MDnJIPg8kRbf0D9Nm142.png"
+                className="w-12 shrink-0"
+                id="Ellipse"
+              />
+              <div className="font-['Kanit'] font-light text-[#e11584] mt-3">
+                ชื่อผู้ใช้งาน
+              </div>
+            </div>
+            <div
+              className="text-center text-xl font-['Kanit'] font-light self-end"
+              id="Element44"
+            >
+              สเตริโอ มินท์ซาดิสต์มายองเนส <br />
+              แฮนด์ธรรมาภิบาลไง
+            </div>
+          </div>
+          <div className="flex flex-row mb-4 gap-2 items-start">
+            <img
+              src="https://file.rendit.io/n/3cnMWJ2QyD0I6JUHUCR4.png"
+              className="w-16 shrink-0"
+            />
+            <div className="flex flex-col mt-px gap-2 w-[114px] shrink-0">
+              <div className="flex flex-row gap-2 items-start ml-1 mr-3">
+                <div className="flex flex-col mt-1 gap-2 w-6 shrink-0 items-start">
+                  <img
+                    src="https://file.rendit.io/n/L7O1l7ziyQqzvPu1ManC.svg"
+                    className="w-6"
+                    id="Icsharpaccesstime1"
+                  />
+                  <img
+                    src="https://file.rendit.io/n/6GXU0ctYex2myRzJ8WDz.svg"
+                    className="w-6"
+                  />
+                </div>
+                <div className="flex flex-col gap-px w-16 shrink-0 items-start">
+                  <div className="text-xl font-['Kanit'] font-light">
+                    02 : 00
+                  </div>
+                  <div
+                    className="text-xl font-['Kanit'] font-light ml-px"
+                    id="Element46"
+                  >
+                    50,000{" "}
+                  </div>
+                </div>
+              </div>
+              <div className="shadow-[1px_4px_5px_0px_rgba(0,_0,_0,_0.25)] overflow-hidden bg-[#ffb7b2] flex flex-row justify-center gap-2 h-12 shrink-0 items-center rounded-[32px]">
+                <img
+                  src="https://file.rendit.io/n/58RYIqpmuxcccQG8Q34X.svg"
+                  className="w-6 shrink-0"
+                />
+                <div className="text-xl font-['Kanit'] text-white">ลบ</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="border-solid flex flex-row gap-6 items-start mb-2 mr-2 pt-2 px-2 border-black border rounded-lg">
+          <div className="flex flex-col gap-1 w-1/2 items-start">
+            <div className="flex flex-row gap-1 w-2/5 items-start">
+              <img
+                src="https://file.rendit.io/n/fzBPmbXHj1eHmt4sgIaA.png"
+                className="w-12 shrink-0"
+                id="Ellipse1"
+              />
+              <div className="font-['Kanit'] font-light text-[#e11584] mt-3">
+                ชื่อผู้ใช้งาน
+              </div>
+            </div>
+            <div
+              className="text-center text-xl font-['Kanit'] font-light self-end"
+              id="Element49"
+            >
+              สเตริโอ มินท์ซาดิสต์มายองเนส <br />
+              แฮนด์ธรรมาภิบาลไง
+            </div>
+          </div>
+          <div className="flex flex-row mb-4 gap-2 items-start">
+            <img
+              src="https://file.rendit.io/n/i4EmgaMUMyKdGrZddlC8.png"
+              className="w-16 shrink-0"
+            />
+            <div className="flex flex-col mt-px gap-2 w-[114px] shrink-0">
+              <div className="flex flex-row gap-2 items-start ml-1 mr-3">
+                <div className="flex flex-col mt-1 gap-3 w-6 shrink-0 items-start">
+                  <img
+                    src="https://file.rendit.io/n/L7O1l7ziyQqzvPu1ManC.svg"
+                    className="w-6"
+                    id="Icsharpaccesstime2"
+                  />
+                  <img
+                    src="https://file.rendit.io/n/6GXU0ctYex2myRzJ8WDz.svg"
+                    className="ml-px w-6"
+                  />
+                </div>
+                <div className="flex flex-col gap-px w-16 shrink-0 items-start">
+                  <div className="text-xl font-['Kanit'] font-light">
+                    02 : 00
+                  </div>
+                  <div
+                    className="text-xl font-['Kanit'] font-light ml-px"
+                    id="Element51"
+                  >
+                    50,000{" "}
+                  </div>
+                </div>
+              </div>
+              <div className="shadow-[1px_4px_5px_0px_rgba(0,_0,_0,_0.25)] overflow-hidden bg-[#ffb7b2] flex flex-row justify-center gap-2 h-12 shrink-0 items-center rounded-[32px]">
+                <img
+                  src="https://file.rendit.io/n/58RYIqpmuxcccQG8Q34X.svg"
+                  className="w-6 shrink-0"
+                />
+                <div className="text-xl font-['Kanit'] text-white">ลบ</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="border-solid flex flex-row mr-2 gap-6 items-start pt-2 px-2 border-black border rounded-lg">
+          <div className="flex flex-col gap-1 w-1/2 items-start">
+            <div className="flex flex-row gap-1 w-2/5 items-start">
+              <img
+                src="https://file.rendit.io/n/UvjbdAtHT8zncuiQKjuE.png"
+                className="w-12 shrink-0"
+                id="Ellipse2"
+              />
+              <div className="font-['Kanit'] font-light text-[#e11584] mt-3">
+                ชื่อผู้ใช้งาน
+              </div>
+            </div>
+            <div
+              className="text-center text-xl font-['Kanit'] font-light self-end"
+              id="Element54"
+            >
+              สเตริโอ มินท์ซาดิสต์มายองเนส <br />
+              แฮนด์ธรรมาภิบาลไง
+            </div>
+          </div>
+          <div className="flex flex-row mb-4 gap-2 items-start">
+            <img
+              src="https://file.rendit.io/n/0DH7On3r3PwvmPa0SeM3.png"
+              className="w-16 shrink-0"
+            />
+            <div className="flex flex-col mt-px gap-2 w-[114px] shrink-0">
+              <div className="flex flex-row gap-2 items-center ml-1 mr-3">
+                <div className="flex flex-col gap-2 w-6 shrink-0 items-start">
+                  <img
+                    src="https://file.rendit.io/n/L7O1l7ziyQqzvPu1ManC.svg"
+                    className="w-6"
+                    id="Icsharpaccesstime3"
+                  />
+                  <img
+                    src="https://file.rendit.io/n/6GXU0ctYex2myRzJ8WDz.svg"
+                    className="w-6"
+                  />
+                </div>
+                <div className="self-start flex flex-col gap-px w-16 shrink-0 items-start">
+                  <div className="text-xl font-['Kanit'] font-light">
+                    02 : 00
+                  </div>
+                  <div
+                    className="text-xl font-['Kanit'] font-light ml-px"
+                    id="Element56"
+                  >
+                    50,000{" "}
+                  </div>
+                </div>
+              </div>
+              <div className="shadow-[1px_4px_5px_0px_rgba(0,_0,_0,_0.25)] overflow-hidden bg-[#ffb7b2] flex flex-row justify-center gap-2 h-12 shrink-0 items-center rounded-[32px]">
+                <img
+                  src="https://file.rendit.io/n/58RYIqpmuxcccQG8Q34X.svg"
+                  className="w-6 shrink-0"
+                />
+                <div className="text-xl font-['Kanit'] text-white">ลบ</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div className="flex flex-col gap-5 items-start">
+      <div className="shadow-[0px_1px_5px_0px_rgba(0,_0,_0,_0.25)] bg-white flex flex-col justify-center ml-1 gap-5 w-[375px] items-end p-4 rounded-lg">
+        <div className="self-stretch flex flex-col ml-2 gap-2">
+          <div className="flex flex-col mr-16 items-start">
+            <div className="text-2xl font-['Kanit']" id="Element32">
+              กราฟแสดงยอดเงินย้อนหลัง{" "}
+            </div>
+            <div className="font-['Kanit'] font-light">5 วันล่าสุด</div>
+          </div>
+          <div className="flex flex-col gap-0">
+            <div className="flex flex-row mr-1 gap-2 items-center">
+              <div className="self-start flex flex-col gap-10 w-8 shrink-0 h-40 items-start">
+                <div className="text-right text-xs font-sans text-[#a3a3a3] mb-px">
+                  300000
+                </div>
+                <div className="text-right text-xs font-sans text-[#a3a3a3]">
+                  200000
+                </div>
+                <div className="text-right text-xs font-sans text-[#a3a3a3] mb-px">
+                  100000
+                </div>
+                <div className="text-right text-xs font-sans text-[#a3a3a3] self-end mr-px">
+                  0
+                </div>
+              </div>
+              <div className="flex flex-row w-[288px] items-start">
+                <img
+                  src="https://file.rendit.io/n/TI3VWSMNtqhpsgfIUW1K.svg"
+                  className="bg-[url(https://file.rendit.io/n/TI3VWSMNtqhpsgfIUW1K.svg)] bg-cover bg-50%_50% bg-blend-normal bg-no-repeat mt-0 w-px shrink-0"
+                  id="Yaxis"
+                />
+                <div className="relative flex flex-col justify-end w-[286px] items-start pt-12 pb-px">
+                  <img
+                    src="https://file.rendit.io/n/TI3VWSMNtqhpsgfIUW1K.svg"
+                    className="w-px h-40 absolute top-0 left-16"
+                    id="XaxisGrid1"
+                  />
+                  <img
+                    src="https://file.rendit.io/n/TI3VWSMNtqhpsgfIUW1K.svg"
+                    className="w-px h-40 absolute top-0 left-[142px]"
+                    id="XaxisGrid2"
+                  />
+                  <img
+                    src="https://file.rendit.io/n/TI3VWSMNtqhpsgfIUW1K.svg"
+                    className="w-px h-40 absolute top-0 left-56"
+                    id="XaxisGrid3"
+                  />
+                  <img
+                    src="https://file.rendit.io/n/3OogEzBkJFU260Hx9wwG.svg"
+                    className="w-[286px] h-px bg-[url(https://file.rendit.io/n/3OogEzBkJFU260Hx9wwG.svg)] bg-cover bg-50%_50% bg-blend-normal bg-no-repeat absolute top-40 left-0"
+                    id="Xaxis"
+                  />
+                  <img
+                    src="https://file.rendit.io/n/3FqkTHRJkX6Z5A7g7CWq.svg"
+                    className="w-[286px] h-px absolute top-24 left-0"
+                    id="YaxisGrid1"
+                  />
+                  <img
+                    src="https://file.rendit.io/n/t1qd9ERQvEhGvedYwaBv.svg"
+                    className="w-[286px] h-px absolute top-12 left-0"
+                    id="YaxisGrid2"
+                  />
+                  <img
+                    src="https://file.rendit.io/n/6V6wpeb6JGl2cW1nhZQi.svg"
+                    className="w-[286px] h-px absolute top-0 left-0"
+                    id="YaxisGrid3"
+                  />
+                  <img
+                    src="https://file.rendit.io/n/01rHooHAE9KQpPHnOygi.svg"
+                    className="relative"
+                    id="Area1"
+                  />
+                </div>
+                <img
+                  src="https://file.rendit.io/n/TI3VWSMNtqhpsgfIUW1K.svg"
+                  className="mt-0 w-px shrink-0"
+                  id="XaxisGrid4"
+                />
+              </div>
+            </div>
+            <div className="flex flex-row ml-8 gap-8 items-start">
+              <div className="text-center text-xs font-sans text-[#a3a3a3] mr-2">
+                23/05
+              </div>
+              <div className="text-center text-xs font-sans text-[#a3a3a3] mr-2">
+                24/05
+              </div>
+              <div className="text-center text-xs font-sans text-[#a3a3a3] mr-2">
+                25/05
+              </div>
+              <div className="text-center text-xs font-sans text-[#a3a3a3]">
+                26/05
+              </div>
+              <div className="text-center text-xs font-sans text-[#a3a3a3]">
+                27/05
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="shadow-[1px_4px_5px_0px_rgba(0,_0,_0,_0.25)] overflow-hidden bg-[#ffb7b2] flex flex-col mr-1 w-2/3 h-12 shrink-0 items-center py-2 rounded-lg"
+          id="Element30"
+        >
+          <div className="text-xl font-['Kanit'] text-white">
+            ยอดเงินย้อนหลังรายวัน
+          </div>
+        </div>
+      </div>
+      <div className="shadow-[0px_1px_5px_0px_rgba(0,_0,_0,_0.25)] bg-white flex flex-col gap-3 w-[375px] items-center pt-5 pb-8 px-6 rounded-lg">
+        <div className="text-2xl font-['Kanit'] self-start">
+          QR Code รับเงิน
+        </div>
+        <div className="bg-[rgba(217,_217,_217,_0.25)] flex flex-col justify-center gap-3 w-2/3 items-center pt-5 pb-6 px-10">
+          <img
+            src="https://file.rendit.io/n/y6IaXFkqyzSzOtI3RRRr.svg"
+            className=""
+          />
+          <div className="text-center text-xl font-['Kanit'] font-light text-[#ee6a5b]">
+            ไม่มี QR-code
+          </div>
+        </div>
+        <div className="shadow-[1px_4px_5px_0px_rgba(0,_0,_0,_0.25)] overflow-hidden bg-[#ffb7b2] flex flex-row justify-center gap-2 w-3/5 h-12 shrink-0 items-center rounded-lg">
+          <img
+            src="https://file.rendit.io/n/O4JcXdFiUQdfLyg47W8k.svg"
+            className="w-6 shrink-0"
+          />
+          <div className="text-xl font-['Kanit'] text-white">เพิ่ม QR-code</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
   );
 }
