@@ -22,7 +22,7 @@ const NavBar: React.FC<NavBarProps> = ({ menuItems }) => {
             <a
               key={index}
               href={item.path}
-              className="m-3 mt-7 font-['kanit'] font-normal text-2xl text-purple-100"
+              className="m-3 mt-7 font-['kanit'] font-normal text-2xl text-black"
             >
               {item.label}
             </a>
