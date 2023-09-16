@@ -15,7 +15,7 @@ const NavBar: React.FC<NavBarProps> = ({ menuItems }) => {
     <nav className="bg-purple drop-shadow-xl">
       <div className="flex flex-row justify-between h-24">
         <button className="flex flex-row gap-8 items-start">
-          <a href="#" className="m-6">
+          <a href="#" className="ml-10 my-6">
             <img src="https://file.rendit.io/n/RZSrLxKdrXOppUJZrRp6.svg" alt="Logo" />
           </a>
           {menuItems.map((item, index) => (
@@ -28,7 +28,7 @@ const NavBar: React.FC<NavBarProps> = ({ menuItems }) => {
             </a>
           ))}
         </button>
-        <div className="m-7 font-['kanit'] font-light flex flex-row gap-2 items-start text-2xl text-black">
+        <div className="mx-10 my-7 font-['kanit'] font-light flex flex-row gap-2 items-start text-2xl text-black">
           <ToggleSwitch onText="เปิดระบบ" offText="ปิดระบบ" />
         </div>
       </div>
