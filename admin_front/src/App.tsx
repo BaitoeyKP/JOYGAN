@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import NavBar from "./components/NavBar";
 import DaysLeft from "./components/DaysLeft";
 import RefreshIcon from "./components/RefreshIcon";
 import TodayIncome from "./components/TodayIncome";
 import CurrentText from "./components/CurrentText";
+import Chart from "react-apexcharts";
 
 const App: React.FC = () => {
   const menuItems = [
@@ -21,6 +22,20 @@ const App: React.FC = () => {
     // Handle remove action here
     console.log("Remove button clicked!");
   };
+  const options = {
+    chart: {
+      id: "basic-bar",
+    },
+    xaxis: {
+      categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999],
+    },
+  };
+  const series = [
+    {
+      name: "series-1",
+      data: [30, 40, 45, 50, 49, 60, 60, 58, 45],
+    },
+  ];
 
   return (
     <div className="bg-cream font-kanit">
@@ -62,14 +77,25 @@ const App: React.FC = () => {
           style={{ height: "300px" }}
         >
           <div className="flex flex-col justify-center">
-            <h1>กราฟแสดงยอดเงินย้อนหลัง</h1>
-            <h2>5 วันล่าสุด</h2>
-            <div id="chart">
-
+            <h1 className="text-lg font-semibold">กราฟแสดงยอดเงินย้อนหลัง</h1>
+            <h2 className="text-sm">5 วันล่าสุด</h2>
+            <div id="chart" className="mt-4">
+              <Chart
+                options={options}
+                series={series}
+                type="area"
+                width="100%"
+                height="120"
+              />
             </div>
-            <div className="flex justify-between"id="buttonLayout">
-              <div id="dummy box"></div>
-            <button className=" bg-purple hover:bg-purple-100 active:outline-none active:ring active:ring-violet-300 text-white font-kanit p-3 rounded-xl drop-shadow-md">รายละเอียดยอดเงินย้อนหลัง</button>
+            <div
+              className="flex justify-between items-center mt-4"
+              id="buttonLayout"
+            >
+              <div className="flex-grow"></div>
+              <button className="bg-purple hover:bg-purple-100 active:outline-none active:ring active:ring-violet-300 text-white font-kanit p-3 rounded-xl drop-shadow-md">
+                รายละเอียดยอดเงินย้อนหลัง
+              </button>
             </div>
           </div>
         </div>
