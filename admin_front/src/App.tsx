@@ -24,16 +24,34 @@ const App: React.FC = () => {
   };
   const options = {
     chart: {
-      id: "basic-bar",
+      id: "linechart",
     },
     xaxis: {
-      categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999],
+      categories: ["12/Sep", "13/Sep", "14/Sep", "15/Sep", "16/Sep", "17/Sep", "18/Sep"],
     },
+    dataLabels: {
+      enabled: false
+    },
+    // fill: {
+    //   type: 'gradient',
+    //   gradient: {
+    //       shadeIntensity: 1,
+    //       inverseColors: false,
+    //       opacityFrom: 0.9,
+    //       opacityTo: 0.9,
+    //       stops: [0, 100]
+    //     },
+    // },
+    // colors: ["#D692F6"],
+    fill: {
+      type: "solid", // Set the fill type to 'solid'
+    },
+    colors: ["#D692F6"], // Set the same color for the chart line
   };
   const series = [
     {
-      name: "series-1",
-      data: [30, 40, 45, 50, 49, 60, 60, 58, 45],
+      name: "ยอดเงิน donate",
+      data: [150, 134, 123, 111, 95, 90, 120],
     },
   ];
 
@@ -78,14 +96,14 @@ const App: React.FC = () => {
         >
           <div className="flex flex-col justify-center">
             <h1 className="text-lg font-semibold">กราฟแสดงยอดเงินย้อนหลัง</h1>
-            <h2 className="text-sm">5 วันล่าสุด</h2>
+            <h2 className="text-sm">7 วันล่าสุด หน่วย : พันบาท</h2>
             <div id="chart" className="mt-4">
               <Chart
                 options={options}
                 series={series}
                 type="area"
                 width="100%"
-                height="120"
+                height="130"
               />
             </div>
             <div

@@ -22,11 +22,11 @@ const TodayIncome: React.FC<TodayIncomeProps> = ({
         <h1 className="text-black font-kanit font-medium text-2xl">
           รายได้วันนี้
         </h1>
-        <div className="flex flex-wrap my-16 justify-between m-5">
-          <h2 className={`text-${incomeChange > 0 ? "green" : "red"} font-kanit font-normal text-3xl lg:text-5xl mx-2`}>
+        <div className="flex flex-wrap my-suto justify-between m-5">
+          <h2 className={`${incomeChange > 0 ? "text-green" : "text-red"} font-kanit font-normal text-3xl lg:text-5xl mx-2`}>
             {todayIncome.toLocaleString()}
           </h2>
-          <h3 className={`text-${incomeChange > 0 ? "green" : "red"} font-kanit font-normal text-lg lg:text-2xl mt-3`}>
+          <h3 className={`${incomeChange > 0 ? "text-green" : "text-red"} font-kanit font-normal text-lg lg:text-2xl mt-3`}>
             {`${incomeChange >= 0 ? "+" : ""}
             ${incomeChange.toLocaleString()} (${percentageChange}%)`}
           </h3>

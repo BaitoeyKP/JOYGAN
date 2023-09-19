@@ -16,7 +16,7 @@ module.exports = {
         'black': '#393939',//text
         'cream': '#F5EBDD',// background color
         'grey': '#A3A0A0',// neutral text color
-        'grey-100': '#737373',
+        'grey-100': '#737373',//accent neutral color
       },
       margin: {
         '68': '265px',
