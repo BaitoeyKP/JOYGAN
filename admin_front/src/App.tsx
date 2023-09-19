@@ -4,7 +4,8 @@ import DaysLeft from "./components/DaysLeft";
 import RefreshIcon from "./components/RefreshIcon";
 import TodayIncome from "./components/TodayIncome";
 import CurrentText from "./components/CurrentText";
-import Chart from "react-apexcharts";
+import AreaChartCard from "./components/AreaChartCard";
+
 
 const App: React.FC = () => {
   const menuItems = [
@@ -22,38 +23,7 @@ const App: React.FC = () => {
     // Handle remove action here
     console.log("Remove button clicked!");
   };
-  const options = {
-    chart: {
-      id: "linechart",
-    },
-    xaxis: {
-      categories: ["12/Sep", "13/Sep", "14/Sep", "15/Sep", "16/Sep", "17/Sep", "18/Sep"],
-    },
-    dataLabels: {
-      enabled: false
-    },
-    // fill: {
-    //   type: 'gradient',
-    //   gradient: {
-    //       shadeIntensity: 1,
-    //       inverseColors: false,
-    //       opacityFrom: 0.9,
-    //       opacityTo: 0.9,
-    //       stops: [0, 100]
-    //     },
-    // },
-    // colors: ["#D692F6"],
-    fill: {
-      type: "solid", // Set the fill type to 'solid'
-    },
-    colors: ["#D692F6"], // Set the same color for the chart line
-  };
-  const series = [
-    {
-      name: "ยอดเงิน donate",
-      data: [150, 134, 123, 111, 95, 90, 120],
-    },
-  ];
+
 
   return (
     <div className="bg-cream font-kanit">
@@ -94,28 +64,10 @@ const App: React.FC = () => {
           className="col-span-1 bg-white p-4 rounded-lg drop-shadow-md"
           style={{ height: "300px" }}
         >
-          <div className="flex flex-col justify-center">
-            <h1 className="text-lg font-semibold">กราฟแสดงยอดเงินย้อนหลัง</h1>
-            <h2 className="text-sm">7 วันล่าสุด หน่วย : พันบาท</h2>
-            <div id="chart" className="mt-4">
-              <Chart
-                options={options}
-                series={series}
-                type="area"
-                width="100%"
-                height="130"
-              />
-            </div>
-            <div
-              className="flex justify-between items-center mt-4"
-              id="buttonLayout"
-            >
-              <div className="flex-grow"></div>
-              <button className="bg-purple hover:bg-purple-100 active:outline-none active:ring active:ring-violet-300 text-white font-kanit p-3 rounded-xl drop-shadow-md">
-                รายละเอียดยอดเงินย้อนหลัง
-              </button>
-            </div>
-          </div>
+          <AreaChartCard
+          yAxisData={[150, 134, 123, 111, 95, 90, 120]} // Pass Y-axis data as a prop
+          xAxisLabels={["12/Sep", "13/Sep", "14/Sep", "15/Sep", "16/Sep", "17/Sep", "18/Sep"]} // Pass X-axis labels as a prop
+        />
         </div>
 
         {/* Card 4 */}
