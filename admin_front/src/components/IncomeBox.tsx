@@ -9,7 +9,7 @@ interface type {
 
 function IncomeBox({ data }: type) {
     return (
-        <div className="w-4/5  grid gap-y-6">
+        <div className="w-4/5 grid gap-y-6">
             {data.map((info, index) => {
                 return (
                     <div key={index} className="bg-white drop-shadow-md rounded-xl flex justify-between items-center py-8 text-xl px-10">
