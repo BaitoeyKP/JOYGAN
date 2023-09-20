@@ -1,5 +1,5 @@
 import React from "react";
-import NavBar from "./components/NavBar";
+import ToggleSwitch from "./components/ToggleSwitch";
 import DaysLeft from "./components/DaysLeft";
 import RefreshIcon from "./components/RefreshIcon";
 import TodayIncome from "./components/TodayIncome";
@@ -27,7 +27,7 @@ const App: React.FC = () => {
 
   return (
     <div className="bg-cream font-kanit">
-      <NavBar menuItems={menuItems} />
+      <ToggleSwitch onText="เปิดระบบ" offText="ปิดระบบ"/>
       <div className="flex flex-row justify-between items-center mx-10 my-6 font-['kanit'] ">
         <RefreshIcon dateTime={refreshDateTime} />
         <DaysLeft days={45} />

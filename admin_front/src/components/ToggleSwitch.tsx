@@ -16,7 +16,7 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ onText, offText }) => {
     <div className="flex items-center">
       <button
         className={`w-12 h-6 rounded-full p-1 transition-transform duration-500 ${
-          isOn ? 'bg-purple-100 transform -translate-x-2' : 'bg-grey'
+          isOn ? 'bg-green transform -translate-x-2' : 'bg-red'
         }`}
         onClick={toggleSwitch}
       >
