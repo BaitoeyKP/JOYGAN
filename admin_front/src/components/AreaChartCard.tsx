@@ -11,6 +11,9 @@ const AreaChartCard: React.FC<AreaChartCardProps> = ({ yAxisData, xAxisLabels })
   const options = {
     chart: {
       id: "linechart",
+      zoom: {
+        enabled: false
+      },
     },
     xaxis: {
       categories: xAxisLabels,
@@ -52,15 +55,10 @@ const AreaChartCard: React.FC<AreaChartCardProps> = ({ yAxisData, xAxisLabels })
             series={series}
             type="area"
             width="100%"
-            height="130"
+            height="230"
           />
         </div>
-        <div className="flex justify-between items-center mt-4" id="buttonLayout">
-          <div className="flex-grow"></div>
-          <button className="bg-purple hover:bg-purple-100 active:outline-none active:ring active:ring-violet-300 text-white font-kanit p-3 rounded-xl drop-shadow-md">
-            รายละเอียดยอดเงินย้อนหลัง
-          </button>
-        </div>
+  
       </div>
 
   );

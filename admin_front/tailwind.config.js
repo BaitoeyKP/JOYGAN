@@ -10,6 +10,7 @@ module.exports = {
         "red-cancel": "#EE6A5B",
         "purple-btn": "#D692F6",
         "dark-purple-highlight": "#6E0C86",
+        "neutral": "#A3A0A0",
       },
     },
   },

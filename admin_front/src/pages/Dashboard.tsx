@@ -5,32 +5,48 @@ import RefreshIcon from "../components/RefreshIcon";
 import TodayIncome from "../components/TodayIncome";
 import CurrentText from "../components/CurrentText";
 import AreaChartCard from "../components/AreaChartCard";
+import StoreName from "../components/StoreName";
 
-
-const Dashboard: React.FC = () => {
-  const menuItems = [
-    { label: "หน้าหลัก", path: "home" },
-    { label: "ประวัติรายได้", path: "IncomeHist" },
-    { label: "จัดการบัญชี", path: "Account" },
-  ];
+const Dashboard: React.FC = () => {  
+  const TavernData = {
+    name: "ABC",
+    code: "B394F7",
+  };
   const refreshDateTime = "15/09/2023 23:43"; // Replace with your actual date and time
+  const license = {
+    expire: "45"
+  }
+  const incomeData = {
+    total: 120000,
+    morethan: -41500,
+    morethanper: 3.75,
+  };
+  const exampleData = {
+    username: 'JohnDoe',
+    text: 'ง่วงจังเลย',
+    time: 45, // 45 minutes
+    donate: 1000,
+    imagesrc: 'path/to/your/image.jpg', // Optional
+  };
   const handleEditClick = () => {
     // Handle edit action here
     console.log("Edit button clicked!");
   };
-
   const handleRemoveClick = () => {
     // Handle remove action here
     console.log("Remove button clicked!");
   };
-
+  
 
   return (
-    <div className="bg-cream font-kanit">
-      <ToggleSwitch onText="เปิดระบบ" offText="ปิดระบบ"/>
+    <div className="bg-cream-bg font-kanit">
+      <div className="flex justify-between mx-10 pt-5">
+        <StoreName store={TavernData} />
+        <ToggleSwitch onText="เปิดระบบ" offText="ปิดระบบ" />
+      </div>
       <div className="flex flex-row justify-between items-center mx-10 my-6 font-['kanit'] ">
         <RefreshIcon dateTime={refreshDateTime} />
-        <DaysLeft days={45} />
+        <DaysLeft Day={license}/>
       </div>
       <div
         className="grid grid-cols-2 md:grid-cols-4 gap-4 mx-10 pb-10"
@@ -41,7 +57,7 @@ const Dashboard: React.FC = () => {
           className="col-span-1 bg-white p-4 rounded-lg drop-shadow-md flex flex-col "
           style={{ height: "300px" }}
         >
-          <TodayIncome todayIncome={124500} yesterdayIncome={120000} />
+          <TodayIncome incomeData={incomeData} />
         </div>
 
         {/* Card 2 */}
@@ -49,14 +65,7 @@ const Dashboard: React.FC = () => {
           className="col-span-2 bg-white p-4 rounded-lg drop-shadow-md"
           style={{ height: "300px" }}
         >
-          <CurrentText
-            Username="Licky"
-            Usertext="สวัสดีชาว social cam ig: inwZaa007"
-            timeLeft={30}
-            imagesrc="https://i.pinimg.com/1200x/de/da/81/deda811e570b5395e8e2affe66e72996.jpg"
-            onEditClick={handleEditClick}
-            onRemoveCLick={handleRemoveClick}
-          />
+           <CurrentText data={exampleData} onEditClick={handleEditClick} onRemoveClick={handleRemoveClick} />
         </div>
 
         {/* Card 3 */}
@@ -65,9 +74,17 @@ const Dashboard: React.FC = () => {
           style={{ height: "300px" }}
         >
           <AreaChartCard
-          yAxisData={[150, 134, 123, 111, 95, 90, 120]} // Pass Y-axis data as a prop
-          xAxisLabels={["12/Sep", "13/Sep", "14/Sep", "15/Sep", "16/Sep", "17/Sep", "18/Sep"]} // Pass X-axis labels as a prop
-        />
+            yAxisData={[150, 134, 123, 111, 95, 90, 120]} // Pass Y-axis data as a prop
+            xAxisLabels={[
+              "12/Sep",
+              "13/Sep",
+              "14/Sep",
+              "15/Sep",
+              "16/Sep",
+              "17/Sep",
+              "18/Sep",
+            ]} // Pass X-axis labels as a prop
+          />
         </div>
 
         {/* Card 4 */}
