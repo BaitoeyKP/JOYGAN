@@ -3,3 +3,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Kanit");
+
+* {
+  /* background-color: #f5ebdd; */
+  font-family: "Kanit", sans-serif;
+}

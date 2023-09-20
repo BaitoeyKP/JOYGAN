@@ -3,31 +3,15 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}",'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
-      fontFamily: {
-        'kanit': ['Kanit', 'sans-serif'],
-      }, colors: {
-        transparent: 'transparent',
-        current: 'currentColor',
-        'white': '#ffffff',// text on button
-        'purple': '#D692F6',// primary color
-        'purple-100': '#A80ECF',// accent color
-        'green': '#98D588',// success
-        'red': '#EE6A5B',// cancel
-        'black': '#393939',//text
-        'cream': '#F5EBDD',// background color
-        'grey': '#A3A0A0',// neutral text color
-        'grey-100': '#737373',//accent neutral color
-      },
-      margin: {
-        '68': '265px',
+      colors: {
+        "cream-bg": "#F5EBDD",
+        "black-text": "#393939",
+        "green-ok": "#98D588",
+        "red-cancel": "#EE6A5B",
+        "purple-btn": "#D692F6",
+        "dark-purple-highlight": "#6E0C86",
       },
     },
-
   },
-  plugins: [
-    require('flowbite/plugin')({
-      charts: true,
-    })
-  ],
-}
-
+  plugins: [],
+};
