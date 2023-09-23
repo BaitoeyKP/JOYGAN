@@ -21,7 +21,7 @@ const TodayIncome: React.FC<TodayIncomeProps> = ({ incomeData }) => {
         </h3>
       </div>
       <div className="flex justify-center ">
-        <button className="px-5 py-2 bg-purple-btn rounded-xl shadow-lg text-white">
+        <button className="px-5 py-2 bg-purple-btn rounded-lg shadow-lg text-white hover:bg-dark-purple-highlight active:ring active:ring-2 active:ring-offset-2 active:ring-violet-600">
           ดูย้อนหลัง
         </button>
       </div>

@@ -11,8 +11,7 @@ interface IconButtonProps {
 const IconButton: React.FC<IconButtonProps> = ({ icon, text, onClick, bgColor, hoverColor }) => {
   let defaultBgColor = `bg-${bgColor || "purple-btn"}`; // Default background color is "purple" if not provided
   let hoverBgColor = `hover:bg-${hoverColor || "dark-purple-highlight"}`; // Darken color on hover  
-  console.log(hoverColor);
-  console.log(hoverBgColor);
+
 
   return (
     <button

@@ -16,7 +16,7 @@ const TopDonaterList: React.FC<TopDonaterListProps> = ({ topDonaters }) => {
   return (
     <div>
       <div id="HeaderBox" className="flex flex-col items-center">
-        <h1 className="items-center my-2 font-bold">ยอดผู้สนับสนุนสูงสุด</h1>
+        <h1 className="items-center my-2  text-xl font-bold ">ยอดผู้สนับสนุนสูงสุด</h1>
       </div>
       <div id="TopDonaterLists" className="flex flex-col content-between">
         {sortedDonaters.map((donator, index) => (

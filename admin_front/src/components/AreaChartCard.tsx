@@ -1,16 +1,16 @@
-// AreaChartCard.tsx
 import React from "react";
 import Chart from "react-apexcharts";
 
 interface AreaChartCardProps {
-  yAxisData: number[];
-  xAxisLabels: string[];
+  chartData: {
+    xAxisLabels: string[];
+    yAxisData: number[];
+  };
 }
 
-const AreaChartCard: React.FC<AreaChartCardProps> = ({
-  yAxisData,
-  xAxisLabels,
-}) => {
+const AreaChartCard: React.FC<AreaChartCardProps> = ({ chartData }) => {
+  const { xAxisLabels, yAxisData } = chartData;
+
   const options = {
     chart: {
       id: "linechart",
@@ -22,19 +22,8 @@ const AreaChartCard: React.FC<AreaChartCardProps> = ({
       categories: xAxisLabels,
     },
     dataLabels: {
-      enabled: false,
+      enabled: true,
     },
-    // fill: {
-    //   type: 'gradient',
-    //   gradient: {
-    //       shadeIntensity: 1,
-    //       inverseColors: false,
-    //       opacityFrom: 0.9,
-    //       opacityTo: 0.9,
-    //       stops: [0, 100]
-    //     },
-    // },
-    // colors: ["#D692F6"],
     fill: {
       type: "solid",
     },
@@ -52,7 +41,7 @@ const AreaChartCard: React.FC<AreaChartCardProps> = ({
     <div className="flex flex-col justify-center">
       <div className="flex justify-center">
         <div></div>
-        <h1 className="flex text-lg font-semibold ">กราฟแสดงยอดเงินย้อนหลัง</h1>
+        <h1 className="flex text-xl font-bold ">กราฟแสดงยอดเงินย้อนหลัง</h1>
       </div>
       <h2 className="text-sm">ยอดเงิน : พันบาท</h2>
       <div id="chart" className="mt-4">

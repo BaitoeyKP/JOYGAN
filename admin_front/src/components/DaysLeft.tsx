@@ -10,7 +10,7 @@ const DaysLeft: React.FC<DaysLeftProps> = ({ Day }) => {
   return (
     <div className="flex flex-row">
       อายุการใช้งานคงเหลือ
-      <div className="text-dark-purple-highlight">{Day.expire} วัน</div>
+      <div className="text-dark-purple-highlight mx-2">{Day.expire} วัน</div>
     </div>
   );
 };
