@@ -9,6 +9,6 @@ function App() {
       <Route path="income" element={<Income />} />
     </Routes>
   );
-}
+};
 
 export default App;
