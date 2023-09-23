@@ -12,17 +12,17 @@ const TodayIncome: React.FC<TodayIncomeProps> = ({ incomeData }) => {
   const { total, morethan, morethanper } = incomeData;
 
   return (
-    <div className="flex flex-col items-center justify-center space-y-16">
+    <div className="flex flex-col items-center space-y-14">
       <h1 className="text-xl font-bold">รายได้รวมวันนี้</h1>
       <div className="flex flex-col items-center">
-        <h2 className="text-4xl flex items-center">{total.toLocaleString()} บาท</h2>
-        <h3 className={`${morethan > 0 ? "text-green-ok" : "text-red-cancel"}  text-lg lg:text-2xl `}>
-          {morethan.toLocaleString()} ({morethanper.toFixed(2)}%)
+        <h2 className="text-5xl flex items-center">{total.toLocaleString()} บาท</h2>
+        <h3 className={`${morethan > 0 && morethanper > 0 ? "text-green-ok" : "text-red-cancel"}  text-lg lg:text-3xl `}>
+          {morethan > 0? "+":""}{morethan.toLocaleString()} ({morethanper > 0? "+":""}{morethanper.toFixed(2)}%)
         </h3>
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center ">
         <div></div>
-        <button className="px-2.5 py-2 bg-purple-btn rounded-xl shadow-lg text-white">
+        <button className="px-5 py-2 bg-purple-btn rounded-xl shadow-lg text-white">
           ดูย้อนหลัง
         </button>
       </div>

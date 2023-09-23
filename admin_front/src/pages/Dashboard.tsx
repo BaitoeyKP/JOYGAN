@@ -18,15 +18,15 @@ const Dashboard: React.FC = () => {
   }
   const incomeData = {
     total: 120000,
-    morethan: -41500,
-    morethanper: 3.75,
+    morethan: +41500,
+    morethanper: +3.75,
   };
   const exampleData = {
     username: 'JohnDoe',
-    text: 'ง่วงจังเลย',
+    text: "วันหยุดสั้น ๆ ก็อยากคั่นความเครียดจากงานด้วยการพาตัวเองไปสูดอากาศดี ๆ หรือทำกิจกรรมสนุก ๆ ที่ผ่อนคลาย และยิ่งถ้าอยู่ใกล้กรุงเทพฯ ได้ก็ยิ่งเลิฟ",
+    imagesrc: "https://i.pinimg.com/1200x/de/da/81/deda811e570b5395e8e2affe66e72996.jpg",
     time: 45, // 45 minutes
     donate: 1000,
-    imagesrc: 'path/to/your/image.jpg', // Optional
   };
   const handleEditClick = () => {
     // Handle edit action here
@@ -74,7 +74,7 @@ const Dashboard: React.FC = () => {
           style={{ height: "300px" }}
         >
           <AreaChartCard
-            yAxisData={[150, 134, 123, 111, 95, 90, 120]} // Pass Y-axis data as a prop
+            yAxisData={[150, 134, 123, 111, 95, 90, 120]} 
             xAxisLabels={[
               "12/Sep",
               "13/Sep",
@@ -83,7 +83,7 @@ const Dashboard: React.FC = () => {
               "16/Sep",
               "17/Sep",
               "18/Sep",
-            ]} // Pass X-axis labels as a prop
+            ]}
           />
         </div>
 

@@ -7,12 +7,15 @@ interface AreaChartCardProps {
   xAxisLabels: string[];
 }
 
-const AreaChartCard: React.FC<AreaChartCardProps> = ({ yAxisData, xAxisLabels }) => {
+const AreaChartCard: React.FC<AreaChartCardProps> = ({
+  yAxisData,
+  xAxisLabels,
+}) => {
   const options = {
     chart: {
       id: "linechart",
       zoom: {
-        enabled: false
+        enabled: false,
       },
     },
     xaxis: {
@@ -46,21 +49,22 @@ const AreaChartCard: React.FC<AreaChartCardProps> = ({ yAxisData, xAxisLabels })
   ];
 
   return (
-      <div className="flex flex-col justify-center">
-        <h1 className="text-lg font-semibold">กราฟแสดงยอดเงินย้อนหลัง</h1>
-        <h2 className="text-sm">7 วันล่าสุด หน่วย : พันบาท</h2>
-        <div id="chart" className="mt-4">
-          <Chart
-            options={options}
-            series={series}
-            type="area"
-            width="100%"
-            height="230"
-          />
-        </div>
-  
+    <div className="flex flex-col justify-center">
+      <div className="flex justify-center">
+        <div></div>
+        <h1 className="flex text-lg font-semibold ">กราฟแสดงยอดเงินย้อนหลัง</h1>
       </div>
-
+      <h2 className="text-sm">ยอดเงิน : พันบาท</h2>
+      <div id="chart" className="mt-4">
+        <Chart
+          options={options}
+          series={series}
+          type="area"
+          width="100%"
+          height="210"
+        />
+      </div>
+    </div>
   );
 };
 
