@@ -1,5 +1,6 @@
 import { UUID } from 'crypto';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Content } from './content.entity';
 
 @Entity()
 export class Admin {
@@ -15,16 +16,19 @@ export class Admin {
     @Column()
     expire:number
 
-    @Column()
+    @Column({ length: 500 })
     code:string
 
-    @Column()
+    @Column({ length: 500 })
     displayname:string
 
-    @Column()
+    @Column({ length: 500 })
     tel:string
 
     @Column()
     mode:boolean
+
+    @OneToMany(() => Content, Content => Content.admin)
+    Contents: Content[];
 
 }
