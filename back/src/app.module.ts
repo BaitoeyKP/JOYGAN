@@ -5,6 +5,8 @@ import { UsersModule } from './users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import entities from './typeorm';
+import { AdminModule } from './admin/admin/admin.module';
+import { ContentModule } from './content/content.module';
 
 
 
@@ -25,7 +27,9 @@ import entities from './typeorm';
       }),
       inject: [ConfigService],
     }),
-    UsersModule
+    UsersModule,
+    AdminModule,
+    ContentModule
   ],
   controllers: [AppController],
   providers: [AppService],
