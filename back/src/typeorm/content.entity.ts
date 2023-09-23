@@ -1,4 +1,3 @@
-import { UUID } from 'crypto';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Admin } from './admin.entity';
 import { User } from './user.entity';
@@ -6,7 +5,7 @@ import { User } from './user.entity';
 @Entity()
 export class Content {
     @PrimaryGeneratedColumn('uuid')
-    id:UUID;
+    id:string;
 
     @Column({ length: 500 })
     text:string;
