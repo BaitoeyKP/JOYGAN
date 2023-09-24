@@ -8,7 +8,7 @@ interface type {
 }
 
 // function IncomeBox({ data }: type) {
-function IncomeBox({ date, income }: type) {
+function IncomeBoxDaily({ date, income }: type) {
     return (
         <div className="w-4/5 my-3">
             {/* {data.map((info, index) => {
@@ -27,4 +27,4 @@ function IncomeBox({ date, income }: type) {
     )
 }
 
-export default IncomeBox;
+export default IncomeBoxDaily;
