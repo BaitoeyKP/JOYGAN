@@ -30,7 +30,14 @@ function Income() {
                     </div>
                 </div>
             </div>
-            <div className="flex justify-center"><IncomeBox data={data}></IncomeBox></div>
+            <div className="flex flex-col items-center">
+                {/* <IncomeBox data={data}></IncomeBox> */}
+                {data.map((info, index) => {
+                    return (
+                        <IncomeBox key={index} date={info.date} income={info.income}></IncomeBox>
+                    );
+                })}
+            </div>
         </div>
     )
 }
