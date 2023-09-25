@@ -1,22 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/typeorm';
-//import { Content } from 'src/typeorm';
+import { Admin } from 'src/typeorm';
+import { Content } from 'src/typeorm';
+import { LogUser } from 'src/typeorm/log.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
+import { CreateLogDto } from 'src/users/dtos/Createlog.dto';
 
 @Injectable()
 export class UsersService {
   private globalObject: any = {};
     constructor(
         @InjectRepository(User) private readonly userRepository: Repository<User>,
-       // @InjectRepository(Content) private readonly contentRepository: Repository<Content>
+       // @InjectRepository(Admin) private readonly adminRepository: Repository<Admin>,
+      // @InjectRepository(Content) private readonly contentRepository: Repository<Content>,
+       @InjectRepository(LogUser) private readonly logRepository: Repository<LogUser>
       ) {}
           
-    /*  createUser(createUserDto: CreateUserDto) {   // make user
-        const newUser = this.userRepository.create(createUserDto);
-        return this.userRepository.save(newUser);
-      }  */   // maiout
 
       getUsers() {   // find all
         return this.userRepository.find();
@@ -47,6 +48,11 @@ export class UsersService {
     
         return user;
       }
+
+      async createLog(createlogDto: CreateLogDto) : Promise<LogUser> {   // make Log
+        const newLog = await this.logRepository.create(createlogDto);
+        return await this.logRepository.save(newLog);
+      } 
     
       messagereq(messagereq:any){
         
@@ -64,13 +70,31 @@ export class UsersService {
         }
       }
     
-      getQr(code:any){
+      async getQr(code:any){
         const thiscode = code["code"]
     
-        // Get qr picture from db with thiscode with qrpath (str)
-        const qrpath = "bbb"
-    
-        return qrpath
+        //get telephone num from code in db admin
+
+        const tel = "0962310140"
+
+        const generatePayload = require('promptpay-qr')
+        const qrcode = require('qrcode')
+
+        //format telephone
+        const formatTel = `${tel.slice(0,3)}-${tel.slice(3,6)}-${tel.slice(6)}`
+
+        //how much 
+        const amount = 0
+        const payload = generatePayload(formatTel, {amount})
+
+        const option = { type: 'png', color:{ dark: '#000', light:'#fff'}}
+        const qrname = `./qr_${tel}.png`
+        qrcode.toFile(qrname, payload, option, (err, svg) => {
+          if (err) return console.log(err)
+          console.log('save png')
+        })
+        
+        return qrname
     
       }
     

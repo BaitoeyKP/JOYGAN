@@ -9,6 +9,7 @@ import {
     ValidationPipe,
     } from '@nestjs/common';
     import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
+    import { CreateLogDto } from 'src/users/dtos/Createlog.dto';
     import { UsersService } from 'src/users/services/users/users.service';
     
     @Controller('users')
@@ -25,17 +26,8 @@ import {
         return this.userService.findUsersById(id);
       }
       
-      /*@Post('create')   // make username
-      @UsePipes(ValidationPipe)
-      createUsers(@Body() createUserDto: CreateUserDto) {
-        return this.userService.createUser(createUserDto);
-      } */  //maiout
-
+  
         // add ver 2
-      @Get('/pay/getqr')
-      async getQR(@Body() code: any){
-         return this.userService.getQr(code)
-      }
 
       @Get('/pay/cancel')
         async cancel(){
@@ -52,12 +44,23 @@ import {
       return this.userService.payment()
       }*/ 
 
+      @Post('/pay/getqr')  // post 
+      async getQR(@Body() code: any){
+         return this.userService.getQr(code)
+      }
+
       @Post('/login')
       @UsePipes(ValidationPipe)
       async login(@Body() createUserDto: CreateUserDto){
         const userId = await this.userService.saveUsertoDB(createUserDto)
         return {id : userId.id} ;
       }  // palm OK
+
+      @Post('/createlog')  
+      @UsePipes(ValidationPipe)
+      async createLog(@Body() createlogDto: CreateLogDto) {
+        return await this.userService.createLog(createlogDto);
+      }
 
       @Post('/req')
        messagereq(@Body() messagereq: any){

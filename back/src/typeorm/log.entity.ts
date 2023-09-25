@@ -1,11 +1,12 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Content } from './content.entity';
+import { User } from './user.entity';
+import { Admin } from './admin.entity';
 
 @Entity()
-export class User {
+export class LogUser {
   @PrimaryGeneratedColumn({
     type: 'bigint',
-    name: 'user_id',
+    name: 'log_id',
   })
   id: number;
 
@@ -15,19 +16,21 @@ export class User {
   })
   username: string;
 
- /* @Column({
-    name: 'email_address',
+  @Column({
     nullable: false,
-    default: '',
+    default: 0,
   })
-  email: string;
-  */
+  amount: number;
+
   @Column({
     nullable: false,
     default: '',
   })
-  password: string;
+  code: string;
   
-  @OneToMany(() => Content, Content => Content.user)
-  Contents: Content[];
+  @OneToMany(() => User, User => User.username)
+  User: User[];
+
+  @OneToMany(() => Admin, admin => admin.tel)
+  admin:Admin;
 }
