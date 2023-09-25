@@ -31,7 +31,10 @@ const Dashboard: React.FC = () => {
   //card 2 data and function
   // State to control the visibility of the confirmation dialog
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+   // State to store the id of the selected queue item
+   const [selectedQueueItemId, setSelectedQueueItemId] = useState<number | null>(null);
   const exampleData = {
+    id: 1,
     username: "JohnDoe",
     text: "ก็พบกันอีกเช่นเคยนะครับ สำหรับท่านที่เดินผ่านไปผ่านมานะครับ วันนี้ เฉาก๊วยชากังราวของเรานะครับ ก็ได้มาบริการท่านพ่อแม่พี่น้องอีกแล้วครับ อากาศร้อนร๊อนอย่างนี้นะครับ สำหรับท่านที่เดินผ่านไปผ่านมานะครับ ลองมาแวะชิมเฉาก๊วยแท้แท้กันก่อนนะครับ เฉาก๊วยชากังราวของเรานะครับ เป็นที่รู้จักไปทั่วนะครับ เฉาก๊วยนั้นนะครับ เป็นพืชสมุนไพรจีนนะครับ ที่นำเข้าจากประเทศจีนนะครับ เรานำเข้าจากประเทศจีน ก็ลองมาชิมเฉาก๊วยกันแท้ๆกัน ดูซิว่า เฉาก๊วยแท้เนี่ยกับเฉาก๊วยตามท้องตลาดนั้น มันแตกต่างกันยังไง นะครับ สำหรับท่านที่ยังไม่เคยรับประทานเฉาก๊วยแท้ๆ ก็ลองแวะมาชิมกันก่อน เฉาก๊วยนั้นน่ะครับนอกจากอร่อยแล้ว ก็ยังมีประโยชน์กับร่างกายด้วยนะครับ เช่น แก้ร้อนใน แก้ไข้หวัดนะครับ ลดความ ดันโลหิตสูง แก้กล้ามเนื้ออักเสบ ข้ออักเสบ ตับอักเสบ แล้วก็เบาหวาน อันนี้คือประโยชน์ของเฉาก๊วยนะครับ เราอยากให้ท่านได้กินของที่มีประโยชน์กับร่างกาย ก็ลองแวะมาชิมกันก่อนนะครับ อากาศร้อนร๊อน หรือว่าอากาศไม่ร้อนก็กินกันได้นะครับ บางคนบอกอากาศเย็นกินได้ไหม อากาศเย็นๆก็กินได้นะครับ คือเฉาก๊วยเนี่ยกินแล้วแก้ร้อนในได้นะครับ",
     imagesrc:
@@ -43,16 +46,20 @@ const Dashboard: React.FC = () => {
     // Handle edit action here
     console.log("Edit button clicked!");
   };
-  const handleRemoveClick = () => {
-    // Handle remove action here
-    console.log("Remove button clicked!");
+  const handleRemoveClick = (itemId: number) => {
+    // Set the selected queue item's id
+    setSelectedQueueItemId(itemId);
     // Display the confirmation dialog
     setShowConfirmDialog(true);
   };
+
   // Function to handle confirmation of removal
   const handleConfirmRemove = () => {
-    // Handle the removal action here
-    console.log("Removing...");
+    if (selectedQueueItemId !== null) {
+      // Log a message with the selected queue item's id
+      console.log(`Queue ${selectedQueueItemId} was removed.`);
+      // Handle the removal action here
+    }
 
     // Hide the confirmation dialog
     setShowConfirmDialog(false);
@@ -60,7 +67,8 @@ const Dashboard: React.FC = () => {
 
   // Function to handle canceling removal
   const handleCancelRemove = () => {
-    console.log("Canceling...");
+    // Clear the selected queue item's id
+    setSelectedQueueItemId(null);
     // Hide the confirmation dialog
     setShowConfirmDialog(false);
   };
@@ -93,7 +101,7 @@ const Dashboard: React.FC = () => {
   //card 5 data and function
   const queueData = [
     {
-      id: 'Qid1',
+      id: 2,
       username: 'UsernameA', // Include the username here
       text: 'ง่วงจังเลย',
       time: 120,
@@ -102,7 +110,7 @@ const Dashboard: React.FC = () => {
       imageSrc: 'https://picsum.photos/200/300',
     },
     {
-      id: 'Qid2',
+      id: 3,
       username: 'UsernameB', // Include the username here
       text: 'ง่วงจังเลย',
       time: 45,
@@ -111,7 +119,7 @@ const Dashboard: React.FC = () => {
       imageSrc: 'https://picsum.photos/1080/720',
     },
     {
-      id: 'Qid3',
+      id: 4,
       username: 'UsernameC', // Include the username here
       text: 'ง่วงจังเลย',
       time: 45,

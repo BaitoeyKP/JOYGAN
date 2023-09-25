@@ -3,6 +3,7 @@ import IconButton from "./IconButton";
 
 interface CurrentTextProps {
   data: {
+    id: number;
     username: string;
     text: string;
     time: number; // in minutes
@@ -16,10 +17,10 @@ interface CurrentTextProps {
 const CurrentText: React.FC<CurrentTextProps> = ({
   data,
   onEditClick,
-  onRemoveClick,
+  onRemoveClick(itemId: number) => void,
 }) => {
   // Destructure the data object
-  const { username, text, time, donate, imagesrc } = data;
+  const { id, username, text, time, donate, imagesrc } = data;
   // State to hold the remaining time
   const [remainingTimeSeconds, setRemainingTime] = useState(time * 60);
 
@@ -99,7 +100,7 @@ const CurrentText: React.FC<CurrentTextProps> = ({
               </svg>
             }
             text="ลบ"
-            onClick={onRemoveClick}
+            onClick={onRemoveClick(id)}
             bgColor="red-cancel"
             hoverColor="dark-red-cancel"
           />

@@ -1,7 +1,7 @@
 import React from "react";
 
 interface QueueItem {
-  id: string;
+  id: number;
   text: string;
   time: number; // time in seconds
   donate: number;
@@ -12,7 +12,7 @@ interface QueueItem {
 
 interface QueueComponentProps {
   queue: QueueItem[];
-  handleRemoveClick: (itemId: string) => void;
+  handleRemoveClick: (itemId: number) => void;
 }
 
 const QueueComponent: React.FC<QueueComponentProps> = ({
