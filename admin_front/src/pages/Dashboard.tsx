@@ -100,7 +100,6 @@ const Dashboard: React.FC = () => {
       text: 'Basic usage Showing content that overflows Use overflow-visible to prevent content within an element from being clipped. Note that any content that overflows the bounds of the element will then be visible.',
       time: 120,
       donate: 10000,
-      timestamp: 13324564,
       imageSrc: 'https://picsum.photos/200/300',
     },
     {
@@ -109,7 +108,6 @@ const Dashboard: React.FC = () => {
       text: 'ง่วงจังเลย',
       time: 45,
       donate: 1000,
-      timestamp: 13324564,
       imageSrc: 'https://picsum.photos/1080/720',
     },
     {
@@ -118,7 +116,6 @@ const Dashboard: React.FC = () => {
       text: 'ง่วงจังเลย',
       time: 145,
       donate: 1000,
-      timestamp: 13324564,
       imageSrc: 'https://picsum.photos/836/739',
     },
   ];
@@ -194,7 +191,7 @@ const Dashboard: React.FC = () => {
       {/* ConfirmDialog component */}
       {showConfirmDialog && (
         <ConfirmDialog
-          message="Are you sure you want to remove?"
+          message="ยกเลิกการแสดงขึ้นจอ"
           onConfirm={handleConfirmRemove}
           onCancel={handleCancelRemove}
         />
