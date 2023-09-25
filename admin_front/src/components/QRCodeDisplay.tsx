@@ -5,9 +5,10 @@ interface QRCodeDisplayProps {
     name: string;
     number: string;
   };
+  handleQrClick: () => void;
 }
 
-const QRCodeDisplay: React.FC<QRCodeDisplayProps> = ({ account }) => {
+const QRCodeDisplay: React.FC<QRCodeDisplayProps> = ({ account, handleQrClick }) => {
   // Format the account number into sets of 4 characters
   const formattedAccountNumber = account.number
     ? account.number.match(/.{1,4}/g)?.join(" ") // Use optional chaining and nullish coalescing
@@ -35,7 +36,8 @@ const QRCodeDisplay: React.FC<QRCodeDisplayProps> = ({ account }) => {
         </div>
       </div>
       <div id="button" className="flex flex-col items-center">
-        <button className="bg-purple-btn hover:bg-dark-purple-highlight rounded-xl shadow-md px-4 py-3 flex fkex-row active:ring active:ring-2 active:ring-offset-2 active:ring-violet-600">
+        <button className="bg-purple-btn hover:bg-dark-purple-highlight rounded-xl shadow-md px-4 py-3 flex fkex-row active:ring active:ring-2 active:ring-offset-2 active:ring-violet-600" 
+        onClick={handleQrClick}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"

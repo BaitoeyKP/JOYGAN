@@ -17,7 +17,7 @@ interface CurrentTextProps {
 const CurrentText: React.FC<CurrentTextProps> = ({
   data,
   onEditClick,
-  onRemoveClick(itemId: number) => void,
+  onRemoveClick,
 }) => {
   // Destructure the data object
   const { id, username, text, time, donate, imagesrc } = data;
@@ -53,13 +53,12 @@ const CurrentText: React.FC<CurrentTextProps> = ({
         >
           <span id="text" className="overflow-y-auto max-h-48">{text}</span>
         </div>
-
         <img
           className="max-h-48 rounded-lg mx-10"
           src={imagesrc}
           alt="current displaying"
         />
-        <div id="buttons" className="flex flex-col self-center mx-5">
+        <div id="buttons" className="flex flex-col self-center xl:mx-5">
           <IconButton
             icon={
               <svg
@@ -100,7 +99,7 @@ const CurrentText: React.FC<CurrentTextProps> = ({
               </svg>
             }
             text="ลบ"
-            onClick={onRemoveClick(id)}
+            onClick={onRemoveClick}
             bgColor="red-cancel"
             hoverColor="dark-red-cancel"
           />

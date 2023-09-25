@@ -22,7 +22,7 @@ const AreaChartCard: React.FC<AreaChartCardProps> = ({ chartData }) => {
       categories: xAxisLabels,
     },
     dataLabels: {
-      enabled: true,
+      enabled: false,
     },
     fill: {
       type: "solid",

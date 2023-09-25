@@ -6,9 +6,10 @@ interface TodayIncomeProps {
     morethan: number;
     morethanper: number;
   };
+  onIncomehistoryClick: () => void;
 }
 
-const TodayIncome: React.FC<TodayIncomeProps> = ({ incomeData }) => {
+const TodayIncome: React.FC<TodayIncomeProps> = ({ incomeData, onIncomehistoryClick }) => {
   const { total, morethan, morethanper } = incomeData;
 
   return (
@@ -21,7 +22,8 @@ const TodayIncome: React.FC<TodayIncomeProps> = ({ incomeData }) => {
         </h3>
       </div>
       <div className="flex justify-center ">
-        <button className="px-5 py-2 bg-purple-btn rounded-lg shadow-lg text-white hover:bg-dark-purple-highlight active:ring active:ring-2 active:ring-offset-2 active:ring-violet-600">
+        <button className="px-5 py-2 bg-purple-btn rounded-lg shadow-lg text-white hover:bg-dark-purple-highlight active:ring active:ring-2 active:ring-offset-2 active:ring-violet-600"
+        onClick={onIncomehistoryClick}>
           ดูย้อนหลัง
         </button>
       </div>

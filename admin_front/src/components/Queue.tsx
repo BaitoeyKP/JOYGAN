@@ -35,16 +35,19 @@ const QueueComponent: React.FC<QueueComponentProps> = ({
                 @{item.username}
               </h2>
             )}
-            <h3 id="Usertext" className="text-center overflow-y-auto h-16 w-80">
+            <h3
+              id="Usertext"
+              className="text-center overflow-y-auto h-16 w-40 xl:w-80"
+            >
               {item.text}
             </h3>
           </div>
           {item.imageSrc && (
             <div id="image" className=" mx-4">
               <img
-                className="max-h-20 rounded-lg"
+                className="max-h-24 rounded-lg"
                 src={item.imageSrc}
-                alt={`Image for ${item.username}`}
+                alt={`${item.username} img`}
               />
             </div>
           )}
@@ -107,5 +110,4 @@ const QueueComponent: React.FC<QueueComponentProps> = ({
     </div>
   );
 };
-
 export default QueueComponent;
