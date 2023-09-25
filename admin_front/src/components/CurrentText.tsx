@@ -48,10 +48,11 @@ const CurrentText: React.FC<CurrentTextProps> = ({
       <div id="TetxImageButton" className="flex justify-between">
         <div
           id="text-container"
-          className="flex items-center text-center xl:mx-5 w-20 md:w-36 xl:w-full overflow-hidden h-48 overflow-y-auto"
+          className="flex items-center text-center xl:mx-5 w-20 md:w-36  xl:w-full"
         >
-          <span id="text">{text}</span>
+          <span id="text" className="overflow-y-auto max-h-48">{text}</span>
         </div>
+
         <img
           className="max-h-48 rounded-lg mx-10"
           src={imagesrc}
