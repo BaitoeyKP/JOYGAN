@@ -21,7 +21,11 @@ export class AdminService {
   }
 
   async loginAdmin(username, pass) : Promise<{access_token:string}>{
-    const user = await this.adminRepository.findOne(username);
+    const user = await this.adminRepository.findOne({
+      where:{
+        admin_username:username
+      }
+   });
     if (user?.admin_password !== pass) {
       throw new UnauthorizedException();
     }
