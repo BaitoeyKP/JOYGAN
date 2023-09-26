@@ -5,7 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateAdminDto } from '../dto/CreateAdmin.dto';
 
 
-
 @Controller('admin/user')
 export class AdminController {
     constructor(

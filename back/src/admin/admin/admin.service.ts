@@ -1,9 +1,8 @@
 import { forwardRef,Injectable, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Admin } from 'src/typeorm';
+import { Admin } from 'src/typeorm/admin.entity';
 import { Repository } from 'typeorm';
 import { CreateAdminDto } from '../dto/CreateAdmin.dto';
-
 
 
 @Injectable()

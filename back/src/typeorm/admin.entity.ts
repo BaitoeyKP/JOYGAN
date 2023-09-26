@@ -10,7 +10,7 @@ export class Admin {
     admin_username:string;
 
     @Column({ length: 500 })
-    password:string;
+    admin_password:string;
 
     @Column()
     expire:number
