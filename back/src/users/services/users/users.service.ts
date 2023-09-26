@@ -7,27 +7,29 @@ import { LogUser } from 'src/typeorm/log.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
 import { CreateLogDto } from 'src/users/dtos/Createlog.dto';
+import { CreateAdminDto } from 'src/users/dtos/CreateAdmin.dto';
+import { CreateContentDto } from 'src/users/dtos/CreateContent.dto';
 
 @Injectable()
 export class UsersService {
   private globalObject: any = {};
     constructor(
         @InjectRepository(User) private readonly userRepository: Repository<User>,
-       // @InjectRepository(Admin) private readonly adminRepository: Repository<Admin>,
-      // @InjectRepository(Content) private readonly contentRepository: Repository<Content>,
+        @InjectRepository(Admin) private readonly adminRepository: Repository<Admin>,
+       @InjectRepository(Content) private readonly contentRepository: Repository<Content>,
        @InjectRepository(LogUser) private readonly logRepository: Repository<LogUser>
       ) {}
           
 
-      getUsers() {   // find all
-        return this.userRepository.find();
-      }
+      async getUsers() {   // find all
+        return await this.userRepository.find();
+      } // palm OK
           
       async findUsersById(id: number) {   // find id frist meet
         return await this.userRepository.findOne({
             where: { id },
         });
-      }
+      } // palm OK
 
 
       // add ver 2
@@ -47,55 +49,70 @@ export class UsersService {
         //Save to Database  palm ok
     
         return user;
-      }
+      }  // palm OK
 
       async createLog(createlogDto: CreateLogDto) : Promise<LogUser> {   // make Log
         const newLog = await this.logRepository.create(createlogDto);
         return await this.logRepository.save(newLog);
-      } 
+      }      //Save Log to Database  palm ok
+
+      async createAdmin(createadminDto: CreateAdminDto) : Promise<Admin> {   // make admin
+        const newAd = await this.adminRepository.create(createadminDto);
+        return await this.adminRepository.save(newAd);
+      }      //Save Log to Database  palm ok tester
+
+      async createContent(createcontentDto: CreateContentDto) : Promise<Content> {   // make content
+        const newCon = await this.contentRepository.create(createcontentDto);
+        return await this.contentRepository.save(newCon);
+      }      //Save Log to Database  palm ok tester
+
+      async findByUsername(username: string): Promise<User | undefined> {
+        return  await this.userRepository.findOne({
+          where: { username },
+      });
+      } // palm OK
     
-      messagereq(messagereq:any){
-        
-        const message = messagereq["message"]
-        const time = messagereq["time"]
-        //const picture = messagereq["picture"]
-        
-        const msgform = {
-          message: message,
-          time: time,
-          // donate : donate,
-          // timestamp : timstamp, //no
-      //  picture: picture, //string
-        //  state : 'queue'  //no
+      async validateUser(username: string, password: string): Promise<User | undefined> {
+        const user = await this.findByUsername(username);
+        if (user && user.password === password) {
+          return user;
         }
+        return undefined;
+      } // palm OK
+    
+      async savemessage(createcontentDto: CreateContentDto) : Promise<Content> {
+        const newCon = await this.contentRepository.create(createcontentDto);
+        return await this.contentRepository.save(newCon);        
       }
     
-      async getQr(code:any){
+      async getQr(code:any ){
         const thiscode = code["code"]
-    
-        //get telephone num from code in db admin
+        const amount = code["amount"]
 
-        const tel = "0962310140"
+        const shop = await this.adminRepository.findOne({
+          where: { code :  thiscode },
+      });
+      
+      if(shop){
+        const tel = shop.tel //0942908834
 
         const generatePayload = require('promptpay-qr')
         const qrcode = require('qrcode')
 
         //format telephone
         const formatTel = `${tel.slice(0,3)}-${tel.slice(3,6)}-${tel.slice(6)}`
-
+        
         //how much 
-        const amount = 0
         const payload = generatePayload(formatTel, {amount})
-
+       
         const option = { type: 'png', color:{ dark: '#000', light:'#fff'}}
-        const qrname = `./qr_${tel}.png`
+        const qrname = `./QRpic/qr_${amount}_${tel}.png`
         qrcode.toFile(qrname, payload, option, (err, svg) => {
           if (err) return console.log(err)
           console.log('save png')
         })
-        
         return qrname
-    
+       }
       }
     
       cancel(){
@@ -105,8 +122,7 @@ export class UsersService {
     
       async queue(uid:any){
     
-        const id = uid["uid"]
-       // let contentob = await this.contentRepository.findOne({ where: { id } });
+       // const contentob = await this.contentRepository.findOne({ where: { uid } });
 
         // Get number of queue before this uid
     
@@ -115,14 +131,4 @@ export class UsersService {
         return queue
       }
 
-
-     /* 
-      payment(){
-        // Check pay status
-        const paycheck = true
-    
-        // Delete global obj
-    
-        return paycheck
-      } */  // maioutleaw
 }

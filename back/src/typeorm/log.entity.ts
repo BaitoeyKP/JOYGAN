@@ -1,6 +1,4 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { User } from './user.entity';
-import { Admin } from './admin.entity';
 
 @Entity()
 export class LogUser {
@@ -28,9 +26,5 @@ export class LogUser {
   })
   code: string;
   
-  @OneToMany(() => User, User => User.username)
-  User: User[];
-
-  @OneToMany(() => Admin, admin => admin.tel)
-  admin:Admin;
+ 
 }

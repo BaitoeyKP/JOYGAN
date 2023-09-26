@@ -15,13 +15,6 @@ export class User {
   })
   username: string;
 
- /* @Column({
-    name: 'email_address',
-    nullable: false,
-    default: '',
-  })
-  email: string;
-  */
   @Column({
     nullable: false,
     default: '',
@@ -30,4 +23,12 @@ export class User {
   
   @OneToMany(() => Content, Content => Content.user)
   Contents: Content[];
+
+   /* @Column({
+    name: 'email_address',
+    nullable: false,
+    default: '',
+  })
+  email: string;
+  */
 }
