@@ -3,9 +3,16 @@ import { ContentController } from './content.controller';
 import { ContentService } from './content.service';
 import { Content } from 'src/typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from '../auth/constants';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Content])],
+  imports: [TypeOrmModule.forFeature([Content]),
+    JwtModule.register({
+    global: true,
+    secret: jwtConstants.secret,
+    
+  }),],
   controllers: [ContentController],
   providers: [ContentService]
 })

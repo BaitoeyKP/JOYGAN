@@ -17,6 +17,12 @@ export class AdminController {
             return this.adminService.createAdmin(createAdminDto)
 
         }
+        @Post('/login')
+        @UsePipes(ValidationPipe)
+        loginAdmin(@Body() playload : {username:string, pass:string}){
+            return this.adminService.loginAdmin(playload.username, playload.pass);
+
+        }
 }
 
 
