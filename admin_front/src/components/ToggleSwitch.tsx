@@ -15,14 +15,14 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ onText, offText }) => {
   return (
     <div className="flex items-center">
       <button
-        className={`w-12 h-6 rounded-full p-1 transition-transform duration-500 ${
-          isOn ? 'bg-green transform -translate-x-2' : 'bg-red'
+        className={`w-20 h-10 rounded-full p-1 transition-transform duration-500 ${
+          isOn ? 'bg-green-ok transform -translate-x-2' : 'bg-red-cancel'
         }`}
         onClick={toggleSwitch}
       >
         <span
-          className={`block w-4 h-4 rounded-full bg-white shadow-md transform duration-500 ${
-            isOn ? 'translate-x-6' : ''
+          className={`block w-8 h-8 rounded-full bg-white shadow-md transform duration-500 ${
+            isOn ? 'translate-x-10' : ''
           }`}
         ></span>
       </button>

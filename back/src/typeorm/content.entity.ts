@@ -6,7 +6,7 @@ import { User } from './user.entity';
 @Entity()
 export class Content {
     @PrimaryGeneratedColumn('uuid')
-    id:UUID;
+    id:string;
 
     @Column({ length: 500 })
     text:string;
