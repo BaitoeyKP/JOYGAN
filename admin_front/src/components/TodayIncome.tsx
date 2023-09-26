@@ -1,44 +1,33 @@
 import React from "react";
 
 interface TodayIncomeProps {
-  todayIncome: number;
-  yesterdayIncome: number;
+  incomeData: {
+    total: number;
+    morethan: number;
+    morethanper: number;
+  };
+  onIncomehistoryClick: () => void;
 }
 
-const TodayIncome: React.FC<TodayIncomeProps> = ({
-  todayIncome,
-  yesterdayIncome,
-}) => {
-  // Calculate the change and percentage change
-  const incomeChange = todayIncome - yesterdayIncome;
-  const percentageChange =
-    yesterdayIncome === 0
-      ? "0.00" // To prevent division by zero
-      : ((incomeChange / yesterdayIncome) * 100).toFixed(2);
+const TodayIncome: React.FC<TodayIncomeProps> = ({ incomeData, onIncomehistoryClick }) => {
+  const { total, morethan, morethanper } = incomeData;
 
   return (
-    <>
-      <div className="flex flex-col">
-        <h1 className="text-black font-kanit font-medium text-2xl">
-          รายได้วันนี้
-        </h1>
-        <div className="flex flex-wrap my-suto justify-between m-5">
-          <h2 className={`${incomeChange > 0 ? "text-green" : "text-red"} font-kanit font-normal text-3xl lg:text-5xl mx-2`}>
-            {todayIncome.toLocaleString()}
-          </h2>
-          <h3 className={`${incomeChange > 0 ? "text-green" : "text-red"} font-kanit font-normal text-lg lg:text-2xl mt-3`}>
-            {`${incomeChange >= 0 ? "+" : ""}
-            ${incomeChange.toLocaleString()} (${percentageChange}%)`}
-          </h3>
-        </div>
-        <div className="flex justify-between">
-          <div></div>
-          <button className="bg-purple hover:bg-purple-100 active:outline-none active:ring active:ring-purple-300 text-white font-kanit p-3 rounded-xl shadow-md">
-            ผู้ที่ Donate วันนี้
-          </button>
-        </div>
+    <div className="flex flex-col items-center content-evenly space-y-4 lg:space-y-14">
+      <h1 className="text-xl font-bold">รายได้รวมวันนี้</h1>
+      <div className="flex flex-col items-center">
+        <h2 className="text-3xl xl:text-5xl flex items-center">{total.toLocaleString()} บาท</h2>
+        <h3 className={`${morethan > 0 && morethanper > 0 ? "text-green-ok" : "text-red-cancel"}  text-xl xl:text-3xl `}>
+          {morethan > 0? "+":""}{morethan.toLocaleString()} ({morethanper > 0? "+":""}{morethanper.toFixed(2)}%)
+        </h3>
       </div>
-    </>
+      <div className="flex justify-center ">
+        <button className="px-5 py-2 bg-purple-btn rounded-lg shadow-lg text-white hover:bg-dark-purple-highlight active:ring active:ring-2 active:ring-offset-2 active:ring-violet-600"
+        onClick={onIncomehistoryClick}>
+          ดูย้อนหลัง
+        </button>
+      </div>
+    </div>
   );
 };
 
