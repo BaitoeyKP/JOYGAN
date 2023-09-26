@@ -7,7 +7,7 @@ export class Admin {
     id:string;
 
     @Column({ length: 500 })
-    admin:string;
+    admin_username:string;
 
     @Column({ length: 500 })
     password:string;
