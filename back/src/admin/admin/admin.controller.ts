@@ -11,11 +11,11 @@ export class AdminController {
         private readonly adminService : AdminService
         ){}
 
-        // @Post('/register')
-        // @UsePipes(ValidationPipe)
-        // createNewAdmin(@Body() createAdminDto : CreateAdminDto){
-        //     return this.adminService.createAdmin(createAdminDto)
+        @Post('/register')
+        @UsePipes(ValidationPipe)
+        createNewAdmin(@Body() createAdminDto : CreateAdminDto){
+            return this.adminService.createAdmin(createAdminDto)
 
-        // }
+        }
 
 }
