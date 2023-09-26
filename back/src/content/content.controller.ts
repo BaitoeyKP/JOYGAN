@@ -10,8 +10,16 @@ export class ContentController {
     @UseGuards(AuthGuard)
     @Get('show')
     getShowContent(@Request() req){
-        return req.user;
+        return req.user; //uuid ของ user
     }
+
+    @UseGuards(AuthGuard) 
+    @Get('top-donators')
+    getTopDonators() {
+    const topDonators =  this.contentService.getTopDonators(); 
+    return topDonators;
+
+}
 
     @Delete('show')
     deleteShowContent(){
@@ -41,5 +49,3 @@ export class ContentController {
     
 
 }
-
-
