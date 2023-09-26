@@ -10,7 +10,7 @@ export class AdminController {
     constructor(
         private readonly adminService : AdminService
         ){}
-         @UsePipes(ValidationPipe)
+         
         @Post("register")
         createNewAdmin(@Body() createAdminDto : CreateAdminDto){
             return this.adminService.createAdmin(createAdminDto)
