@@ -15,11 +15,6 @@ export class AdminController {
         @UsePipes(ValidationPipe)
         createNewAdmin(@Body() createAdminDto : CreateAdminDto){
             return this.adminService.createAdmin(createAdminDto)
-<<<<<<< HEAD
-
-        }
-=======
->>>>>>> 00ddb6b6c1e3c05429ef500c0f90151e1fe71737
 
         }
 }
