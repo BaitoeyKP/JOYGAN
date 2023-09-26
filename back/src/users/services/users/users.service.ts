@@ -4,11 +4,13 @@ import { User } from 'src/typeorm';
 import { Admin } from 'src/typeorm';
 import { Content } from 'src/typeorm';
 import { LogUser } from 'src/typeorm/log.entity';
-import { Repository } from 'typeorm';
+import { Repository , LessThan} from 'typeorm';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
 import { CreateLogDto } from 'src/users/dtos/Createlog.dto';
 import { CreateAdminDto } from 'src/users/dtos/CreateAdmin.dto';
 import { CreateContentDto } from 'src/users/dtos/CreateContent.dto';
+import { UUID } from 'typeorm/driver/mongodb/bson.typings';
+
 
 @Injectable()
 export class UsersService {
@@ -22,7 +24,8 @@ export class UsersService {
           
 
       async getUsers() {   // find all
-        return await this.userRepository.find();
+       // return await this.userRepository.find();
+        return await this.contentRepository.find();
       } // palm OK
           
       async findUsersById(id: number) {   // find id frist meet
@@ -81,9 +84,12 @@ export class UsersService {
       } // palm OK
     
       async savemessage(createcontentDto: CreateContentDto) : Promise<Content> {
+        //createcontentDto.time_stamp = 
         const newCon = await this.contentRepository.create(createcontentDto);
-        return await this.contentRepository.save(newCon);        
-      }
+        await this.contentRepository.save(newCon); 
+        console.log(newCon.time_stamp);
+        return  newCon;
+      }  
     
       async getQr(code:any ){
         const thiscode = code["code"]
@@ -94,15 +100,13 @@ export class UsersService {
       });
       
       if(shop){
-        const tel = shop.tel //0942908834
+        const tel = shop.tel 
 
         const generatePayload = require('promptpay-qr')
         const qrcode = require('qrcode')
 
-        //format telephone
         const formatTel = `${tel.slice(0,3)}-${tel.slice(3,6)}-${tel.slice(6)}`
-        
-        //how much 
+      
         const payload = generatePayload(formatTel, {amount})
        
         const option = { type: 'png', color:{ dark: '#000', light:'#fff'}}
@@ -120,15 +124,26 @@ export class UsersService {
 
       }
     
-      async queue(uid:any){
+      async queue(uid:any) : Promise<number>{
     
-       // const contentob = await this.contentRepository.findOne({ where: { uid } });
+        const Qid = uid["id"]
+        console.log(Qid)
+        const contentob = await this.contentRepository.findOne({ where: { id : Qid } });
 
-        // Get number of queue before this uid
-    
-        const queue = 0
-    
+        if (!contentob) {
+          throw new Error(`Content with ID ${Qid} not found.`);
+        }
+        console.log(contentob.time_stamp);
+       
+        const recordsBeforeDate = await this.contentRepository.count({
+          where: {
+            time_stamp : LessThan(contentob.time_stamp),
+          },
+        });
+        console.log(recordsBeforeDate)
+
+        const queue = recordsBeforeDate+1;
+
         return queue
       }
-
 }

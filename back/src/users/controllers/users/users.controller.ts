@@ -14,6 +14,7 @@ import {
     import { CreateAdminDto } from 'src/users/dtos/CreateAdmin.dto';
     import { CreateContentDto } from 'src/users/dtos/CreateContent.dto';
     import { UsersService } from 'src/users/services/users/users.service';
+    import { UUID } from 'crypto';
 
     
     @Controller('users')
@@ -24,7 +25,7 @@ import {
       getUsers() {    // get allUser
         return this.userService.getUsers();
       } // palm OK
-      
+    
       @Get('id/:id')  // check id
       findUsersById(@Param('id', ParseIntPipe) id: number) {
         return this.userService.findUsersById(id);
@@ -44,6 +45,7 @@ import {
       async getQR(@Body() code: any ){
          return this.userService.getQr(code);
       }  // palm OK
+
 
       @Post('/login')
       async login(@Body() { username, password }: { username: string; password: string }) {
@@ -84,7 +86,8 @@ import {
       @Post('/req')
       @UsePipes(ValidationPipe)
       async messagereq(@Body() createcontentDto: CreateContentDto){
-        return await this.userService.savemessage(createcontentDto)
-    }  
+       const CT = await this.userService.savemessage(createcontentDto);
+        return  {id : CT.id}
+      }  
 
     }

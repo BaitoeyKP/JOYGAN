@@ -7,22 +7,19 @@ export class CreateContentDto {
     text: string;
 
     @IsNotEmpty()
-    @MinLength(2)
     time_display: number;
      
     @IsNotEmpty()
-    @MinLength(1)
     donate: number;
 
-    @IsNotEmpty()
-    @MinLength(2)
+   // @IsNotEmpty()
     time_stamp: number;
 
     @IsNotEmpty()
     @MinLength(6)
     pic: string; 
 
-    @IsNotEmpty()
+   /* @IsNotEmpty()
     @MinLength(5)
     state: string; 
 
@@ -33,5 +30,5 @@ export class CreateContentDto {
     @IsNotEmpty()
     @MinLength(1)
     userId: number;
-
+    */
 }

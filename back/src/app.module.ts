@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
+import { Module ,forwardRef  } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import entities from './typeorm';
+import { AdminModule } from './admin/admin/admin.module';
 
 
 
@@ -25,7 +26,8 @@ import entities from './typeorm';
       }),
       inject: [ConfigService],
     }),
-    UsersModule
+    UsersModule,
+    AdminModule
   ],
   controllers: [AppController],
   providers: [AppService],

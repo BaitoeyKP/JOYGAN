@@ -1,10 +1,11 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { UUID } from 'crypto';
 
 @Entity()
 export class LogUser {
   @PrimaryGeneratedColumn({
     type: 'bigint',
-    name: 'log_id',
+    name: 'user_id',
   })
   id: number;
 

@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Content } from './content.entity';
+import { UUID } from 'crypto';
 
 @Entity()
 export class User {
