@@ -34,7 +34,7 @@ export class AdminController {
                 return { code };
         }
 
-        @Get('code')
+        @Get('getcode')
         async getAdminCode() {
             const code = await this.adminService.getCode();
             if (code === null) {
@@ -45,7 +45,7 @@ export class AdminController {
         }
         
 
-        @Get(':id/Expire')
+        @Get(':id/getExpireByid')
         async getExpireByid(@Param('id') adminId: string) {
             const expire = await this.adminService.getCodeById(adminId);
             if (expire === null) {
@@ -54,7 +54,7 @@ export class AdminController {
             }
                 return { expire };
         }
-        
+        @Get('Expire')
         async getExpire() {
             const expire = await this.adminService.getCode();
             if (expire === null) {

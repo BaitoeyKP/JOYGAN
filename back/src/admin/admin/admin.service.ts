@@ -108,8 +108,9 @@ export class AdminService {
 
     async getCode(): Promise<string | null> {
   
-      const admin = await this.adminRepository.findOne({});
-      return admin ? admin.code : null;
+      const admin = await this.adminRepository.find();
+      const admins = admin.length > 0 ? admin[0] : null;
+      return admins ? admins.code : null;
     }
 
     async getExpireById(adminId: string): Promise<number| null> {
@@ -117,10 +118,11 @@ export class AdminService {
       return admin ? admin.expire : null;
     }
 
-    async getExpire(): Promise<number | null> {
+    async getExpire(): Promise<number| null> {
   
-      const admin = await this.adminRepository.findOne({});
-      return admin ? admin.expire : null;
+      const admin = await this.adminRepository.find();
+      const admins = admin.length > 0 ? admin[0] : null;
+      return admins ? admins.expire : null;
     }
     
 
