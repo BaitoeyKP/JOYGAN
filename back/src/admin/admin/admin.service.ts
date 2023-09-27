@@ -100,31 +100,28 @@ export class AdminService {
         };
     }
 
-    async getCodeByUsername(username: string): Promise<string> {
-        const admin = await this.adminRepository.findOne(
-            { 
-                where:{
-                    admin_username: username 
-                }
-        });
-        if (!admin) {
-          throw new NotFoundException('Admin not found');
-        }
-        return admin.code;
-      }
+    async getCodeById(adminId: string): Promise<string | null> {
+      const admin = await this.adminRepository.findOne({where:{ id: adminId }});
+      return admin ? admin.code : null;
+    }
 
-      async getExpireUsername(username: string) {
-        const admin = await this.adminRepository.findOne(
-            { 
-                where:{
-                    admin_username: username 
-                }
-        });
-        if (!admin) {
-          throw new NotFoundException('Admin not found');
-        }
-        return admin.expire;
-      }
+
+    async getCode(): Promise<string | null> {
+  
+      const admin = await this.adminRepository.findOne({});
+      return admin ? admin.code : null;
+    }
+
+    async getExpireById(adminId: string): Promise<number| null> {
+      const admin = await this.adminRepository.findOne({where:{ id: adminId }});
+      return admin ? admin.expire : null;
+    }
+
+    async getExpire(): Promise<number | null> {
+  
+      const admin = await this.adminRepository.findOne({});
+      return admin ? admin.expire : null;
+    }
     
 
 }
