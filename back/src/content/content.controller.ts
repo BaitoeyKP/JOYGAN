@@ -13,7 +13,7 @@ export class ContentController {
         return req.user; //uuid ของ user
     }
 
-    @UseGuards(AuthGuard) 
+    // @UseGuards(AuthGuard) 
     @Get('top-donators')
     getTopDonators() {
     const topDonators =  this.contentService.getTopDonators(); 

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards, UsePipes, ValidationPipe ,Request } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards, UsePipes, ValidationPipe ,Request, UnauthorizedException } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from '../admin/dto/CreateAdmin.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
@@ -17,10 +17,10 @@ export class AdminController {
 
         }
         
-        
         @Post('/login')
-        AdminLogin(@Body() body: { username: string; pass: string }){
-            return this.adminService.loginAdmin(body.username,body.pass)
+        AdminLogin(@Body() { username, password }: { username: string; password: string }){
+            const user =  this.adminService.loginAdmin(username,password)
+           return user;
         }
 
        
@@ -41,7 +41,6 @@ export class AdminController {
         } 
 
         @Get('/daily-summary')
-        @UseGuards(AuthGuard)
         async getDailyIncomeSummary(@Request() req) {
             const { total, morethan, morethanper } = await this.adminService.calculateDailySummary(req.user);
 

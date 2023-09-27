@@ -5,6 +5,7 @@ import { Repository ,Equal} from 'typeorm';
 import { CreateAdminDto } from '../admin/dto/CreateAdmin.dto';
 import { JwtService } from '@nestjs/jwt';
 import { LogUser } from 'src/typeorm';
+import { access } from 'fs';
 
 
 @Injectable()
@@ -24,18 +25,30 @@ export class AdminService {
   }
 
   async loginAdmin(username, pass) : Promise<{access_token:string}>{
+    console.log(pass);
+  
+
     const adminUser = await this.adminRepository.findOne({
       where:{
         admin_username:username
       }
    });
+   console.log(adminUser.admin_password);
     if (adminUser?.admin_password !== pass) {
       throw new UnauthorizedException();
     }
-    const payload = { uuid: adminUser.id};
-    return {
-      access_token: await this.jwtService.signAsync(payload),
-    };
+    
+    if (adminUser && adminUser.id){
+
+      const payload = { uuid: adminUser.id};
+      return {
+        access_token: await this.jwtService.signAsync(payload)
+       
+      };
+    }
+    else{
+      console.log( adminUser.id);
+    }
   }
 
 
@@ -78,7 +91,7 @@ export class AdminService {
         
         const morethan = totalIncomeToday - totalIncomeYesterday;
         const morethanper = (morethan / totalIncomeYesterday) * 100;
-
+        console.log(morethan);
         
         return {
         total: totalIncomeToday,
