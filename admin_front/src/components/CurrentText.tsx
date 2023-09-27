@@ -6,7 +6,7 @@ interface CurrentTextProps {
     id: number;
     username: string;
     text: string;
-    time: number; // in minutes
+    time: number; // in second
     donate: number;
     imagesrc?: string; // optional
   };
