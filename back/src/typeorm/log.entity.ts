@@ -27,5 +27,10 @@ export class LogUser {
   })
   code: string;
   
+  @Column({ type: 'timestamp with time zone' }) // ระบุประเภทข้อมูลวันที่และเวลาที่ใช้กับฐานข้อมูล
+  date: Date;
+
+ 
+ 
  
 }

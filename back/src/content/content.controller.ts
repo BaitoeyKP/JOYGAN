@@ -14,7 +14,14 @@ export class ContentController {
         return await this.contentService.getShowContent(req.user);
     }
 
-    @UseGuards(AuthGuard)
+    // @UseGuards(AuthGuard) 
+    @Get('top-donators')
+    getTopDonators() {
+    const topDonators =  this.contentService.getTopDonators(); 
+    return topDonators;
+
+}
+
     @Delete('show')
     async deleteShowContent(@Request() req){
         await this.contentService.deleteShowContent(req.user);
@@ -47,5 +54,3 @@ export class ContentController {
     
 
 }
-
-
