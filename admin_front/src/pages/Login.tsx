@@ -8,7 +8,7 @@ interface FormData{
 };
 
 function Login(){
-    const[name,passWord]=useState();
+    const[name,passWord]=useState("");
     const{register,handleSubmit}=useForm<FormData>();
 
     const onSubmit=handleSubmit(({username,password})=>{

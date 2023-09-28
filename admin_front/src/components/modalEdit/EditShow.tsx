@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import {useForm} from 'react-hook-form';
 import { useState } from "react";
-import uploatFile from "./imageUpload";
+import uploatFile from "../modalEdit/imageUpload";
 
 interface ModalType {
     children?: ReactNode;
@@ -38,6 +38,9 @@ export default function EditName(props: ModalType) {
                                         onChange={handleTextChange} // เรียกใช้ฟังก์ชันเมื่อข้อความเปลี่ยนแปลง
                                     />
                                     <p className="text-end">{text.length} / 60</p>
+                            </div>
+                            <div>
+                                {/* <uploatFile ></uploatFile> */}
                             </div>
                             <div className=" justify-center items-end font-normal text-xl py-7">
                                 <div className="space-y-0 w-full justify-col items-end">
