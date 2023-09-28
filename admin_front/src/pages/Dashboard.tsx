@@ -133,7 +133,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="bg-cream-bg font-kanit p-6">
-      <div className="flex justify-between mx-10 pt-5">
+      <div className="flex justify-between mx-1 pt-5">
         <StoreName store={TavernData} />
         <ToggleSwitch onText="เปิดระบบ" offText="ปิดระบบ" />
       </div>
@@ -194,7 +194,7 @@ const Dashboard: React.FC = () => {
       {/* ConfirmDialog component */}
       {showConfirmDialog && (
         <ConfirmDialog
-          message="Are you sure you want to remove?"
+          message="ยกเลิกการแสดงขึ้นจอ"
           onConfirm={handleConfirmRemove}
           onCancel={handleCancelRemove}
         />
