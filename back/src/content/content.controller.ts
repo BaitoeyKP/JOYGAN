@@ -2,6 +2,7 @@ import { Controller, Delete, Get, Param, Patch, UseGuards ,Request} from '@nestj
 import { contentType } from './interface/content.interface';
 import { ContentService } from './content.service';
 import { AuthGuard } from '../auth/auth.guard';
+import { Content } from 'src/typeorm';
 
 @Controller('admin/content')
 export class ContentController {
@@ -9,8 +10,8 @@ export class ContentController {
     
     @UseGuards(AuthGuard)
     @Get('show')
-    getShowContent(@Request() req){
-        return req.user; //uuid ของ user
+    async getShowContent(@Request() req):Promise<Content>{
+        return await this.contentService.getShowContent(req.user);
     }
 
     // @UseGuards(AuthGuard) 
@@ -22,28 +23,32 @@ export class ContentController {
 }
 
     @Delete('show')
-    deleteShowContent(){
-        return
+    async deleteShowContent(@Request() req){
+        await this.contentService.deleteShowContent(req.user);
     }
 
+    @UseGuards(AuthGuard)
     @Patch('show/:text')
-    patchShowContent(@Param('text')text:string){
-        return text;
+    async patchShowContent(@Request() req,@Param('text')text:string):Promise<Content>{
+        return await this.contentService.patchShowContent(req.user,text);
     }
 
+    @UseGuards(AuthGuard)
     @Get('queue')
-    getQueueContent():contentType[]{
-        return
+    async getQueueContent(@Request() req):Promise<Content[]> {
+        return await this.contentService.getQueueContent(req.user);
     }
 
+    @UseGuards(AuthGuard)
     @Delete('queue/:id')
-    deleteQueueContent(@Param('id')id:string){
-        return
+    async deleteQueueContent(@Param('id')id:string){
+        await this.contentService.deleteQueueContent(id);
     }
 
+    @UseGuards(AuthGuard)
     @Patch('queue/:id/:text')
-    patchQueueContent(@Param('id')id:string,@Param('text')text:string){
-        return
+    async patchQueueContent(@Param('id')id:string,@Param('text')text:string):Promise<Content>{
+        return await this.contentService.patchShowContent(id,text);
     }
 
     

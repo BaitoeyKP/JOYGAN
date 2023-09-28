@@ -17,7 +17,15 @@ export class AdminService {
     private jwtService: JwtService 
   ){}
 
-  
+  async updateQRcode(uuid:string,tel:string)  {
+    const admin = await this.adminRepository.findOne({
+      where: {
+        id: uuid
+      }
+    })
+    admin.tel=tel;
+    return this.adminRepository.save(admin);
+  }
   
   async createAdmin(createAdminDto:CreateAdminDto) : Promise<Admin>{
     const newAdmin = await this.adminRepository.create(createAdminDto);
