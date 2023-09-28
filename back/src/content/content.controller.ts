@@ -14,14 +14,21 @@ export class ContentController {
         return await this.contentService.getShowContent(req.user);
     }
 
-    // @UseGuards(AuthGuard) 
+    @UseGuards(AuthGuard) 
     @Get('top-donators')
     getTopDonators() {
     const topDonators =  this.contentService.getTopDonators(); 
     return topDonators;
 
-}
+    }
 
+    @UseGuards(AuthGuard)
+    @Get('donations-by-day')
+    async getDonationsByDay(): Promise<{ date: string; totalDonations: number }[]> {
+      return this.contentService.getDonationsByDay();
+    }
+
+    
     @Delete('show')
     async deleteShowContent(@Request() req){
         await this.contentService.deleteShowContent(req.user);

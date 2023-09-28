@@ -82,6 +82,8 @@ export class ContentService {
     Content.sort((a, b) => a.time_stamp < b.time_stamp ? -1 : a.time_stamp < b.time_stamp ? 1 : 0)
     return Content.findIndex((x) => x.id == idcontent)
   }
+
+
     async getTopDonators(): Promise<{ id: String; totaldonate: number }[]> {
         const topDonators = await this.repositoryContent
           .createQueryBuilder('user')
@@ -92,6 +94,20 @@ export class ContentService {
           .getRawMany();
     
         return topDonators;
+      }
+
+
+
+      async getDonationsByDay(): Promise<{ date: string; totalDonations: number }[]> {
+        const query = this.repositoryContent
+          .createQueryBuilder('content')
+          .select("DATE_TRUNC('day', TIMESTAMP WITH TIME ZONE 'epoch' + content.time_stamp * INTERVAL '1 second') as date")
+          .addSelect('SUM(content.donate) as totalDonations')
+          .groupBy('date')
+          .orderBy('date', 'ASC')
+          .getRawMany();;
+    
+        return query
       }
 
 }
