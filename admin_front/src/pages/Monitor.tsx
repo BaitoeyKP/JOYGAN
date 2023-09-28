@@ -2,6 +2,8 @@ import qrCode from "../assets/qrCode.png"
 import TopSpenderMonitor from "../components/TopSpenderMonitor"
 import monitorImg from "../assets/monitorPic.jpg"
 import { Link } from "react-router-dom";
+import axios from 'axios';
+import { useEffect } from "react";
 
 const data = [
     { usename: "username1", amount: 10000 },
@@ -11,10 +13,24 @@ const data = [
     { usename: "username5", amount: 1 },
 ]
 
+// interface storInfoType {
+//     storeName: string;
+//     storeCode: string;
+// }
+
 function Monitor() {
     let storeName = "abc";
     let storeCode = "123456";
     let caption = "Lorem ipsum dolor sit amet, consectetur cras amet.";
+
+    // async function getStoreInfo({ storeName, storeCode }: storInfoType) {
+    //     try {
+    //         const response = await axios.get('10.66.10.105:3000/admin/income/toprank');
+    //         console.log(response);
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // }
 
     return (
         <div className="flex bg-cream-bg min-h-screen h-full w-screen">
