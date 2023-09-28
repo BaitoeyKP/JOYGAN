@@ -9,7 +9,6 @@ import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
 import { CreateLogDto } from 'src/users/dtos/Createlog.dto';
 import { CreateAdminDto } from 'src/users/dtos/CreateAdmin.dto';
 import { CreateContentDto } from 'src/users/dtos/CreateContent.dto';
-import { UUID } from 'typeorm/driver/mongodb/bson.typings';
 
 
 @Injectable()
