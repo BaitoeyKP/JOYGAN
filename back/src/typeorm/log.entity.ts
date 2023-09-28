@@ -1,9 +1,8 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Content } from './content.entity';
 import { UUID } from 'crypto';
 
 @Entity()
-export class User {
+export class LogUser {
   @PrimaryGeneratedColumn({
     type: 'bigint',
     name: 'user_id',
@@ -18,18 +17,15 @@ export class User {
 
   @Column({
     nullable: false,
-    default: '',
+    default: 0,
   })
-  password: string;
-  
-  @OneToMany(() => Content, Content => Content.user)
-  Contents: Content[];
+  amount: number;
 
-   /* @Column({
-    name: 'email_address',
+  @Column({
     nullable: false,
     default: '',
   })
-  email: string;
-  */
+  code: string;
+  
+ 
 }

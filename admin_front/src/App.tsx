@@ -3,6 +3,7 @@ import Dashboard from "./pages/Dashboard";
 import Income from "./pages/Income";
 import Login from "./pages/Login"
 import Test from "./pages/testModal";
+import Monitor from "./pages/Monitor";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Route path="income" element={<Income />} />
       <Route path="login" element={<Login />} />
       <Route path="test" element={<Test />} />
+      <Route path="monitor" element={<Monitor />} />
     </Routes>
   );
 };
