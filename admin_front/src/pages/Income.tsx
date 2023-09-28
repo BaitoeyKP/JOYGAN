@@ -76,7 +76,7 @@ function Income() {
     });
 
     return (
-        <div className="bg-cream-bg h-screen w-screen">
+        <div className="bg-cream-bg min-h-screen h-full w-screen">
             <div className="flex justify-center pt-20">
                 <div className="w-4/5 flex justify-between py-6">
                     <Link to="/" className="flex items-center justify-center bg-purple-btn py-3 w-44 rounded-xl hover:opacity-80 drop-shadow-md">
