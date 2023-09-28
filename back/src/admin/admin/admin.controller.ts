@@ -18,22 +18,24 @@ export class AdminController {
         }
         
         @Post('/login')
-        AdminLogin(@Body() { username, password }: { username: string; password: string }){
+        AdminLogin(@Body('username') username: string,@Body('password') password: string){
+            console.log(username,password);
+            
             const user =  this.adminService.loginAdmin(username,password)
            return user;
         }
 
        
-        @Get(':id/code')
-        async getAdminCodeByid(@Param('id') adminId: string) {
-            const code = await this.adminService.getCodeById(adminId);
-            if (code === null) {
+        // @Get(':id/code')
+        // async getAdminCodeByid(@Param('id') adminId: string) {
+        //     const code = await this.adminService.getCodeById(adminId);
+        //     if (code === null) {
 
-                return { error: 'Admin not found' };
-            }
-                return { code };
-        }
-
+        //         return { error: 'Admin not found' };
+        //     }
+        //         return { code };
+        // }
+        @UseGuards(AuthGuard) 
         @Get('getcode')
         async getAdminCode() {
             const code = await this.adminService.getCode();
@@ -45,18 +47,19 @@ export class AdminController {
         }
         
 
-        @Get(':id/getExpireByid')
-        async getExpireByid(@Param('id') adminId: string) {
-            const expire = await this.adminService.getCodeById(adminId);
-            if (expire === null) {
+        // @Get(':id/getExpireByid')
+        // async getExpireByid(@Param('id') adminId: string) {
+        //     const expire = await this.adminService.getCodeById(adminId);
+        //     if (expire === null) {
 
-                return { error: 'Admin not found' };
-            }
-                return { expire };
-        }
+        //         return { error: 'Admin not found' };
+        //     }
+        //         return { expire };
+        // }
+        @UseGuards(AuthGuard) 
         @Get('Expire')
         async getExpire() {
-            const expire = await this.adminService.getCode();
+            const expire = await this.adminService.getExpire();
             if (expire === null) {
             
                 return { error: 'Admin not found' };
@@ -64,7 +67,7 @@ export class AdminController {
                  return { expire };
         }
         
-
+        @UseGuards(AuthGuard) 
         @Get('/daily-summary')
         async getDailyIncomeSummary(@Request() req) {
             const { total, morethan, morethanper } = await this.adminService.calculateDailySummary(req.user);

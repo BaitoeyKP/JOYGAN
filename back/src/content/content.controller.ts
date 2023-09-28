@@ -11,7 +11,7 @@ export class ContentController {
     @UseGuards(AuthGuard)
     @Get('show')
     async getShowContent(@Request() req):Promise<Content>{
-        return await this.contentService.getShowContent(req.user);
+        return await this.contentService.getShowContent(req.user.uuid);
     }
 
     @UseGuards(AuthGuard) 
@@ -21,6 +21,16 @@ export class ContentController {
     return topDonators;
 
     }
+
+    @UseGuards(AuthGuard) 
+    @Get('summary-donate')
+    getDonateToday() {
+    const topDonators =  this.contentService.getTopDonators(); 
+    return topDonators;
+
+    }
+
+    
 
     @UseGuards(AuthGuard)
     @Get('donations-by-day')
@@ -58,6 +68,10 @@ export class ContentController {
         return await this.contentService.patchShowContent(id,text);
     }
 
+//     @Get('/daily-summary')
+//     async getDonationsSummary(@Request() req) {
+     
+//   }
     
 
 }

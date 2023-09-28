@@ -1,15 +1,21 @@
 import { Injectable ,Request } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Admin, Content } from 'src/typeorm';
-import { Repository } from 'typeorm';
+import { Admin, Content, LogUser, User } from 'src/typeorm';
+import { Repository ,MoreThanOrEqual, LessThan} from 'typeorm';
 
 @Injectable()
 export class ContentService {
-  constructor(@InjectRepository(Content) private repositoryContent: Repository<Content>, @InjectRepository(Content) private repositoryAdmin: Repository<Admin>) { }
+  constructor(@InjectRepository(Content) private repositoryContent: Repository<Content>,
+               @InjectRepository(Content) private repositoryAdmin: Repository<Admin>,
+               @InjectRepository(Content) private logUserRepository: Repository<LogUser>,) 
+               { }
 
   async getShowContent(uuid: string): Promise<Content> {
-
-    return await this.getTopQueue(uuid);
+    try {
+      return await this.getTopQueue(uuid);
+    } catch (error) {
+      
+    }
   }
 
   async deleteShowContent(uuid: string) {
@@ -54,11 +60,14 @@ export class ContentService {
   }
 
   async getTopQueue(uuid: string): Promise<Content> {
+    console.log(uuid);
     const admin = await this.repositoryAdmin.findOne({
       where: {
         id: uuid
       }
     })
+    console.log(admin);
+    
     const Content = await this.repositoryContent.find({
       where: {
         admin: admin,
@@ -84,20 +93,9 @@ export class ContentService {
   }
 
 
-    async getTopDonators(): Promise<{ id: String; totaldonate: number }[]> {
-        const topDonators = await this.repositoryContent
-          .createQueryBuilder('user')
-          .select(['user.id', 'SUM(user.donate) as totaldonate'])
-          .groupBy('user.id')
-          .orderBy('totaldonate', 'DESC')
-          .limit(10)
-          .getRawMany();
-    
-        return topDonators;
-      }
+  
 
-
-
+ 
       async getDonationsByDay(): Promise<{ date: string; totalDonations: number }[]> {
         const query = this.repositoryContent
           .createQueryBuilder('content')
@@ -105,9 +103,40 @@ export class ContentService {
           .addSelect('SUM(content.donate) as totalDonations')
           .groupBy('date')
           .orderBy('date', 'ASC')
-          .getRawMany();;
+          .getRawMany();
     
         return query
       }
 
+      async getTopDonators(): Promise<{ username: string; totalAmount: number }[]> {
+        const query = `
+          SELECT logUser.username, SUM(logUser.amount) as totalAmount
+          FROM log_user logUser
+          GROUP BY logUser.username
+          ORDER BY totalAmount DESC
+          LIMIT 10
+        `;
+        const topDonators = await this.logUserRepository.query(query);
+    
+        return topDonators;
+      }
+
+      async getDailyTotalAmount(): Promise<number> {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+    
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+    
+        const dailyTotal = await this.logUserRepository
+          .createQueryBuilder('logUser')
+          .select('SUM(logUser.amount)', 'totalAmount')
+          .where('logUser.date >= :today', { today })
+          .andWhere('logUser.date < :tomorrow', { tomorrow })
+          .getRawOne();
+    
+        return dailyTotal ? dailyTotal.totalAmount : 0;
+      }
 }
+
+

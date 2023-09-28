@@ -17,15 +17,7 @@ export class AdminService {
     private jwtService: JwtService 
   ){}
 
-  async updateQRcode(uuid:string,tel:string)  {
-    const admin = await this.adminRepository.findOne({
-      where: {
-        id: uuid
-      }
-    })
-    admin.tel=tel;
-    return this.adminRepository.save(admin);
-  }
+  
   
   async createAdmin(createAdminDto:CreateAdminDto) : Promise<Admin>{
     const newAdmin = await this.adminRepository.create(createAdminDto);
@@ -33,7 +25,7 @@ export class AdminService {
   }
 
   async loginAdmin(username, pass) : Promise<{access_token:string}>{
-    console.log(pass);
+    console.log(username,pass);
   
 
     const adminUser = await this.adminRepository.findOne({
@@ -67,8 +59,6 @@ export class AdminService {
         const today = new Date();
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
-        
-
         
         const incomeToday = await this.LogUserRepository.find({
         where: {
@@ -132,6 +122,6 @@ export class AdminService {
       const admins = admin.length > 0 ? admin[0] : null;
       return admins ? admins.expire : null;
     }
-    
+
 
 }
