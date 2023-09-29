@@ -93,21 +93,23 @@ export class ContentService {
   }
 
 
-  
+  async getDonationsByDay(): Promise<{ date: string; totalDonations: number }[]> {
+    const query = `
+      SELECT
+        DATE_TRUNC('day', date) as date,
+        SUM(amount) as totalDonations
+      FROM log_user
+      WHERE DATE_TRUNC('day', date) >= DATE_TRUNC('day', NOW() - INTERVAL '10 days')
+      GROUP BY date
+      ORDER BY date ASC
+    `;
+
+    const result = await this.logUserRepository.query(query);
+    return result;
+  }
 
  
-      async getDonationsByDay(): Promise<{ date: string; totalDonations: number }[]> {
-        const query = this.repositoryContent
-          .createQueryBuilder('content')
-          .select("DATE_TRUNC('day', TIMESTAMP WITH TIME ZONE 'epoch' + content.time_stamp * INTERVAL '1 second') as date")
-          .addSelect('SUM(content.donate) as totalDonations')
-          .groupBy('date')
-          .orderBy('date', 'ASC')
-          .getRawMany();
-    
-        return query
-      }
-
+      
       async getTopDonators(): Promise<{ username: string; totalAmount: number }[]> {
         const query = `
           SELECT logUser.username, SUM(logUser.amount) as totalAmount
@@ -117,25 +119,40 @@ export class ContentService {
           LIMIT 10
         `;
         const topDonators = await this.logUserRepository.query(query);
+        
+       
     
         return topDonators;
       }
 
-      async getDailyTotalAmount(): Promise<number> {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+      
+      async getTodayTotalAmount(): Promise<number> {
+        const query = `
+
+          SELECT SUM(amount) AS totalAmount
+          FROM log_user
+          WHERE date >= DATE_TRUNC('day', NOW()) AND date < DATE_TRUNC('day', NOW() + INTERVAL '1 day')
+        
+          `;
     
-        const tomorrow = new Date(today);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-    
-        const dailyTotal = await this.logUserRepository
-          .createQueryBuilder('logUser')
-          .select('SUM(logUser.amount)', 'totalAmount')
-          .where('logUser.date >= :today', { today })
-          .andWhere('logUser.date < :tomorrow', { tomorrow })
-          .getRawOne();
-    
-        return dailyTotal ? dailyTotal.totalAmount : 0;
+        const result = await this.logUserRepository.query(query);
+        console.log(result);
+        
+        return parseInt(result[0].totalamount);
+      }
+
+      async getYesterdayTotalAmount(): Promise<number> {
+        const query = `
+          SELECT SUM(amount) AS totalAmount
+          FROM log_user
+          WHERE date >= DATE_TRUNC('day', NOW() - INTERVAL '1 day')
+            AND date < DATE_TRUNC('day', NOW())
+        `;
+      
+        const result = await this.logUserRepository.query(query);
+        console.log(result);
+      
+        return parseInt(result[0].totalamount);
       }
 }
 

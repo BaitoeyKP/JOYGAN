@@ -24,10 +24,25 @@ export class ContentController {
 
     @UseGuards(AuthGuard) 
     @Get('summary-donate')
-    getDonateToday() {
-    const topDonators =  this.contentService.getTopDonators(); 
-    return topDonators;
+    async getDonateToday() {
+    //console.log(this.contentService.getTodayTotalAmount);
+    const totalToday = await this.contentService.getTodayTotalAmount();
+    const totalYesterday = await this.contentService.getYesterdayTotalAmount();
+    const morethan  = totalToday -totalYesterday;
+    const percentage = ((totalToday  -totalYesterday)/totalYesterday)*100;
+    return {
+        totalToday,
+        morethan,
+        percentage
+    }
+    }
 
+    @UseGuards(AuthGuard) 
+    @Get('summary-yesterday')
+    async getDonateYesterday() {
+    //console.log(this.contentService.getTodayTotalAmount);
+    
+    return await this.contentService.getYesterdayTotalAmount() ; 
     }
 
     
