@@ -5,7 +5,6 @@ interface QueueItem {
   text: string;
   time: number; // time in seconds
   donate: number;
-  timestamp: number;
   imageSrc?: string; // URL to the image (optional)
   username?: string; // Username (optional)
 }

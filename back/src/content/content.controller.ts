@@ -11,10 +11,49 @@ export class ContentController {
     @UseGuards(AuthGuard)
     @Get('show')
     async getShowContent(@Request() req):Promise<Content>{
-        return await this.contentService.getShowContent(req.user);
+        return await this.contentService.getShowContent(req.user.uuid);
     }
 
+    @UseGuards(AuthGuard) 
+    @Get('top-donators')
+    getTopDonators() {
+    const topDonators =  this.contentService.getTopDonators(); 
+    return topDonators;
+
+    }
+
+    @UseGuards(AuthGuard) 
+    @Get('summary-donate')
+    async getDonateToday() {
+    //console.log(this.contentService.getTodayTotalAmount);
+    const totalToday = await this.contentService.getTodayTotalAmount();
+    const totalYesterday = await this.contentService.getYesterdayTotalAmount();
+    const morethan  = totalToday -totalYesterday;
+    const percentage = ((totalToday  -totalYesterday)/totalYesterday)*100;
+    return {
+        totalToday,
+        morethan,
+        percentage
+    }
+    }
+
+    @UseGuards(AuthGuard) 
+    @Get('summary-yesterday')
+    async getDonateYesterday() {
+    //console.log(this.contentService.getTodayTotalAmount);
+    
+    return await this.contentService.getYesterdayTotalAmount() ; 
+    }
+
+    
+
     @UseGuards(AuthGuard)
+    @Get('donations-by-day')
+    async getDonationsByDay(): Promise<{ date: string; totalDonations: number }[]> {
+      return this.contentService.getDonationsByDay();
+    }
+
+    
     @Delete('show')
     async deleteShowContent(@Request() req){
         await this.contentService.deleteShowContent(req.user);
@@ -44,8 +83,10 @@ export class ContentController {
         return await this.contentService.patchShowContent(id,text);
     }
 
+//     @Get('/daily-summary')
+//     async getDonationsSummary(@Request() req) {
+     
+//   }
     
 
 }
-
-
