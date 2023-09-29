@@ -25,7 +25,8 @@ export class UsersService {
 
       async getUsers() {   // find all
        // return await this.userRepository.find();
-        return await this.contentRepository.find();
+       // return await this.contentRepository.find();
+       return await this.adminRepository.find();
       } // palm OK
           
       async findUsersById(id: number) {   // find id frist meet

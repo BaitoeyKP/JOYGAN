@@ -29,5 +29,4 @@ export class Admin {
 
     @OneToMany(() => Content, Content => Content.admin)
     Contents: Content[];
-
 }

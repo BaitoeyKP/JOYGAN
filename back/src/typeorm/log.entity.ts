@@ -27,5 +27,7 @@ export class LogUser {
   })
   code: string;
   
+  @Column({ type: 'timestamp with time zone' }) 
+  date: Number;
  
 }
