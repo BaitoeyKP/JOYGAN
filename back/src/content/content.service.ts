@@ -101,9 +101,9 @@ export class ContentService {
       FROM log_user
       WHERE DATE_TRUNC('day', date) >= DATE_TRUNC('day', NOW() - INTERVAL '10 days')
       GROUP BY date
-      ORDER BY date ASC
+      ORDER BY date DESC -- นี่คือการเรียงลำดับวันล่าสุดขึ้นก่อน
     `;
-
+  
     const result = await this.logUserRepository.query(query);
     return result;
   }
@@ -154,6 +154,7 @@ export class ContentService {
       
         return parseInt(result[0].totalamount);
       }
+      
 }
 
 
