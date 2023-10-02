@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import IncomeBoxWeekly from "../components/incomBox/IncomeBoxWeekly"
 import IncomeBoxMonthly from "../components/incomBox/IncomeBoxMonthly"
 import IncomeBoxAnnually from "../components/incomBox/IncomeBoxAnnually"
+import axios from "axios"
 
 const dataDaily = [
     { date: "16 กรกฎาคม 2562", income: 9990 },
@@ -34,6 +35,20 @@ function Income() {
     const [title, setTitle] = useState("รายวัน");
     const [selectedValue, setSelectedValue] = useState("daily");
     const [content, setContent] = useState(<></>);
+
+    useEffect(() => {
+        axios({
+            method: 'get',
+            url: 'http://10.66.5.253:3000/admin/content/donations-by-day',
+            headers: {
+                Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
+            }
+        }).then((res) => {
+            console.log("income");
+            console.log(res.data)
+            // setTopSpender(res.data)
+        });
+    }, []);
 
     useEffect(() => {
         if (selectedValue === "daily") {
@@ -73,7 +88,7 @@ function Income() {
                 </div>
             );
         }
-    });
+    },[]);
 
     return (
         <div className="bg-cream-bg min-h-screen h-full w-screen">
