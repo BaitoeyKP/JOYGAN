@@ -3,11 +3,11 @@ import { IsEmail, IsNotEmpty, MinLength } from "class-validator";
 export class CreateAdminDto {
     @IsNotEmpty()
     @MinLength(3)
-    admin: string;
+    admin_username: string;
 
     @IsNotEmpty()
     @MinLength(8)
-    password: string;
+    admin_password: string;
 
     @IsNotEmpty()
     @MinLength(3)

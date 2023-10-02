@@ -15,11 +15,12 @@ import {
     import { CreateContentDto } from 'src/users/dtos/CreateContent.dto';
     import { UsersService } from 'src/users/services/users/users.service';
     import { UUID } from 'crypto';
+    import { ContentService } from 'src/content/content.service';
 
     
     @Controller('users')
     export class UsersController {
-      constructor(private readonly userService: UsersService) {}
+      constructor(private readonly userService: UsersService,private readonly contentService: ContentService) {}
       
       @Get()
       getUsers() {    // get allUser
@@ -36,15 +37,32 @@ import {
           return this.userService.cancel()
       }  // wait palm
 
-      @Get('/queue')
+      @Post('/queue')
         getQueue(@Body() uid:any) {
         return this.userService.queue(uid);
       } // wait palm
 
-      @Get('/pay/getqr')  // post 
+      @Post('/pay/getqr')  // post 
       async getQR(@Body() code: any ){
          return this.userService.getQr(code);
       }  // palm OK
+
+      @Post('/getidshop')  // post 
+      async getidshop(@Body() code: any ){
+        const shopid = await this.userService.getuuidshop(code);
+        return {id : shopid}
+     } 
+
+      @Post('/pay/checkcode')  // post 
+      async codeshop(@Body() code: any ){
+         const chcode = await this.userService.codeshop(code);
+         if (!chcode){
+          return { message: 'Unsuccessful'};
+         }
+         else{
+          return { message: 'successful'};
+        }
+      }
 
 
       @Post('/login')
@@ -53,7 +71,7 @@ import {
         if (!user) {
           throw new UnauthorizedException('Invalid credentials');
         }
-        return { message: 'Login successful', user };
+        return { message: 'Login successful', id : user.id };
       } // palm OK
 
       @Post('/register')
@@ -81,7 +99,7 @@ import {
       @UsePipes(ValidationPipe)
       async createContent(@Body() createcontentDto: CreateContentDto) {
         return await this.userService.createContent(createcontentDto);
-      } // palm OK  tester
+      } // palm OK  
 
       @Post('/req')
       @UsePipes(ValidationPipe)

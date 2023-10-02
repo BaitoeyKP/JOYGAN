@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface TodayIncomeProps {
   incomeData: {
@@ -18,14 +19,15 @@ const TodayIncome: React.FC<TodayIncomeProps> = ({ incomeData, onIncomehistoryCl
       <div className="flex flex-col items-center">
         <h2 className="text-3xl xl:text-5xl flex items-center">{total.toLocaleString()} บาท</h2>
         <h3 className={`${morethan > 0 && morethanper > 0 ? "text-green-ok" : "text-red-cancel"}  text-xl xl:text-3xl `}>
-          {morethan > 0? "+":""}{morethan.toLocaleString()} ({morethanper > 0? "+":""}{morethanper.toFixed(2)}%)
+          {morethan > 0 ? "+" : ""}{morethan.toLocaleString()} ({morethanper > 0 ? "+" : ""}{morethanper.toFixed(2)}%)
         </h3>
       </div>
       <div className="flex justify-center ">
-        <button className="px-5 py-2 bg-purple-btn rounded-lg shadow-lg text-white hover:bg-dark-purple-highlight active:ring active:ring-2 active:ring-offset-2 active:ring-violet-600"
-        onClick={onIncomehistoryClick}>
-          ดูย้อนหลัง
-        </button>
+        <Link to="/income">
+          <button className="px-5 py-2 bg-purple-btn rounded-lg shadow-lg text-white hover:bg-dark-purple-highlight active:ring active:ring-2 active:ring-offset-2 active:ring-violet-600"
+            onClick={onIncomehistoryClick}>
+            ดูย้อนหลัง
+          </button></Link>
       </div>
     </div>
   );

@@ -1,9 +1,9 @@
-import { IsNotEmpty, MinLength } from "class-validator";
+import { IsNotEmpty, IsUUID, MinLength } from "class-validator";
 import { UUID } from "crypto";
 
 export class CreateContentDto {
-    @IsNotEmpty()
-    @MinLength(3)
+    //@IsNotEmpty()
+    //@MinLength(3)
     text: string;
 
     @IsNotEmpty()
@@ -18,6 +18,12 @@ export class CreateContentDto {
     @IsNotEmpty()
     @MinLength(6)
     pic: string; 
+
+    @IsUUID()
+    adminId: string; 
+
+
+    userId: string; 
 
    /* @IsNotEmpty()
     @MinLength(5)
