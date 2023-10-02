@@ -6,13 +6,6 @@ import IncomeBoxMonthly from "../components/incomBox/IncomeBoxMonthly"
 import IncomeBoxAnnually from "../components/incomBox/IncomeBoxAnnually"
 import axios from "axios"
 
-const dataDaily = [
-    { date: "16 กรกฎาคม 2562", income: 9990 },
-    { date: "16 กรกฎาคม 2562", income: 9990 },
-    { date: "16 กรกฎาคม 2562", income: 9990 },
-    { date: "16 กรกฎาคม 2562", income: 9990 },
-]
-
 const dataWeekly = [
     { date: "4 กันยายน 2566 - 10 กันยายน 2566", income: 19990 },
     { date: "4 กันยายน 2566 - 10 กันยายน 2566", income: 19990 },
@@ -31,6 +24,47 @@ const dataAnnually = [
     { year: 2566, income: 324323 },
 ]
 
+function monthName(monthNum: string) {
+    let monthName = "";
+    if (monthNum === "01") {
+        monthName = "มกราคม"
+    }
+    else if (monthNum === "02") {
+        monthName = "กุมภาพันธ์"
+    }
+    else if (monthNum === "03") {
+        monthName = "มีนาคม"
+    }
+    else if (monthNum === "04") {
+        monthName = "เมษายน"
+    }
+    else if (monthNum === "05") {
+        monthName = "พฤษภาคม"
+    }
+    else if (monthNum === "06") {
+        monthName = "มิถุนายน"
+    }
+    else if (monthNum === "07") {
+        monthName = "กรกฎาคม"
+    }
+    else if (monthNum === "08") {
+        monthName = "สิงหาคม"
+    }
+    else if (monthNum === "09") {
+        monthName = "กันยายน"
+    }
+    else if (monthNum === "10") {
+        monthName = "ตุลาคม"
+    }
+    else if (monthNum === "11") {
+        monthName = "พฤศจิกายน"
+    }
+    else if (monthNum === "12") {
+        monthName = "ธันวาคม"
+    }
+    return monthName;
+}
+
 function Income() {
     const [title, setTitle] = useState("รายวัน");
     const [selectedValue, setSelectedValue] = useState("daily");
@@ -44,51 +78,97 @@ function Income() {
                 Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
             }
         }).then((res) => {
-            console.log("income");
             console.log(res.data)
-            // setTopSpender(res.data)
+            if (selectedValue === "daily") {
+                setTitle("รายวัน");
+                const dataDaily = [];
+                for (let i = 0; i < res.data.length; i++) {
+                    let ddmmyyyy = res.data[i].date.split("-");
+                    let year = parseInt(ddmmyyyy[0]) + 543;
+                    let month = monthName(ddmmyyyy[1]);
+                    let dd = ddmmyyyy[2].split("");
+                    let day = dd[0] + dd[1];
+                    dataDaily.push({ day: day, month: month, year: year, income: res.data[i].totaldonations })
+                    // console.log(day + " " + month + " " + year);
+                    // console.log(res.data);
+                }
+                setContent(
+                    <div className="w-full flex flex-col items-center">
+                        {dataDaily.map((info, index) => (
+                            <IncomeBoxDaily key={index} day={info.day} month={info.month} year={info.year} income={info.income} />
+                        ))}
+                    </div>
+                );
+            } else if (selectedValue === "weekly") {
+                setTitle("รายสัปดาห์");
+                setContent(
+                    <div className="w-full flex flex-col items-center">
+                        {dataWeekly.map((info, index) => (
+                            <IncomeBoxWeekly key={index} date={info.date} income={info.income} />
+                        ))}
+                    </div>
+                );
+            } else if (selectedValue === "monthly") {
+                setTitle("รายเดือน");
+                setContent(
+                    <div className="w-full flex flex-col items-center">
+                        {dataMonthly.map((info, index) => (
+                            <IncomeBoxMonthly key={index} month={info.month} year={info.year} income={info.income} />
+                        ))}
+                    </div>
+                );
+            } else if (selectedValue === "annually") {
+                setTitle("รายปี");
+                setContent(
+                    <div className="w-full flex flex-col items-center">
+                        {dataAnnually.map((info, index) => (
+                            <IncomeBoxAnnually key={index} year={info.year} income={info.income} />
+                        ))}
+                    </div>
+                );
+            }
         });
-    }, []);
+    }, [selectedValue]);
 
-    useEffect(() => {
-        if (selectedValue === "daily") {
-            setTitle("รายวัน");
-            setContent(
-                <div className="w-full flex flex-col items-center">
-                    {dataDaily.map((info, index) => (
-                        <IncomeBoxDaily key={index} date={info.date} income={info.income} />
-                    ))}
-                </div>
-            );
-        } else if (selectedValue === "weekly") {
-            setTitle("รายสัปดาห์");
-            setContent(
-                <div className="w-full flex flex-col items-center">
-                    {dataWeekly.map((info, index) => (
-                        <IncomeBoxWeekly key={index} date={info.date} income={info.income} />
-                    ))}
-                </div>
-            );
-        } else if (selectedValue === "monthly") {
-            setTitle("รายเดือน");
-            setContent(
-                <div className="w-full flex flex-col items-center">
-                    {dataMonthly.map((info, index) => (
-                        <IncomeBoxMonthly key={index} month={info.month} year={info.year} income={info.income} />
-                    ))}
-                </div>
-            );
-        } else if (selectedValue === "annually") {
-            setTitle("รายปี");
-            setContent(
-                <div className="w-full flex flex-col items-center">
-                    {dataAnnually.map((info, index) => (
-                        <IncomeBoxAnnually key={index} year={info.year} income={info.income} />
-                    ))}
-                </div>
-            );
-        }
-    },[]);
+    // useEffect(() => {
+    //     if (selectedValue === "daily") {
+    //         setTitle("รายวัน");
+    //         setContent(
+    //             <div className="w-full flex flex-col items-center">
+    //                 {dataDaily.map((info, index) => (
+    //                     <IncomeBoxDaily key={index} date={info.date} income={info.income} />
+    //                 ))}
+    //             </div>
+    //         );
+    //     } else if (selectedValue === "weekly") {
+    //         setTitle("รายสัปดาห์");
+    //         setContent(
+    //             <div className="w-full flex flex-col items-center">
+    //                 {dataWeekly.map((info, index) => (
+    //                     <IncomeBoxWeekly key={index} date={info.date} income={info.income} />
+    //                 ))}
+    //             </div>
+    //         );
+    //     } else if (selectedValue === "monthly") {
+    //         setTitle("รายเดือน");
+    //         setContent(
+    //             <div className="w-full flex flex-col items-center">
+    //                 {dataMonthly.map((info, index) => (
+    //                     <IncomeBoxMonthly key={index} month={info.month} year={info.year} income={info.income} />
+    //                 ))}
+    //             </div>
+    //         );
+    //     } else if (selectedValue === "annually") {
+    //         setTitle("รายปี");
+    //         setContent(
+    //             <div className="w-full flex flex-col items-center">
+    //                 {dataAnnually.map((info, index) => (
+    //                     <IncomeBoxAnnually key={index} year={info.year} income={info.income} />
+    //                 ))}
+    //             </div>
+    //         );
+    //     }
+    // },[selectedValue]);
 
     return (
         <div className="bg-cream-bg min-h-screen h-full w-screen">
