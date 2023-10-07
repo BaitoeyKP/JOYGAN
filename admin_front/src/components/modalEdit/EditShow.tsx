@@ -1,29 +1,48 @@
 import { ReactNode } from "react";
 import { Link } from "react-router-dom";
-import {useForm} from 'react-hook-form';
+// import {useForm} from 'react-hook-form';
 import { useState } from "react";
-import uploatFile from "../modalEdit/imageUpload";
+import axios from "axios";
 
 interface ModalType {
     children?: ReactNode;
-    isOpen: boolean;
+    isOpenShow: boolean;
     toggle: () => void;
 }
 
-interface FormData{
-    phoneNume:string;
-};
+
 
 export default function EditName(props: ModalType) {
+    // const{register,handleSubmit}=useForm<FormData>();
     const [text, setText] = useState("");
     const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const newText = e.target.value;
         setText(newText);
     };
+
+    const handleSave = () => {
+        // สร้างข้อมูลที่จะส่งไปยังเซิร์ฟเวอร์
+        const data = {
+          editText: text,
+    };
+
+    axios
+    .patch("http://10.66.5.253:3000/admin/user", data)
+    .then((res) => {
+      console.log(res);
+      // ทำอย่างอื่นตามที่คุณต้องการหลังจากส่งข้อมูลสำเร็จ
+    })
+    .catch((error) => {
+      console.log(error);
+      // จัดการข้อผิดพลาด (error handling) ตามที่คุณต้องการ
+    });
+
+  };
+
     return (
         <div>
-            {props.isOpen && (
-                <div className="z-9999 w-full h-full absolute top-0 bg-black bg-opacity-70 flex justify-center items-center">
+            {props.isOpenShow && (
+                <div className="z-9999 w-full h-full fixed left-0 top-0 bg-black bg-opacity-70 flex justify-center items-center">
                     <div className="bg-white w-4/7 h-3/4 p-1 rounded-[20px] ">
                         <h1 className="text-center py-12 font-bold  text-5xl ">แก้ไขการแสดงขึ้นจอ</h1>
                         <div className="bg-white w-3/6 h-2/4 p-1 rounded-[20px] flex justify-between">
@@ -45,14 +64,13 @@ export default function EditName(props: ModalType) {
                             <div className=" justify-center items-end font-normal text-xl py-7">
                                 <div className="space-y-0 w-full justify-col items-end">
                                     <Link to="/">
-                                    <button className="w-full  py-3 px-5 mb-8 bg-purple-btn hover:bg-dark-purple-highlight  text-white font-bold text-4xl rounded-full">บันทึก</button>
+                                    <button className="w-full  py-3 px-5 mb-8 bg-purple-btn hover:bg-dark-purple-highlight  text-white font-bold text-4xl rounded-full"onClick={handleSave}>บันทึก</button>
                                     </Link>
                                     <button className="w-full py-3 px-5  bg-red-500 hover:bg-red-700 text-white font-bold text-4xl rounded-full" onClick={props.toggle}>ยกเลิก</button>
                                     
                                 </div>
                             </div>
                         </div>
-
 
                     </div>
                 </div>

@@ -10,8 +10,15 @@ import TopDonaterList from "../components/TopDonaterList";
 import ConfirmDialog from "../components/ConfirmDialog";
 import QRCodeDisplay from "../components/QRCodeDisplay";
 import QueueComponent from "../components/Queue";
+import EditQR from "../components/modalEdit/EditQR";
+import EditShow from "../components/modalEdit/EditShow";
+import EditName from "../components/modalEdit/EditName";
+
 
 const Dashboard: React.FC = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [showModalShow, setShowModalShow] = useState(false);
+  const [showModalName, setShowModalName] = useState(false);
   //outside grid
   const TavernData = {
     name: "ABC",
@@ -45,7 +52,8 @@ const Dashboard: React.FC = () => {
   };
   const handleEditClick = () => {
     // Handle edit action here
-    console.log("Edit button clicked!");
+    setShowModalShow(true)
+    
   };
   const handleRemoveClick = () => {
     // Handle remove action here
@@ -121,17 +129,22 @@ const Dashboard: React.FC = () => {
   ];
   //card 6 data and function
   const handleQrClick = () => {
-    console.log("Qr button clicked!");
+      setShowModal(true)
   };
+  const handleNameClick = () => {
+    setShowModalName(true)
+};
   const account = {
     name: "สุปรีญา อรุณฉาย",
     number: "7070148614333071",
   };
 
+
+
   return (
-    <div className="bg-cream-bg font-kanit p-6">
+    <div className="bg-cream-bg font-kanit p-6 min-h-screen bg-cream-bg">
       <div className="flex justify-between mx-1 pt-5">
-        <StoreName store={TavernData} />
+        <StoreName store={TavernData} handleNameClick={handleNameClick}/>
         <ToggleSwitch onText="เปิดระบบ" offText="ปิดระบบ" />
       </div>
       <div className="flex flex-row justify-between items-center mx-10 my-6 font-['kanit'] ">
@@ -196,6 +209,9 @@ const Dashboard: React.FC = () => {
           onCancel={handleCancelRemove}
         />
       )}
+      <EditQR isOpen={showModal} toggle={() => setShowModal(!showModal)}></EditQR>
+      <EditShow isOpenShow={showModalShow} toggle={() => setShowModalShow(!showModalShow)}></EditShow>
+      <EditName isOpenName={showModalName} toggle={() => setShowModalName(!showModalName)}></EditName>
     </div>
   );
 };

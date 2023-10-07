@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Income from "./pages/Income";
 import Login from "./pages/Login"
-import Test from "./pages/testModal";
 import Monitor from "./pages/Monitor";
 
 function App() {
@@ -11,7 +10,6 @@ function App() {
       <Route index element={<Dashboard />} />
       <Route path="income" element={<Income />} />
       <Route path="login" element={<Login />} />
-      <Route path="test" element={<Test />} />
       <Route path="monitor" element={<Monitor />} />
     </Routes>
   );
