@@ -6,6 +6,7 @@ import { User } from 'src/typeorm';
 import { Content } from 'src/typeorm';
 import { Admin } from 'src/typeorm';
 import { LogUser } from 'src/typeorm';
+import { ContentService } from 'src/content/content.service';
 
 @Module({
   imports: [
@@ -15,6 +16,6 @@ import { LogUser } from 'src/typeorm';
     TypeOrmModule.forFeature([LogUser])
   ],
   controllers: [UsersController],
-  providers: [UsersService]
+  providers: [UsersService, ContentService]
 })
 export class UsersModule {}
