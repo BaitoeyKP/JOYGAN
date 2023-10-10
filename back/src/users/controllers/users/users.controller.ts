@@ -16,6 +16,7 @@ import {
     import { UsersService } from 'src/users/services/users/users.service';
     import { UUID } from 'crypto';
     import { ContentService } from 'src/content/content.service';
+import { error } from 'console';
 
     
     @Controller('users')
@@ -76,7 +77,7 @@ import {
 
       @Post('/register')
       @UsePipes(ValidationPipe)
-      async register(@Body() createUserDto: CreateUserDto){
+      async register(@Body() createUserDto: CreateUserDto) {
         const userId = await this.userService.saveUsertoDB(createUserDto)
         return {id : userId.id} ;
       }  // palm OK

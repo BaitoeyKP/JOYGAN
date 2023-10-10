@@ -15,7 +15,7 @@ export class CreateContentDto {
    // @IsNotEmpty()
     time_stamp: number;
 
-    @IsNotEmpty()
+    //@IsNotEmpty()
     @MinLength(6)
     pic: string; 
 
