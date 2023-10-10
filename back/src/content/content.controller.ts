@@ -83,10 +83,7 @@ export class ContentController {
         return await this.contentService.patchShowContent(id,text);
     }
 
-//     @Get('/daily-summary')
-//     async getDonationsSummary(@Request() req) {
-     
-//   }
+
     
 
 }
