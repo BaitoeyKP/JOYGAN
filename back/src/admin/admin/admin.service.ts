@@ -1,27 +1,23 @@
-import { Injectable, UnauthorizedException} from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Admin } from 'src/typeorm/admin.entity';
-import { Repository } from 'typeorm';
+import { Repository ,Equal} from 'typeorm';
 import { CreateAdminDto } from '../admin/dto/CreateAdmin.dto';
 import { JwtService } from '@nestjs/jwt';
+import { LogUser } from 'src/typeorm';
+import { access } from 'fs';
 
 
 @Injectable()
 export class AdminService {
  
   constructor(
-    @InjectRepository(Admin) private readonly adminRepository: Repository<Admin>,private jwtService: JwtService 
+    @InjectRepository(Admin) private readonly adminRepository: Repository<Admin>,
+    @InjectRepository(LogUser) private readonly LogUserRepository : Repository<LogUser>,
+    private jwtService: JwtService 
   ){}
 
-  async updateQRcode(uuid:string,tel:string)  {
-    const admin = await this.adminRepository.findOne({
-      where: {
-        id: uuid
-      }
-    })
-    admin.tel=tel;
-    return this.adminRepository.save(admin);
-  }
+  
   
   async createAdmin(createAdminDto:CreateAdminDto) : Promise<Admin>{
     const newAdmin = await this.adminRepository.create(createAdminDto);
@@ -29,20 +25,103 @@ export class AdminService {
   }
 
   async loginAdmin(username, pass) : Promise<{access_token:string}>{
-    const user = await this.adminRepository.findOne({
+    console.log(username,pass);
+  
+
+    const adminUser = await this.adminRepository.findOne({
       where:{
         admin_username:username
       }
    });
-    if (user?.admin_password !== pass) {
+   console.log(adminUser.admin_password);
+    if (adminUser?.admin_password !== pass) {
       throw new UnauthorizedException();
     }
-    const payload = { uuid: user.id};
-    return {
-      access_token: await this.jwtService.signAsync(payload),
-    };
+    
+    if (adminUser && adminUser.id){
+
+      const payload = { uuid: adminUser.id};
+      return {
+        access_token: await this.jwtService.signAsync(payload)
+       
+      };
+    }
+    else{
+      console.log( adminUser.id);
+    }
   }
 
+
+
+
+  async calculateDailySummary(userId: number) {
+   
+        const today = new Date();
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        const incomeToday = await this.LogUserRepository.find({
+        where: {
+            id: userId,
+            date: Equal(today)
+        },
+        });
+        
+        const incomeYesterday = await this.LogUserRepository.find({
+        where: {
+            id: userId,
+            date: Equal(yesterday )
+        },
+        });
+
+        
+        let totalIncomeToday = 0;
+        for (const income of incomeToday) {
+        totalIncomeToday += income.amount;
+        }
+
+        
+        let totalIncomeYesterday = 0;
+        for (const income of incomeYesterday) {
+        totalIncomeYesterday += income.amount;
+        }
+
+        
+        const morethan = totalIncomeToday - totalIncomeYesterday;
+        const morethanper = (morethan / totalIncomeYesterday) * 100;
+        console.log(morethan);
+        
+        return {
+        total: totalIncomeToday,
+        morethan: morethan,
+        morethanper: morethanper,
+        };
+    }
+
+    async getCodeById(adminId: string): Promise<string | null> {
+      const admin = await this.adminRepository.findOne({where:{ id: adminId }});
+      return admin ? admin.code : null;
+    }
+
+
+    async getCode(): Promise<string | null> {
+  
+      const admin = await this.adminRepository.find();
+      const admins = admin.length > 0 ? admin[0] : null;
+      return admins ? admins.code : null;
+    }
+
+    async getExpireById(adminId: string): Promise<number| null> {
+      const admin = await this.adminRepository.findOne({where:{ id: adminId }});
+      return admin ? admin.expire : null;
+    }
+
+    async getExpire(): Promise<number| null> {
+  
+      const admin = await this.adminRepository.find();
+      const admins = admin.length > 0 ? admin[0] : null;
+      return admins ? admins.expire : null;
+    }
 
 
 }

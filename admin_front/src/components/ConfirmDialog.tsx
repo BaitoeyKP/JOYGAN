@@ -19,21 +19,22 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
         onClick={onCancel} // Allow clicking outside to cancel
       ></div>
       {/* Confirmation card */}
-      <div className="bg-white p-4 rounded-lg shadow-md relative">
-        <p className="text-xl mb-4">{message}</p>
-        <div className="flex justify-end">
-          <button
-            className="px-4 py-2 bg-red-cancel text-white rounded-lg mr-4"
-            onClick={onCancel}
-          >
-            Cancel
-          </button>
-          <button
-            className="px-4 py-2 bg-green-ok text-white rounded-lg"
+      <div className="bg-white w-2/6  p-1 rounded-[20px] flex flex-col justify-between shadow-md relative">
+        <p className="text-center py-12 font-bold  text-5xl ">{message}</p>
+        <div className="flex justify-center items-center font-normal text-xl py-7">
+        <button
+            className="w-2/5 py-4 px-3 mb-5 bg-purple-btn hover:bg-dark-purple-highlight  text-white font-bold text-3xl rounded-[40px]"
             onClick={onConfirm}
           >
-            Delete
+            ตกลง
           </button>
+          <button
+            className="w-2/5 py-4 px-3 mb-5 ml-4 bg-red-500 hover:bg-red-700 text-white font-bold text-3xl rounded-[40px]"
+            onClick={onCancel}
+          >
+            ยกเลิก
+          </button>
+          
         </div>
       </div>
     </div>
