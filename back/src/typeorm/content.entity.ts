@@ -20,8 +20,9 @@ export class Content {
     @Column()
     time_stamp:number;
 
-    @Column()
-    pic:string;
+    @Column({ default: 'default-pic.png' }) // ตั้งค่าค่าเริ่มต้นให้กับคอลัมน์ "pic"
+    pic: string;
+
 
     @Column({ length: 500,default:'queue',nullable: true})
     state:string;
