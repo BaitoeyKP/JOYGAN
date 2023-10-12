@@ -66,7 +66,7 @@ export default function EditName(props: ModalType) {
     // axios((
     // ))
     // .patch("http://10.66.14.173:3000/admin/content/show", data)
-    
+
     // .then((res) => {
     //   console.log(res);
     //   // ทำอย่างอื่นตามที่คุณต้องการหลังจากส่งข้อมูลสำเร็จ
@@ -75,12 +75,6 @@ export default function EditName(props: ModalType) {
     //   console.log(error);
     //   // จัดการข้อผิดพลาด (error handling) ตามที่คุณต้องการ
     // });
-
-
-
-
-
-
 
     return (
         <div>

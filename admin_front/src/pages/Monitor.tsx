@@ -9,6 +9,7 @@ function Monitor() {
     const [storeName, setStoreName] = useState("ABC");
     const [storeCode, setStoreCode] = useState(null);
     const [caption, setCaption] = useState(null);
+    const [pic, setPic] = useState<string>();
     const [topSpender, setTopSpender] = useState(<></>);
     const ipAddress = '10.66.14.173';
 
@@ -61,7 +62,9 @@ function Monitor() {
             }
         }).then((res) => {
             // console.log("content : " + res.data.text);
-            setCaption(res.data.text)
+            setCaption(res.data.text);
+            console.log("pic : " + res.data.pic);
+            setPic(res.data.pic);
         });
     }, []);
 
@@ -97,7 +100,9 @@ function Monitor() {
                         <span className="text-5xl font-normal">({storeCode})</span>
                     </p>
                 </Link>
-                <img src={monitorImg} alt="" className="w-[555px] h-[555px] object-cover rounded-xl" />
+                {
+                    pic ? <img src={pic!} alt="" className="w-[555px] h-[555px] object-cover rounded-xl" /> : null
+                }
                 <p className="text-5xl font-normal text-center w-[555px] text-black-text h-[23%] flex items-center justify-center flex-wrap break-all">{caption}</p>
             </div>
             <div className="flex basis-1/2 justify-center items-center flex-col">
