@@ -18,9 +18,9 @@ export default function EditName(props: ModalType) {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         axios({
-            method:'post',
-            url:'http://127.0.0.1:8000/admin/user/login',
-            data:{
+            method: 'post',
+            url: `http://${ipAddress}/admin/user/login`,
+            data: {
                 marketName: marketName
             },
             headers: {
