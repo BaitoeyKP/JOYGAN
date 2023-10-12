@@ -21,7 +21,7 @@ const Dashboard: React.FC = () => {
   const [showModalShow, setShowModalShow] = useState(false);
   const [showModalName, setShowModalName] = useState(false);
   const [storeCode, setStoreCode] = useState(null);
-  const [expireDate, setExpireDate] = useState(null);
+  const [expireDate, setExpireDate] = useState(0);
   const [topSpender, setTopSpender] = useState(<></>);
 
   //outside grid
@@ -55,26 +55,27 @@ const Dashboard: React.FC = () => {
       }
     }).then((res) => {
       console.log(res.data.expire);
-
-      setExpireDate(res.data.expire);
+      const currentDate = Math.floor(new Date().getTime() / 1000);
+      let dayleft = Math.round((res.data.expire - currentDate) / (60 * 60 * 24));
+      setExpireDate(dayleft);
+      console.log("dayleft : " + dayleft);
     });
   }, []);
 
-  const currentDate = new Date();
 
-  // Target date (December 31, 2023)
-  const targetDate = new Date('2023-12-31');
+  // // Target date (December 31, 2023)
+  // const targetDate = new Date(expireDate);
 
-  // Calculate the time difference in milliseconds
-  const timeDifference = targetDate.getTime() - currentDate.getTime();
+  // // Calculate the time difference in milliseconds
+  // const timeDifference = targetDate.getTime() - currentDate.getTime();
 
-  // Calculate the number of days left
-  const daysLeft = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+  // // Calculate the number of days left
+  // const daysLeft = Math.floor(timeDifference / (1000 * 60 * 60 * 24));86,400
 
-  console.log(`There are ${daysLeft} days left until December 31, 2023.`);
+  // console.log(`There are ${daysLeft} days left until December 31, 2023.`);
 
   const license = {
-    expire: "45",
+    expire: `${expireDate}`,
   };
 
   //card 1
