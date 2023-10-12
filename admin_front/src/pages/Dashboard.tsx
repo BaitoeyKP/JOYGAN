@@ -22,6 +22,7 @@ const Dashboard: React.FC = () => {
   const [showModalName, setShowModalName] = useState(false);
   const [storeCode, setStoreCode] = useState(null);
   const [expireDate, setExpireDate] = useState(null);
+  const [topSpender, setTopSpender] = useState(<></>);
 
   //outside grid
   const ipAddress = '10.66.14.173';
@@ -136,7 +137,6 @@ const Dashboard: React.FC = () => {
     yAxisData: [150, 134, 123, 111, 95, 90, 120],
   };
   //card 4
-  const topDonaters: { username: any; donate: any; }[] = [];
   useEffect(() => {
     axios({
       method: 'get',
@@ -145,13 +145,17 @@ const Dashboard: React.FC = () => {
         Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
       }
     }).then((res) => {
-      console.log("top donator");
+      const data = []
       for (let i = 0; i < Math.min(10, res.data.length); i++) {
-        // console.log(i + res.data[i].username)
-        topDonaters.push({ username: res.data[i].username, donate: res.data[i].totalamount })
+        data.push({ username: res.data[i].username, totalamount: res.data[i].totalamount })
       }
-      console.log(topDonaters);
-
+      setTopSpender(
+        <div className="flex flex-col gap-y-3.5">
+          {data.map((info, index) => (
+            <TopDonaterList key={index} username={info.username} totalamount={info.totalamount}></TopDonaterList>
+          ))}
+        </div>
+      )
     });
   }, []);
 
@@ -198,7 +202,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="bg-cream-bg font-kanit p-6 min-h-screen">
-      <div className="flex justify-between mx-1 pt-5">
+      <div className="flex justify-between mx-10 pt-5">
         <StoreName store={TavernData} handleNameClick={handleNameClick} />
         <ToggleSwitch onText="เปิดระบบ" offText="ปิดระบบ" />
       </div>
@@ -239,8 +243,12 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Card 4 */}
+
         <div className="col-span-1 bg-white p-4 rounded-lg drop-shadow-md h-auto">
-          <TopDonaterList topDonaters={topDonaters} />
+          <div id="HeaderBox" className="flex flex-col items-center">
+            <h1 className="items-center my-2  text-2xl font-bold">ยอดผู้สนับสนุนสูงสุด</h1>
+          </div>
+          {topSpender}
         </div>
 
         {/* Card 5 */}
