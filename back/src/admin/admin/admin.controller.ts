@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post, UseGuards, UsePipes, ValidationPipe ,Request, UnauthorizedException, Param } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards, UsePipes, ValidationPipe ,Request, UnauthorizedException, Param, Patch } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from '../admin/dto/CreateAdmin.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { Admin } from 'src/typeorm';
 
 
 @Controller('admin/user')
@@ -49,6 +50,11 @@ export class AdminController {
                  return { expire };
         }
         
+        @UseGuards(AuthGuard)
+        @Patch('displayname/:name')
+        async patchDisplayname(@Request() req,@Param('name')name:string):Promise<Admin>{
+        return await this.adminService.patchDisplayname(req.user.uuid,name);
+    }
        
 
        

@@ -36,11 +36,12 @@ export class ContentService {
   }
 
   async getQueueContent(uuid: string): Promise<Content[]> {
+    this.getTopQueue(uuid);
     const Content = await this.repositoryContent.find({
       where: {
         id: uuid,
         state: "queue"
-      }
+      },relations:['User']
     });
     return Content
   }
@@ -77,9 +78,10 @@ export class ContentService {
     const Content = await this.repositoryContent.find({
       where: {
         admin: admin,
-      }
+      },relations:['User']
     })
     Content.sort((a, b) => a.time_stamp < b.time_stamp ? -1 : a.time_stamp < b.time_stamp ? 1 : 0)
+    Content[0].state='show';
     return Content[0];
   }
 
@@ -105,7 +107,6 @@ export class ContentService {
         DATE_TRUNC('day', date) as date,
         SUM(amount) as totalDonations
       FROM log_user
-      WHERE DATE_TRUNC('day', date) >= DATE_TRUNC('day', NOW() - INTERVAL '10 days')
       GROUP BY date
       ORDER BY date DESC -- นี่คือการเรียงลำดับวันล่าสุดขึ้นก่อน
     `;
