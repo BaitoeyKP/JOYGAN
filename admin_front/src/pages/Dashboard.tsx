@@ -62,28 +62,36 @@ const Dashboard: React.FC = () => {
     });
   }, []);
 
-
-  // // Target date (December 31, 2023)
-  // const targetDate = new Date(expireDate);
-
-  // // Calculate the time difference in milliseconds
-  // const timeDifference = targetDate.getTime() - currentDate.getTime();
-
-  // // Calculate the number of days left
-  // const daysLeft = Math.floor(timeDifference / (1000 * 60 * 60 * 24));86,400
-
-  // console.log(`There are ${daysLeft} days left until December 31, 2023.`);
-
   const license = {
     expire: `${expireDate}`,
   };
 
   //card 1
+  const [totalToday, setTotalToday] = useState(0);
+  const [morethan, setMorethan] = useState(0);
+  const [percentage, setPercentage] = useState(0);
+
+  useEffect(() => {
+    axios({
+      method: 'get',
+      url: `http://${ipAddress}:3000/admin/content/summary-donate`,
+      headers: {
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
+      }
+    }).then((res) => {
+      setTotalToday(res.data.totalToday);
+      setMorethan(res.data.morethan);
+      setPercentage(res.data.percentage);
+    });
+  }, []);
+
   const incomeData = {
-    total: 120000,
-    morethan: +41500,
-    morethanper: +3.75,
+    total: totalToday,
+    morethan: morethan,
+    morethanper: percentage,
   };
+
+
   const handlehistoryClick = () => {
     console.log("Income History clicked!...");
   };

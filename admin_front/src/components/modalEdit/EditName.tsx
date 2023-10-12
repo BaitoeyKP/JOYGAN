@@ -6,39 +6,41 @@ import axios from 'axios';
 interface ModalType {
     children?: ReactNode;
     isOpenName: boolean;
-    toggle: () => void; 
-} 
+    toggle: () => void;
+}
+
 
 export default function EditName(props: ModalType) {
     const [marketName, setMarketName] = useState("");
     const [displayText, setDisplayText] = useState('');
+    const ipAddress = '10.66.14.173';
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         axios({
-            method:'post',
-            url:'http://10.66.11.55:3000/admin/user/login',
-            data:{
+            method: 'post',
+            url: `http://${ipAddress}:3000/admin/user/login`,
+            data: {
                 marketName: marketName
             },
-            headers:{
-                Authorization:'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGU0ZWIxYzktNGEwOS00NjI4LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
+            headers: {
+                Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGU0ZWIxYzktNGEwOS00NjI4LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
             },
         })
-        .then((res) => {
-            console.log(res);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
     const handleButtonClick = () => {
         if (marketName) {
-          setDisplayText("");
+            setDisplayText("");
         } else {
-          setDisplayText('*คุณยังไม่ได้ใส่ชื่อร้าน*');
+            setDisplayText('*คุณยังไม่ได้ใส่ชื่อร้าน*');
         }
-      };
+    };
 
     return (
         <div>
@@ -46,19 +48,19 @@ export default function EditName(props: ModalType) {
                 <div className="z-9999 w-full h-full fixed left-0 top-0 bg-black bg-opacity-70 flex justify-center items-center">
                     <div className="bg-white w-3/6 h-3/5 p-1 rounded-[20px]  flex-col justify-center items-center">
                         <h1 className="text-center py-12 font-bold  text-5xl ">แก้ไขชื่อร้าน</h1>
-                        <form  className="space-y-6" onSubmit={handleSubmit}>
-                            <div className="px-20 flex-col items-center space-y-0">    
+                        <form className="space-y-6" onSubmit={handleSubmit}>
+                            <div className="px-20 flex-col items-center space-y-0">
                                 <p className=" label text-2xl font-bold pr-4">ชื่อร้าน</p>
-                                <input 
-                                    onChange={e => setMarketName(e.target.value)} 
+                                <input
+                                    onChange={e => setMarketName(e.target.value)}
                                     value={marketName}
-                                    name="marketName" 
-                                    type="text" 
+                                    name="marketName"
+                                    type="text"
                                     className="w-full   py-4 px-2 border border-gry-500 rounded-[20px] text-4xl" />
                             </div>
                             <div className=" flex ml-[90px] text-red-cancel">
                                 <p>{displayText}</p>
-                        </div>
+                            </div>
                         </form>
                         <div className="flex justify-center items-center font-normal text-xl py-7">
                             <div className="flex space-x-10 space-y-0 mt-5">
@@ -68,7 +70,7 @@ export default function EditName(props: ModalType) {
                                 <button className="w-full py-4 px-16 bg-red-500 hover:bg-red-700 text-white font-bold text-4xl rounded-full" onClick={props.toggle}>ยกเลิก</button>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             )}
