@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { UUID } from 'crypto';
 
 @Entity()
@@ -27,7 +27,7 @@ export class LogUser {
   })
   code: string;
   
-  @Column({ type: 'timestamp with time zone' }) 
+  @CreateDateColumn({ type: 'timestamp with time zone' })
   date: Number;
  
 }

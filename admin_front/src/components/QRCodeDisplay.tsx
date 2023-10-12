@@ -1,4 +1,6 @@
 import React from "react";
+// import EditQR from './modalEdit/EditQR';
+import EditQR from "./modalEdit/EditQR";
 
 interface QRCodeDisplayProps {
   account: {
@@ -7,14 +9,16 @@ interface QRCodeDisplayProps {
   };
   handleQrClick: () => void;
 }
-
 const QRCodeDisplay: React.FC<QRCodeDisplayProps> = ({ account, handleQrClick }) => {
+  
   // Format the account number into sets of 4 characters
   const formattedAccountNumber = account.number
     ? account.number.match(/.{1,4}/g)?.join(" ") // Use optional chaining and nullish coalescing
     : "1111";
   return (
+    
     <div className="flex flex-col items-center">
+      
       <div id="Header" className="flex flex-col items-center text-xl font-bold my-2">
         <h1>QR code รับเงิน</h1>
       </div>
