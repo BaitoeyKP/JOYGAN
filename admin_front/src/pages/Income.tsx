@@ -73,7 +73,7 @@ function Income() {
     useEffect(() => {
         axios({
             method: 'get',
-            url: 'http://10.66.5.253:3000/admin/content/donations-by-day',
+            url: 'http://10.66.14.173:3000/admin/content/donations-by-day',
             headers: {
                 Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
             }

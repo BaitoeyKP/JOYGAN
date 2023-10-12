@@ -6,11 +6,12 @@ import axios from 'axios';
 interface ModalType {
     children?: ReactNode;
     isOpenName: boolean;
-    toggle: () => void;
-}
+    toggle: () => void; 
+} 
 
 export default function EditName(props: ModalType) {
     const [marketName, setMarketName] = useState("");
+    const [displayText, setDisplayText] = useState('');
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -31,6 +32,13 @@ export default function EditName(props: ModalType) {
             console.log(error);
         });
     };
+    const handleButtonClick = () => {
+        if (marketName) {
+          setDisplayText("");
+        } else {
+          setDisplayText('*คุณยังไม่ได้ใส่ชื่อร้าน*');
+        }
+      };
 
     return (
         <div>
@@ -48,15 +56,19 @@ export default function EditName(props: ModalType) {
                                     type="text" 
                                     className="w-full   py-4 px-2 border border-gry-500 rounded-[20px] text-4xl" />
                             </div>
+                            <div className=" flex ml-[90px] text-red-cancel">
+                                <p>{displayText}</p>
+                        </div>
                         </form>
                         <div className="flex justify-center items-center font-normal text-xl py-7">
                             <div className="flex space-x-10 space-y-0 mt-5">
                                 <Link to="/">
-                                    <button className="w-full py-4 px-16  bg-purple-btn hover:bg-dark-purple-highlight  text-white font-bold text-4xl rounded-full">ตกลง</button>
+                                    <button className="w-full py-4 px-16  bg-purple-btn hover:bg-dark-purple-highlight  text-white font-bold text-4xl rounded-full" onClick={handleButtonClick}>ตกลง</button>
                                 </Link>
                                 <button className="w-full py-4 px-16 bg-red-500 hover:bg-red-700 text-white font-bold text-4xl rounded-full" onClick={props.toggle}>ยกเลิก</button>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
             )}

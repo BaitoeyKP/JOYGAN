@@ -16,7 +16,7 @@ const StoreName: React.FC<StoreNameProps> = ({ store,handleNameClick }) => {
       ร้าน
       <span className="text-5xl text-dark-purple-highlight">{store.name}</span>
       <span>({store.code})</span>
-      <div  onClick={handleNameClick}>
+      <div  className="cursor-pointer" onClick={handleNameClick} >
           <svg 
             xmlns="http://www.w3.org/2000/svg"
             width="24"

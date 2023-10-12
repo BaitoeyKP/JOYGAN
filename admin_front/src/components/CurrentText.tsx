@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import IconButton from "./IconButton";
 import { Link } from "react-router-dom";
+import axios from 'axios';
 
 interface CurrentTextProps {
   data: {
@@ -14,6 +15,17 @@ interface CurrentTextProps {
   onEditClick: () => void;
   onRemoveClick: () => void;
 }
+interface fetchdata {
+  
+  id:string;
+  pic:string;
+  state:string;
+  text:string;
+  time_display:number;
+  time_stamp:number;
+  
+  
+}
 
 const CurrentText: React.FC<CurrentTextProps> = ({
   data,
@@ -24,6 +36,25 @@ const CurrentText: React.FC<CurrentTextProps> = ({
   const { id, username, text, time, donate, imagesrc } = data;
   // State to hold the remaining time
   const [remainingTimeSeconds, setRemainingTime] = useState(time * 60);
+  const [caption, setCaption] = useState(null);
+  const [Data, setData] = useState<fetchdata>();
+
+  useEffect(() => {
+    console.log(localStorage.getItem("JWT"));
+    
+      axios({
+          method: 'get',
+          url: 'http://10.66.14.173:3000/admin/content/show',
+          headers: {
+            Authorization:`Bearer ${localStorage.getItem("JWT")}` 
+          }
+      }).then((res) => {
+          // console.log("content : " + res.data.text);
+          setData(res.data)
+          console.log(res.data);
+          
+      });
+      }, []);
 
   // Update the remaining time every second
   useEffect(() => {
@@ -37,9 +68,13 @@ const CurrentText: React.FC<CurrentTextProps> = ({
     return () => clearInterval(timer);
   }, [remainingTimeSeconds]);
 
+
   // Format the remaining time as minutes and seconds
   const minutes = Math.floor(remainingTimeSeconds / 60);
   const seconds = remainingTimeSeconds % 60;
+  if (!Data) {
+    return;
+  }
   return (
     <div className="flex flex-col space-y-4">
       <div id="Header-box" className="flex flex-col items-center">
@@ -48,6 +83,7 @@ const CurrentText: React.FC<CurrentTextProps> = ({
             <span>
               ข้อความที่กำลังแสดงบนจอ
             </span>
+            
             <span className="ml-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
                 <path d="M13.6225 7.09116L10.81 9.90366C10.6779 10.0358 10.4987 10.11 10.3119 10.11C10.1251 10.11 9.94596 10.0358 9.81387 9.90366C9.68178 9.77157 9.60757 9.59242 9.60757 9.40561C9.60757 9.21881 9.68178 9.03966 9.81387 8.90757L11.4258 7.29683H9.66797C8.57653 7.29647 7.51594 7.6589 6.65298 8.32713C5.79002 8.99535 5.17364 9.93146 4.90078 10.9882C4.8777 11.0776 4.83723 11.1616 4.78168 11.2354C4.72614 11.3092 4.65661 11.3713 4.57706 11.4182C4.49752 11.4651 4.40951 11.4959 4.31807 11.5088C4.22663 11.5216 4.13355 11.5164 4.04414 11.4933C3.95473 11.4702 3.87074 11.4298 3.79697 11.3742C3.7232 11.3187 3.66109 11.2491 3.61418 11.1696C3.56728 11.09 3.53651 11.002 3.52362 10.9106C3.51073 10.8192 3.51598 10.7261 3.53906 10.6367C3.88932 9.27771 4.68161 8.07384 5.79118 7.21461C6.90076 6.35538 8.2646 5.88959 9.66797 5.89058H11.4258L9.81504 4.27808C9.68295 4.14598 9.60874 3.96683 9.60874 3.78003C9.60874 3.59322 9.68295 3.41407 9.81504 3.28198C9.94713 3.14989 10.1263 3.07568 10.3131 3.07568C10.4999 3.07568 10.679 3.14989 10.8111 3.28198L13.6236 6.09448C13.6892 6.15989 13.7412 6.23761 13.7766 6.32317C13.8121 6.40873 13.8303 6.50045 13.8301 6.59306C13.83 6.68568 13.8116 6.77735 13.776 6.86283C13.7403 6.94831 13.6882 7.0259 13.6225 7.09116ZM11.25 12.4531H2.57812V5.6562C2.57812 5.46972 2.50405 5.29088 2.37218 5.15902C2.24032 5.02715 2.06148 4.95308 1.875 4.95308C1.68852 4.95308 1.50968 5.02715 1.37782 5.15902C1.24595 5.29088 1.17188 5.46972 1.17188 5.6562V12.6875C1.17188 12.9983 1.29534 13.2963 1.51511 13.5161C1.73488 13.7359 2.03295 13.8593 2.34375 13.8593H11.25C11.4365 13.8593 11.6153 13.7852 11.7472 13.6534C11.879 13.5215 11.9531 13.3427 11.9531 13.1562C11.9531 12.9697 11.879 12.7909 11.7472 12.659C11.6153 12.5272 11.4365 12.4531 11.25 12.4531Z" fill="#393939" />
@@ -61,11 +97,11 @@ const CurrentText: React.FC<CurrentTextProps> = ({
           id="text-container"
           className="flex items-center text-center xl:mx-5 w-20 md:w-36  xl:w-full"
         >
-          <span id="text" className="overflow-y-auto max-h-48">{text}</span>
+          <span id="text" className="overflow-y-auto max-h-48">{Data.text}</span>
         </div>
         <img
           className="max-h-48 rounded-lg mx-10"
-          src={imagesrc}
+          src={Data!.pic}
           alt="current displaying"
         />
         <div id="buttons" className="flex flex-col self-center xl:mx-5">

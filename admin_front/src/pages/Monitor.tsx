@@ -14,7 +14,7 @@ function Monitor() {
     useEffect(() => {
         axios({
             method: 'get',
-            url: 'http://10.66.5.253:3000/admin/content/top-donators',
+            url: 'http://10.66.14.173:3000/admin/content/top-donators',
             headers: {
                 Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
             }
@@ -41,7 +41,7 @@ function Monitor() {
     useEffect(() => {
         axios({
             method: 'get',
-            url: 'http://10.66.5.253:3000/admin/user/getcode',
+            url: 'http://10.66.14.173:3000/admin/user/getcode',
             headers: {
                 Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
             }
@@ -54,7 +54,7 @@ function Monitor() {
     useEffect(() => {
         axios({
             method: 'get',
-            url: 'http://10.66.5.253:3000/admin/content/show',
+            url: 'http://10.66.14.173:3000/admin/content/show',
             headers: {
                 Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
             }
