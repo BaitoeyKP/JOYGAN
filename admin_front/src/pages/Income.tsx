@@ -48,16 +48,20 @@ function monthName(monthNum: string) {
 
 function Income() {
     const [title, setTitle] = useState("รายวัน");
-    const [selectedValue, setSelectedValue] = useState("daily");
+    const [selectedValue, setSelectedValue] = useState(localStorage.getItem("selectedValue") || "daily");
     const [content, setContent] = useState(<></>);
     const ipAddress = '10.66.14.173';
+    // const ipAddress = process.env.IP
 
     useEffect(() => {
+        console.log("ip : " + process.env.IP);
+
+        localStorage.setItem("selectedValue", selectedValue);
         axios({
             method: 'get',
             url: `http://${ipAddress}:3000/admin/content/donations-by-day`,
             headers: {
-                Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
+                Authorization: `Bearer ${localStorage.getItem("JWT")}`
             }
         }).then((res) => {
             console.log(res.data)
@@ -89,10 +93,9 @@ function Income() {
                     let ddmmyyyy = res.data[i].date.split("-");
                     let year = parseInt(ddmmyyyy[0]) + 543;
                     let month = monthName(ddmmyyyy[1]);
-                    const j = dataMonthly.findIndex((x) => x.year == year && x.month == month);
+                    const j = dataMonthly.findIndex((x) => x.year === year && x.month === month);
                     console.log(j);
-                    if (j == -1) {
-
+                    if (j === -1) {
                         dataMonthly.push({ month: month, year: year, income: parseInt(res.data[i].totaldonations) })
                     }
                     else
@@ -113,9 +116,9 @@ function Income() {
                 for (let i = 0; i < res.data.length; i++) {
                     let ddmmyyyy = res.data[i].date.split("-");
                     let year = parseInt(ddmmyyyy[0]) + 543;
-                    const j = dataYear.findIndex((x) => x.year == year);
+                    const j = dataYear.findIndex((x) => x.year === year);
                     console.log(j);
-                    if (j == -1) {
+                    if (j === -1) {
                         dataYear.push({ year: year, income: parseInt(res.data[i].totaldonations) })
                     }
                     else
@@ -147,6 +150,7 @@ function Income() {
                     <select
                         className="flex items-center bg-purple-btn py-3 px-2 w-44 rounded-xl drop-shadow-md text-white"
                         onChange={event => setSelectedValue(event.target.value)}
+                        value={selectedValue}
                     >
                         <option value="daily" className="text-white">รายวัน</option>
                         <option value="monthly" className="text-white">รายเดือน</option>

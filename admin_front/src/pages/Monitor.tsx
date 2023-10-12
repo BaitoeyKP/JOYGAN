@@ -73,8 +73,8 @@ function Monitor() {
                 Authorization: `Bearer ${localStorage.getItem("JWT")}`
             }
         }).then((res) => {
-            console.log("store name : " + res.data);
-            // setStoreCode(res.data.code)
+            // console.log("store name : " + res.data);
+            setStoreName(res.data)
         });
     }, []);
 

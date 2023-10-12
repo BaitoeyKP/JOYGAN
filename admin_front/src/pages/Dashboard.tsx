@@ -32,7 +32,7 @@ const Dashboard: React.FC = () => {
       method: 'get',
       url: `http://${ipAddress}:3000/admin/user/getcode`,
       headers: {
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
     }).then((res) => {
       setStoreCode(res.data.code)
@@ -51,7 +51,7 @@ const Dashboard: React.FC = () => {
       method: 'get',
       url: `http://${ipAddress}:3000/admin/user/expire`,
       headers: {
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
     }).then((res) => {
       console.log(res.data.expire);
@@ -72,24 +72,22 @@ const Dashboard: React.FC = () => {
   const [percentage, setPercentage] = useState(0);
 
   useEffect(() => {
+
     axios({
       method: 'get',
       url: `http://${ipAddress}:3000/admin/content/summary-donate`,
       headers: {
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
     }).then((res) => {
+      console.log(res.data, 1234567890);
       setTotalToday(res.data.totalToday);
       setMorethan(res.data.morethan);
       setPercentage(res.data.percentage);
     });
   }, []);
 
-  const incomeData = {
-    total: totalToday,
-    morethan: morethan,
-    morethanper: percentage,
-  };
+
 
 
   const handlehistoryClick = () => {
@@ -151,7 +149,7 @@ const Dashboard: React.FC = () => {
       method: 'get',
       url: `http://${ipAddress}:3000/admin/content/top-donators`,
       headers: {
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
     }).then((res) => {
       const data = []
@@ -206,7 +204,13 @@ const Dashboard: React.FC = () => {
     name: "สุปรีญา อรุณฉาย",
     number: "7070148614333071",
   };
-
+  if (!totalToday)
+    return;
+  const incomeData = {
+    total: totalToday,
+    morethan: morethan,
+    morethanper: percentage,
+  };
 
 
   return (
@@ -225,7 +229,7 @@ const Dashboard: React.FC = () => {
       >
         {/* Card 1 */}
         <div
-          className="col-span-1 bg-white p-4 rounded-lg drop-shadow-md flex flex-col "
+          className="col-span-1 bg-white p-4 rounded-lg drop-shadow-md flex flex-col"
           style={{ height: "300px" }}
         >
           <TodayIncome incomeData={incomeData} onIncomehistoryClick={handlehistoryClick} />

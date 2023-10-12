@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import { Link } from "react-router-dom";
 
 
 interface FormData {
@@ -79,10 +80,10 @@ function Login() {
                         <p>{displayTextPass}</p>
                     </div>
                     <div>
-                        <button className="w-full py-4 bg-purple-btn hover:bg-dark-purple-highlight mt-10  text-white text-bold text-3xl rounded-lg" onClick={handleButtonClick}>เข้าสู่ระบบ</button>
-
+                        <Link to="/dashboard">
+                            <button className="w-full py-4 bg-purple-btn hover:bg-dark-purple-highlight mt-10  text-white text-bold text-3xl rounded-lg" onClick={handleButtonClick}>เข้าสู่ระบบ</button>
+                        </Link>
                     </div>
-
                 </form>
                 <div className="text-1xl font-sm mt-2 justify-center text-center">มีปัญหาในการเข้าสู่ระบบ? <a href="#" className="font-medium text-black underline  hover:no-underline">ติดต่อผู้ขาย</a></div>
 
