@@ -1,28 +1,9 @@
 import { Link } from "react-router-dom"
 import IncomeBoxDaily from "../components/incomBox/IncomeBoxDaily"
 import { useEffect, useState } from "react"
-import IncomeBoxWeekly from "../components/incomBox/IncomeBoxWeekly"
 import IncomeBoxMonthly from "../components/incomBox/IncomeBoxMonthly"
 import IncomeBoxAnnually from "../components/incomBox/IncomeBoxAnnually"
 import axios from "axios"
-
-const dataWeekly = [
-    { date: "4 กันยายน 2566 - 10 กันยายน 2566", income: 19990 },
-    { date: "4 กันยายน 2566 - 10 กันยายน 2566", income: 19990 },
-    { date: "4 กันยายน 2566 - 10 กันยายน 2566", income: 19990 },
-    { date: "4 กันยายน 2566 - 10 กันยายน 2566", income: 19990 },
-]
-
-const dataMonthly = [
-    { month: "มกรารคม", year: 2566, income: 85648 },
-    { month: "มกรารคม", year: 2566, income: 85648 },
-    { month: "มกรารคม", year: 2566, income: 85648 },
-]
-
-const dataAnnually = [
-    { year: 2566, income: 324323 },
-    { year: 2566, income: 324323 },
-]
 
 function monthName(monthNum: string) {
     let monthName = "";
@@ -67,19 +48,22 @@ function monthName(monthNum: string) {
 
 function Income() {
     const [title, setTitle] = useState("รายวัน");
-    const [selectedValue, setSelectedValue] = useState("daily");
+    const [selectedValue, setSelectedValue] = useState(localStorage.getItem("selectedValue") || "daily");
     const [content, setContent] = useState(<></>);
     const ipAddress = '10.66.14.173';
 
     useEffect(() => {
+        console.log("ip : " + process.env.IP);
+
+        localStorage.setItem("selectedValue", selectedValue);
         axios({
             method: 'get',
             url: `http://${ipAddress}:3000/admin/content/donations-by-day`,
             headers: {
-                Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
+                Authorization: `Bearer ${localStorage.getItem("JWT")}`
             }
         }).then((res) => {
-            // console.log(res.data)
+            console.log(res.data)
             if (selectedValue === "daily") {
                 setTitle("รายวัน");
                 const dataDaily = [];
@@ -101,60 +85,20 @@ function Income() {
                     </div>
                 );
             }
-            else if (selectedValue === "weekly") {
-                setTitle("รายสัปดาห์");
-                setContent(
-                    <div className="w-full flex flex-col items-center">
-                        {dataWeekly.map((info, index) => (
-                            <IncomeBoxWeekly key={index} date={info.date} income={info.income} />
-                        ))}
-                    </div>
-                );
-            }
             else if (selectedValue === "monthly") {
                 setTitle("รายเดือน");
-                // const dataMonthly = [];
-                // for (let i = 0; i < res.data.length; i++) {
-                //     let ddmmyyyy = res.data[i].date.split("-");
-                //     let year = parseInt(ddmmyyyy[0]) + 543;
-                //     let month = monthName(ddmmyyyy[1]);
-                //     let currentMonth = ddmmyyyy[1];
-                //     let totalMonth += res.data[i].totaldonations;
-                //     // dataDaily.push({ day: day, month: month, year: year, income: res.data[i].totaldonations })
-
-                // }
-
-                // for (let i = 0; i < res.data.length; i++) {
-                //     let ddmmyyyy = res.data[i].date.split("-");
-                //     let year = parseInt(ddmmyyyy[0]) + 543;
-                //     let month = monthName(ddmmyyyy[1]);
-                //     let currentMonth = ddmmyyyy[1];
-                //     let totalMonth = 0;
-                //     while (ddmmyyyy[1] === currentMonth) {
-                //         totalMonth += parseInt(res.data[i].totaldonations)
-                //     }
-                //     // dataMonthly.push({ month: month, year: year, income: totalMonth })
-                // }
-
                 const dataMonthly = [];
-                let totalMonth = 0;
                 for (let i = 0; i < res.data.length; i++) {
                     let ddmmyyyy = res.data[i].date.split("-");
                     let year = parseInt(ddmmyyyy[0]) + 543;
                     let month = monthName(ddmmyyyy[1]);
-
-                    let currentMonth = parseInt(ddmmyyyy[1]);
-                    let nextMonth = currentMonth + 1;
-                    // console.log("cur " + currentMonth);
-                    // console.log("next " + nextMonth);
-
-                    totalMonth += parseInt(res.data[i].totaldonations);
-                    // console.log("donation" + res.data[i].totaldonations);
-
-                    console.log("daily " + res.data[i].totaldonations + " toalMonth " + totalMonth);
-
-
-                    dataMonthly.push({ month: month, year: year, income: totalMonth })
+                    const j = dataMonthly.findIndex((x) => x.year === year && x.month === month);
+                    console.log(j);
+                    if (j === -1) {
+                        dataMonthly.push({ month: month, year: year, income: parseInt(res.data[i].totaldonations) })
+                    }
+                    else
+                        dataMonthly[j].income += parseInt(res.data[i].totaldonations)
                     // console.log(res.data);
                 }
                 setContent(
@@ -167,9 +111,22 @@ function Income() {
             }
             else if (selectedValue === "annually") {
                 setTitle("รายปี");
+                const dataYear = [];
+                for (let i = 0; i < res.data.length; i++) {
+                    let ddmmyyyy = res.data[i].date.split("-");
+                    let year = parseInt(ddmmyyyy[0]) + 543;
+                    const j = dataYear.findIndex((x) => x.year === year);
+                    console.log(j);
+                    if (j === -1) {
+                        dataYear.push({ year: year, income: parseInt(res.data[i].totaldonations) })
+                    }
+                    else
+                        dataYear[j].income += parseInt(res.data[i].totaldonations)
+                    // console.log(res.data);
+                }
                 setContent(
                     <div className="w-full flex flex-col items-center">
-                        {dataAnnually.map((info, index) => (
+                        {dataYear.map((info, index) => (
                             <IncomeBoxAnnually key={index} year={info.year} income={info.income} />
                         ))}
                     </div>
@@ -177,46 +134,6 @@ function Income() {
             }
         });
     }, [selectedValue]);
-
-    // useEffect(() => {
-    //     if (selectedValue === "daily") {
-    //         setTitle("รายวัน");
-    //         setContent(
-    //             <div className="w-full flex flex-col items-center">
-    //                 {dataDaily.map((info, index) => (
-    //                     <IncomeBoxDaily key={index} date={info.date} income={info.income} />
-    //                 ))}
-    //             </div>
-    //         );
-    //     } else if (selectedValue === "weekly") {
-    //         setTitle("รายสัปดาห์");
-    //         setContent(
-    //             <div className="w-full flex flex-col items-center">
-    //                 {dataWeekly.map((info, index) => (
-    //                     <IncomeBoxWeekly key={index} date={info.date} income={info.income} />
-    //                 ))}
-    //             </div>
-    //         );
-    //     } else if (selectedValue === "monthly") {
-    //         setTitle("รายเดือน");
-    //         setContent(
-    //             <div className="w-full flex flex-col items-center">
-    //                 {dataMonthly.map((info, index) => (
-    //                     <IncomeBoxMonthly key={index} month={info.month} year={info.year} income={info.income} />
-    //                 ))}
-    //             </div>
-    //         );
-    //     } else if (selectedValue === "annually") {
-    //         setTitle("รายปี");
-    //         setContent(
-    //             <div className="w-full flex flex-col items-center">
-    //                 {dataAnnually.map((info, index) => (
-    //                     <IncomeBoxAnnually key={index} year={info.year} income={info.income} />
-    //                 ))}
-    //             </div>
-    //         );
-    //     }
-    // },[selectedValue]);
 
     return (
         <div className="bg-cream-bg min-h-screen h-full w-screen">
@@ -229,30 +146,18 @@ function Income() {
                         <span className="text-white text-base">กลับไปหน้าแดชบอร์ด</span>
                     </Link>
                     <h1 className="text-center text-5xl font-bold">จำนวนเงินเข้าย้อนหลัง{title}</h1>
-                    {/* <div className="flex items-center bg-purple-btn py-3 px-4 rounded-xl drop-shadow-md">
-                        <span className="text-white">รายวัน</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M5 7.5L10 12.5L15 7.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </div> */}
                     <select
                         className="flex items-center bg-purple-btn py-3 px-2 w-44 rounded-xl drop-shadow-md text-white"
                         onChange={event => setSelectedValue(event.target.value)}
+                        value={selectedValue}
                     >
                         <option value="daily" className="text-white">รายวัน</option>
-                        <option value="weekly" className="text-white">รายสัปดาห์</option>
                         <option value="monthly" className="text-white">รายเดือน</option>
                         <option value="annually" className="text-white">รายปี</option>
                     </select>
                 </div>
             </div>
             <div>
-                {/* <IncomeBoxDaily data={dataDaily}></IncomeBoxDaily> */}
-                {/* {dataDaily.map((info, index) => {
-                    return (
-                        <IncomeBoxDaily key={index} date={info.date} income={info.income}></IncomeBoxDaily>
-                    );
-                })} */}
                 {content}
             </div>
         </div>

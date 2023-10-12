@@ -86,6 +86,7 @@ const Dashboard: React.FC = () => {
   const [percentage, setPercentage] = useState(0);
 
   useEffect(() => {
+
     axios({
       method: 'get',
       url: `http://${ipAddress}:3000/admin/content/summary-donate`,
@@ -93,17 +94,14 @@ const Dashboard: React.FC = () => {
         Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
     }).then((res) => {
+      console.log(res.data, 1234567890);
       setTotalToday(res.data.totalToday);
       setMorethan(res.data.morethan);
       setPercentage(res.data.percentage);
     });
   }, []);
 
-  const incomeData = {
-    total: totalToday,
-    morethan: morethan,
-    morethanper: percentage,
-  };
+
 
 
   const handlehistoryClick = () => {
@@ -248,7 +246,13 @@ const Dashboard: React.FC = () => {
     name: "สุปรีญา อรุณฉาย",
     number: "7070148614333071",
   };
-
+  if (!totalToday)
+    return;
+  const incomeData = {
+    total: totalToday,
+    morethan: morethan,
+    morethanper: percentage,
+  };
 
   if(!Data)
     return 'no data';
@@ -278,7 +282,7 @@ const Dashboard: React.FC = () => {
       >
         {/* Card 1 */}
         <div
-          className="col-span-1 bg-white p-4 rounded-lg drop-shadow-md flex flex-col "
+          className="col-span-1 bg-white p-4 rounded-lg drop-shadow-md flex flex-col"
           style={{ height: "300px" }}
         >
           <TodayIncome incomeData={incomeData} onIncomehistoryClick={handlehistoryClick} />
