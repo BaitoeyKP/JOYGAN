@@ -46,7 +46,7 @@ const Dashboard: React.FC = () => {
       method: 'get',
       url: `http://${ipAddress}:8000/admin/user/getcode`,
       headers: {
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
     }).then((res) => {
       setStoreCode(res.data.code)
@@ -65,7 +65,7 @@ const Dashboard: React.FC = () => {
       method: 'get',
       url: `http://${ipAddress}:8000/admin/user/expire`,
       headers: {
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
     }).then((res) => {
       console.log(res.data.expire);
@@ -88,9 +88,9 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     axios({
       method: 'get',
-      url: `http://${ipAddress}:3000/admin/content/summary-donate`,
+      url: `http://${ipAddress}:8000/admin/content/summary-donate`,
       headers: {
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
     }).then((res) => {
       setTotalToday(res.data.totalToday);
@@ -157,7 +157,7 @@ const Dashboard: React.FC = () => {
       method: 'get',
       url: `http://${ipAddress}:8000/admin/content/top-donators`,
       headers: {
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
     }).then((res) => {
       const data = []
@@ -179,7 +179,7 @@ const Dashboard: React.FC = () => {
     
       axios({
           method: 'get',
-          url: 'http:///127.0.0.1:8000/admin/content/show',
+          url: `http:///${ipAddress}:8000/admin/content/show`,
           headers: {
             Authorization:`Bearer ${localStorage.getItem("JWT")}` 
           }
@@ -233,7 +233,7 @@ const Dashboard: React.FC = () => {
 
 
   if(!Data)
-    return;
+    return 'no data';
   console.log(Data.time_display);
   const getData = {
     id: 1,

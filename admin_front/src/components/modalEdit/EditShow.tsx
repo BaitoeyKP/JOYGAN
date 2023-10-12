@@ -16,14 +16,14 @@ export default function EditName(props: ModalType) {
     // const{register,handleSubmit}=useForm<FormData>();
     // const [text, setText] = useState("");
     const [caption, setCaption] = useState("");
-    const ipAddress = '10.66.14.173';
+    const ipAddress = '127.0.0.1';
 
     useEffect(() => {
         console.log(localStorage.getItem("JWT"));
 
         axios({
             method: 'get',
-            url: `http://${ipAddress}:3000/admin/content/show`,
+            url: `http://${ipAddress}:8000/admin/content/show`,
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("JWT")}`
             }
@@ -50,7 +50,7 @@ export default function EditName(props: ModalType) {
         console.log("test")
         axios({
             method: 'patch',
-            url: `http://${ipAddress}:3000/admin/content/show/${caption}`,
+            url: `http://${ipAddress}:8000/admin/content/show/${caption}`,
 
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("JWT")}`
