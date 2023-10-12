@@ -16,6 +16,46 @@ import EditName from "../components/modalEdit/EditName";
 import axios from "axios";
 import { time } from "console";
 
+function monthName(monthNum: string) {
+  let monthName = "";
+  if (monthNum === "01") {
+    monthName = "ม.ค."
+  }
+  else if (monthNum === "02") {
+    monthName = "ก.พ."
+  }
+  else if (monthNum === "03") {
+    monthName = "ม.ค."
+  }
+  else if (monthNum === "04") {
+    monthName = "เม.ย."
+  }
+  else if (monthNum === "05") {
+    monthName = "พ.ค."
+  }
+  else if (monthNum === "06") {
+    monthName = "มิ.ย."
+  }
+  else if (monthNum === "07") {
+    monthName = "ก.ค."
+  }
+  else if (monthNum === "08") {
+    monthName = "ส.ค."
+  }
+  else if (monthNum === "09") {
+    monthName = "ก.ย."
+  }
+  else if (monthNum === "10") {
+    monthName = "ต.ค."
+  }
+  else if (monthNum === "11") {
+    monthName = "พ.ย."
+  }
+  else if (monthNum === "12") {
+    monthName = "ธ.ค."
+  }
+  return monthName;
+}
 
 const Dashboard: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -58,7 +98,34 @@ const Dashboard: React.FC = () => {
     code: storeCode,
   };
 
-  const refreshDateTime = "15/09/2023 23:43"; // Replace with your actual date and time
+  const [refreshDateTime, setRefreshDateTime] = useState("");
+  useEffect(() => {
+    let date = new Date();
+    let month = "";
+    let hour = "";
+    let min = "";
+    if (date.getMonth() < 10) {
+      month = "0" + date.getMonth();
+    }
+    else {
+      month = date.getMonth().toString();
+    }
+    if (date.getHours() < 10) {
+      hour = "0" + date.getHours();
+    }
+    else {
+      hour = date.getHours().toString();
+    }
+    if (date.getMinutes() < 10) {
+      min = "0" + date.getMinutes();
+    }
+    else {
+      min = date.getMinutes().toString();
+    }
+    let now = date.getDate() + "/" + month + "/" + date.getFullYear() + " " + hour + ":" + min
+    console.log("now : " + now);
+    setRefreshDateTime(now);
+  })
 
   useEffect(() => {
     axios({
@@ -68,11 +135,11 @@ const Dashboard: React.FC = () => {
         Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
     }).then((res) => {
-      console.log(res.data.expire);
+      // console.log(res.data.expire);
       const currentDate = Math.floor(new Date().getTime() / 1000);
       let dayleft = Math.round((res.data.expire - currentDate) / (60 * 60 * 24));
       setExpireDate(dayleft);
-      console.log("dayleft : " + dayleft);
+      // console.log("dayleft : " + dayleft);
     });
   }, []);
 
@@ -94,7 +161,7 @@ const Dashboard: React.FC = () => {
         Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
     }).then((res) => {
-      console.log(res.data, 1234567890);
+      // console.log(res.data, 1234567890);
       setTotalToday(res.data.totalToday);
       setMorethan(res.data.morethan);
       setPercentage(res.data.percentage);
@@ -105,7 +172,7 @@ const Dashboard: React.FC = () => {
 
 
   const handlehistoryClick = () => {
-    console.log("Income History clicked!...");
+    // console.log("Income History clicked!...");
   };
   //card 2
   // State to control the visibility of the confirmation dialog
@@ -119,36 +186,66 @@ const Dashboard: React.FC = () => {
   };
   const handleRemoveClick = () => {
     // Handle remove action here
-    console.log("Remove button clicked!");
+    // console.log("Remove button clicked!");
     // Display the confirmation dialog
     setShowConfirmDialog(true);
   };
   // Function to handle confirmation of removal
   const handleConfirmRemove = () => {
     // Handle the removal action here
-    console.log("Removing...");
+    // console.log("Removing...");
     // Hide the confirmation dialog
     setShowConfirmDialog(false);
   };
   // Function to handle canceling removal
   const handleCancelRemove = () => {
-    console.log("Canceling...");
+    // console.log("Canceling...");
     // Hide the confirmation dialog
     setShowConfirmDialog(false);
   };
   //card 3
-  const chartData = {
-    xAxisLabels: [
-      "12/Sep",
-      "13/Sep",
-      "14/Sep",
-      "15/Sep",
-      "16/Sep",
-      "17/Sep",
-      "18/Sep",
-    ],
-    yAxisData: [150, 134, 123, 111, 95, 90, 120],
-  };
+  const [yAxisData, setYAxisData] = useState<any>();
+  const [xAxisLabels, setXAxisLabels] = useState<any>();
+  useEffect(() => {
+    axios({
+      method: 'get',
+      url: `http://${ipAddress}:3000/admin/content/donations-by-day`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
+      }
+    }).then((res) => {
+      // console.log("income : ", res.data)
+      const yAxisData = [];
+      let countx = 0;
+      let county = 0;
+      for (let index = res.data.length - 1; index >= 0; index--) {
+        county++;
+        yAxisData.push(res.data[index].totaldonations);
+        if (county == 7) {
+          break;
+        }
+      }
+      setYAxisData(yAxisData);
+      // console.log("y : " + yAxisData);
+      const xAxisLabels = [];
+      for (let index = res.data.length - 1; index >= 0; index--) {
+        let ddmmyyyy = res.data[index].date.split("-");
+        let year = parseInt(ddmmyyyy[0]) + 543;
+        let month = monthName(ddmmyyyy[1]);
+        let dd = ddmmyyyy[2].split("");
+        let day = dd[0] + dd[1];
+        let date = day + " " + month + " " + year;
+        xAxisLabels.push(date);
+        countx++;
+        if (countx == 7) {
+          break;
+        }
+      }
+      // console.log("x : " + xAxisLabels);
+      setXAxisLabels(xAxisLabels);
+    });
+  }, []);
+
   //card 4
   useEffect(() => {
     axios({
@@ -173,39 +270,35 @@ const Dashboard: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log(localStorage.getItem("JWT"));
-    
-      axios({
-          method: 'get',
-          url: `http:///${ipAddress}:3000/admin/content/show`,
-          headers: {
-            Authorization:`Bearer ${localStorage.getItem("JWT")}` 
-          }
-      }).then((res) => {
-          // console.log("content : " + res.data.text);
-          setData(res.data)
-          console.log("show",res);
-          
-      });
-      }, []);
+    axios({
+      method: 'get',
+      url: `http:///${ipAddress}:3000/admin/content/show`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
+      }
+    }).then((res) => {
+      // console.log("content : " + res.data.text);
+      setData(res.data)
+      // console.log("show", res);
 
-      const [nameMaket, setNameMaket] = useState("");
+    });
+  }, []);
 
-      useEffect(() => {
-        console.log(localStorage.getItem("JWT"));
+  const [nameMaket, setNameMaket] = useState("");
 
-        axios({
-            method: 'get',
-            url: `http://${ipAddress}:3000/admin/user/displayname`,
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("JWT")}`
-            }
-        }).then((res) => {
-            // console.log("content : " + res.data.text);
-            console.log("nameMaket",res.data);
-            setNameMaket(res.data)
-        });
-    }, []);
+  useEffect(() => {
+    axios({
+      method: 'get',
+      url: `http://${ipAddress}:3000/admin/user/displayname`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
+      }
+    }).then((res) => {
+      // console.log("content : " + res.data.text);
+      // console.log("nameMaket", res.data);
+      setNameMaket(res.data)
+    });
+  }, []);
 
 
   //card 5 data and function
@@ -246,7 +339,7 @@ const Dashboard: React.FC = () => {
     name: "สุปรีญา อรุณฉาย",
     number: "7070148614333071",
   };
- 
+
   const incomeData = {
     total: totalToday,
     morethan: morethan,
@@ -255,7 +348,7 @@ const Dashboard: React.FC = () => {
 
   if (!Data)
     return 'no data';
-  console.log(Data.time_display);
+  // console.log(Data.time_display);
   const getData = {
     id: 1,
     username: "nut",
@@ -265,6 +358,7 @@ const Dashboard: React.FC = () => {
     time: Data!.time_display, // 45 minutes
     donate: 1000,
   };
+
   return (
     <div className="bg-cream-bg font-kanit p-6 min-h-screen">
       <div className="flex justify-between mx-10 pt-5">
@@ -304,7 +398,7 @@ const Dashboard: React.FC = () => {
           className="col-span-1 bg-white p-4 rounded-lg drop-shadow-md"
           style={{ height: "300px" }}
         >
-          <AreaChartCard chartData={chartData} />
+          <AreaChartCard xAxisLabels={xAxisLabels} yAxisData={yAxisData} />
         </div>
 
         {/* Card 4 */}

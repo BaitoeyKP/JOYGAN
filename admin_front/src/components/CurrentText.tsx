@@ -40,7 +40,7 @@ const CurrentText: React.FC<CurrentTextProps> = ({
   const ipAddress = '10.66.14.173';
 
   useEffect(() => {
-    console.log(localStorage.getItem("JWT"));
+    // console.log(localStorage.getItem("JWT"));
 
     axios({
       method: 'get',
@@ -51,7 +51,7 @@ const CurrentText: React.FC<CurrentTextProps> = ({
     }).then((res) => {
       // console.log("content : " + res.data.text);
       setData(res.data)
-      console.log(res.data);
+      // console.log(res.data);
 
     });
   }, []);
@@ -82,7 +82,7 @@ if (!Data) {
 }
 
 if (minutes == 0 && seconds == 0) {
-  console.log("testDelete")
+  // console.log("testDelete")
   // axios({
   //   method:'delete',
   //   url:`http://10.66.14.173:3000/admin/content/show`,

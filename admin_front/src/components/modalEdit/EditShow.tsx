@@ -19,7 +19,7 @@ export default function EditName(props: ModalType) {
     const ipAddress = '10.66.14.173';
 
     useEffect(() => {
-        console.log(localStorage.getItem("JWT"));
+        // console.log(localStorage.getItem("JWT"));
 
         axios({
             method: 'get',
@@ -30,7 +30,7 @@ export default function EditName(props: ModalType) {
         }).then((res) => {
             // console.log("content : " + res.data.text);
             setCaption(res.data.text)
-            console.log(res.data);
+            // console.log(res.data);
 
         });
     }, []);
@@ -55,10 +55,10 @@ export default function EditName(props: ModalType) {
                 Authorization: `Bearer ${localStorage.getItem("JWT")}`
             },
         }).then((res) => {
-            console.log(res.data);
+            // console.log(res.data);
             // localStorage.setItem("JWT",res.data.access_token);
         }).catch((error) => {
-            console.log(error)
+            // console.log(error)
         })
     };
 
