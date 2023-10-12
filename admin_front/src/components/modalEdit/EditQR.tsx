@@ -14,12 +14,13 @@ interface ModalType {
 export default function EditQR(props: ModalType) {
     // const{register,handleSubmit}=useForm<FormData>();
     const [phoneNume, setphoneNume] = useState(""); // ย้าย useState มาที่นี่
+    const [displayText, setDisplayText] = useState('');
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         axios({
             method:'patch',
-            url:'http://10.66.5.253:3000/admin/user',
+            url:'http://10.66.14.173:3000/admin/user',
             data:{
                 phoneNume: phoneNume
             },
@@ -31,6 +32,14 @@ export default function EditQR(props: ModalType) {
             console.log(error);
         });
     };
+
+    const handleButtonClick = () => {
+        if (phoneNume) {
+          setDisplayText("");
+        } else {
+          setDisplayText('*คุณยังไม่ได้กรอกเบอร์พร้อมเพย์*');
+        }
+      };
 
     return (
         <div>
@@ -47,10 +56,14 @@ export default function EditQR(props: ModalType) {
                                 // {...register("phoneNume")} 
                                 name="phoneNume" type="text" className="w-full   py-4 px-2 border border-gry-500 rounded-[20px] text-3xl" />
                         </div>
+                        
+                        <div className=" flex ml-[90px] text-red-cancel">
+                            <p >{displayText}</p>
+                        </div>
                         <div className="flex justify-center items-center font-normal text-xl ">
                             <div className="flex space-x-10 space-y-0 mt-5">
                                 <Link to="/">
-                                    <button className="w-full py-4 px-16  bg-purple-btn hover:bg-dark-purple-highlight  text-white font-bold text-4xl rounded-full">ตกลง</button>
+                                    <button className="w-full py-4 px-16  bg-purple-btn hover:bg-dark-purple-highlight  text-white font-bold text-4xl rounded-full" onClick={handleButtonClick}>ตกลง</button>
                                 </Link>
                                 <button className="w-full py-4 px-16 bg-red-500 hover:bg-red-700 text-white font-bold text-4xl rounded-full" onClick={props.toggle}>ยกเลิก</button>
                                 
