@@ -123,5 +123,12 @@ export class AdminService {
       return admins ? admins.expire : null;
     }
 
+    async patchDisplayname(uuid: string, displayname: string): Promise<Admin> {
+      const admin = await this.adminRepository.findOne({where:{id:uuid}});
+      
+      admin.displayname = displayname;
+      return await this.adminRepository.save(admin);
+    }
+
 
 }
