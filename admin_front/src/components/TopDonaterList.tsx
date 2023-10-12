@@ -5,7 +5,7 @@ interface TopDonaterListProps {
 }
 
 interface TopDonator {
-  username: string;
+  username: any;
   donate: number;
 }
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ToggleSwitch from "../components/ToggleSwitch";
 import DaysLeft from "../components/DaysLeft";
 import RefreshIcon from "../components/RefreshIcon";
@@ -13,21 +13,69 @@ import QueueComponent from "../components/Queue";
 import EditQR from "../components/modalEdit/EditQR";
 import EditShow from "../components/modalEdit/EditShow";
 import EditName from "../components/modalEdit/EditName";
+import axios from "axios";
 
 
 const Dashboard: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [showModalShow, setShowModalShow] = useState(false);
   const [showModalName, setShowModalName] = useState(false);
+  const [storeCode, setStoreCode] = useState(null);
+  const [expireDate, setExpireDate] = useState(null);
+
   //outside grid
+  const ipAddress = '10.66.14.173';
+
+  useEffect(() => {
+    axios({
+      method: 'get',
+      url: `http://${ipAddress}:3000/admin/user/getcode`,
+      headers: {
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
+      }
+    }).then((res) => {
+      setStoreCode(res.data.code)
+    });
+  }, []);
+
   const TavernData = {
     name: "ABC",
-    code: "B394F7",
+    code: storeCode,
   };
+
   const refreshDateTime = "15/09/2023 23:43"; // Replace with your actual date and time
+
+  useEffect(() => {
+    axios({
+      method: 'get',
+      url: `http://${ipAddress}:3000/admin/user/expire`,
+      headers: {
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
+      }
+    }).then((res) => {
+      console.log(res.data.expire);
+
+      setExpireDate(res.data.expire);
+    });
+  }, []);
+
+  const currentDate = new Date();
+
+  // Target date (December 31, 2023)
+  const targetDate = new Date('2023-12-31');
+
+  // Calculate the time difference in milliseconds
+  const timeDifference = targetDate.getTime() - currentDate.getTime();
+
+  // Calculate the number of days left
+  const daysLeft = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+  console.log(`There are ${daysLeft} days left until December 31, 2023.`);
+
   const license = {
     expire: "45",
   };
+
   //card 1
   const incomeData = {
     total: 120000,
@@ -53,7 +101,7 @@ const Dashboard: React.FC = () => {
   const handleEditClick = () => {
     // Handle edit action here
     setShowModalShow(true)
-    
+
   };
   const handleRemoveClick = () => {
     // Handle remove action here
@@ -88,18 +136,25 @@ const Dashboard: React.FC = () => {
     yAxisData: [150, 134, 123, 111, 95, 90, 120],
   };
   //card 4
-  const topDonaters = [
-    { username: "user1", donate: 26000 },
-    { username: "user2", donate: 83000 },
-    { username: "user3", donate: 2000 },
-    { username: "user4", donate: 35000 },
-    { username: "user5", donate: 84000 },
-    { username: "user6", donate: 28000 },
-    { username: "user7", donate: 43000 },
-    { username: "user8", donate: 86000 },
-    { username: "user9", donate: 52000 },
-    { username: "user10", donate: 8000 },
-  ];
+  const topDonaters: { username: any; donate: any; }[] = [];
+  useEffect(() => {
+    axios({
+      method: 'get',
+      url: `http://${ipAddress}:3000/admin/content/top-donators`,
+      headers: {
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
+      }
+    }).then((res) => {
+      console.log("top donator");
+      for (let i = 0; i < Math.min(10, res.data.length); i++) {
+        // console.log(i + res.data[i].username)
+        topDonaters.push({ username: res.data[i].username, donate: res.data[i].totalamount })
+      }
+      console.log(topDonaters);
+
+    });
+  }, []);
+
   //card 5 data and function
   const queueData = [
     {
@@ -129,11 +184,11 @@ const Dashboard: React.FC = () => {
   ];
   //card 6 data and function
   const handleQrClick = () => {
-      setShowModal(true)
+    setShowModal(true)
   };
   const handleNameClick = () => {
     setShowModalName(true)
-};
+  };
   const account = {
     name: "สุปรีญา อรุณฉาย",
     number: "7070148614333071",
@@ -142,9 +197,9 @@ const Dashboard: React.FC = () => {
 
 
   return (
-    <div className="bg-cream-bg font-kanit p-6 min-h-screen bg-cream-bg">
+    <div className="bg-cream-bg font-kanit p-6 min-h-screen">
       <div className="flex justify-between mx-1 pt-5">
-        <StoreName store={TavernData} handleNameClick={handleNameClick}/>
+        <StoreName store={TavernData} handleNameClick={handleNameClick} />
         <ToggleSwitch onText="เปิดระบบ" offText="ปิดระบบ" />
       </div>
       <div className="flex flex-row justify-between items-center mx-10 my-6 font-['kanit'] ">
@@ -160,7 +215,7 @@ const Dashboard: React.FC = () => {
           className="col-span-1 bg-white p-4 rounded-lg drop-shadow-md flex flex-col "
           style={{ height: "300px" }}
         >
-          <TodayIncome incomeData={incomeData} onIncomehistoryClick={handlehistoryClick}/>
+          <TodayIncome incomeData={incomeData} onIncomehistoryClick={handlehistoryClick} />
         </div>
 
         {/* Card 2 */}
@@ -192,13 +247,13 @@ const Dashboard: React.FC = () => {
         <div className="col-span-2 bg-white p-4 rounded-lg drop-shadow-md h-auto">
           <div className=" flex flex-col items-center space-y-2">
             <h1 className=" text-xl font-bold  mt-2">ข้อความถัดไป</h1>
-            <QueueComponent queue={queueData} handleRemoveClick={handleRemoveClick}/>
+            <QueueComponent queue={queueData} handleRemoveClick={handleRemoveClick} />
           </div>
         </div>
 
         {/* Card 6 */}
         <div className="col-span-1 bg-white p-4 rounded-lg drop-shadow-md h-auto">
-          <QRCodeDisplay account={account} handleQrClick={handleQrClick}/>
+          <QRCodeDisplay account={account} handleQrClick={handleQrClick} />
         </div>
       </div>
       {/* ConfirmDialog component */}
