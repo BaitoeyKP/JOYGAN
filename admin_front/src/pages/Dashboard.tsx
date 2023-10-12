@@ -24,7 +24,7 @@ const Dashboard: React.FC = () => {
   const [storeCode, setStoreCode] = useState(null);
   const [expireDate, setExpireDate] = useState(0);
   const [topSpender, setTopSpender] = useState(<></>);
-
+  const [refresh,setRefresh] = useState(0);
   //outside grid
   const ipAddress = '10.66.14.173';
 
@@ -36,10 +36,16 @@ const Dashboard: React.FC = () => {
     text: string;
     time_display: number;
     time_stamp: number;
-
+    donate: number;
+    user: {
+      id: number;
+      username: string;
+    }
 
   }
+  const [deletequeue, setDeletequeue] = useState<string>('');
   const [Data, setData] = useState<fetchdata>();
+  const [queueData, setDataQueue] = useState<fetchdata[]>([]);
 
   useEffect(() => {
     axios({
@@ -53,10 +59,7 @@ const Dashboard: React.FC = () => {
     });
   }, []);
 
-  const TavernData = {
-    name: "ABC",
-    code: storeCode,
-  };
+
 
   const refreshDateTime = "15/09/2023 23:43"; // Replace with your actual date and time
 
@@ -117,15 +120,35 @@ const Dashboard: React.FC = () => {
     setShowModalShow(true)
 
   };
-  const handleRemoveClick = () => {
+  const handleRemoveClick = (itemId: string) => {
     // Handle remove action here
+    setDeletequeue(itemId);
     console.log("Remove button clicked!");
     // Display the confirmation dialog
     setShowConfirmDialog(true);
   };
   // Function to handle confirmation of removal
   const handleConfirmRemove = () => {
-    // Handle the removal action here
+
+    console.log(deletequeue, 'deletequeue');
+   
+      axios({
+        method: 'delete',
+        url: `http:///${ipAddress}:3000/admin/content/queue/${deletequeue}`,
+
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("JWT")}`
+        },
+      }).then((res) => {
+        console.log(res.data);
+        setRefresh((x)=>x+1)
+        // localStorage.setItem("JWT",res.data.access_token);
+      }).catch((error) => {
+        console.log(error)
+      })
+    
+
+
     console.log("Removing...");
     // Hide the confirmation dialog
     setShowConfirmDialog(false);
@@ -174,67 +197,55 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     console.log(localStorage.getItem("JWT"));
-    
-      axios({
-          method: 'get',
-          url: `http:///${ipAddress}:3000/admin/content/show`,
-          headers: {
-            Authorization:`Bearer ${localStorage.getItem("JWT")}` 
-          }
-      }).then((res) => {
-          // console.log("content : " + res.data.text);
-          setData(res.data)
-          console.log("show",res);
-          
-      });
-      }, []);
 
-      const [nameMaket, setNameMaket] = useState("");
+    axios({
+      method: 'get',
+      url: `http:///${ipAddress}:3000/admin/content/show`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
+      }
+    }).then((res) => {
+      // console.log("content : " + res.data.text);
+      setData(res.data)
+      console.log("show", res);
 
-      useEffect(() => {
-        console.log(localStorage.getItem("JWT"));
+    });
+    axios({
+      method: 'get',
+      url: `http:///${ipAddress}:3000/admin/content/queue`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
+      }
+    }).then((res) => {
+      // console.log("content : " + res.data.text);
+      setDataQueue(res.data)
+      console.log("queuedata", res);
 
-        axios({
-            method: 'get',
-            url: `http://${ipAddress}:3000/admin/user/displayname`,
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("JWT")}`
-            }
-        }).then((res) => {
-            // console.log("content : " + res.data.text);
-            console.log("nameMaket",res.data);
-            setNameMaket(res.data)
-        });
-    }, []);
+    });
+  }, [refresh]);
+
+  const [nameMaket, setNameMaket] = useState("");
+
+  useEffect(() => {
+    console.log(localStorage.getItem("JWT"));
+
+    axios({
+      method: 'get',
+      url: `http://${ipAddress}:3000/admin/user/displayname`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
+      }
+    }).then((res) => {
+      // console.log("content : " + res.data.text);
+      console.log("nameMaket", res.data);
+      setNameMaket(res.data)
+    });
+  }, []);
+
 
 
   //card 5 data and function
-  const queueData = [
-    {
-      id: 2,
-      username: 'UsernameA', // Include the username here
-      text: 'Basic usage Showing content that overflows Use overflow-visible to prevent content within an element from being clipped. Note that any content that overflows the bounds of the element will then be visible.',
-      time: 120,
-      donate: 10000,
-      imageSrc: 'https://picsum.photos/200/300',
-    },
-    {
-      id: 3,
-      username: 'UsernameB', // Include the username here
-      text: 'ง่วงจังเลย',
-      time: 45,
-      donate: 1000,
-      imageSrc: 'https://picsum.photos/1080/720',
-    },
-    {
-      id: 4,
-      username: 'UsernameC', // Include the username here
-      text: 'ง่วงจังเลย',
-      time: 145,
-      donate: 1000,
-      imageSrc: 'https://picsum.photos/836/739',
-    },
-  ];
+
   //card 6 data and function
   const handleQrClick = () => {
     setShowModal(true)
@@ -246,30 +257,26 @@ const Dashboard: React.FC = () => {
     name: "สุปรีญา อรุณฉาย",
     number: "7070148614333071",
   };
- 
+
   const incomeData = {
     total: totalToday,
     morethan: morethan,
     morethanper: percentage,
   };
 
-  if (!Data)
-    return 'no data';
-  console.log(Data.time_display);
-  const getData = {
-    id: 1,
-    username: "nut",
-    text: "โอ๊ตรวยเลี้ยงชาบูหน่อย",
-    imagesrc:
-      "https://picsum.photos/304/650",
-    time: Data!.time_display, // 45 minutes
-    donate: 1000,
+
+
+
+
+  const TavernData = {
+    name: nameMaket,
+    code: storeCode,
   };
   return (
     <div className="bg-cream-bg font-kanit p-6 min-h-screen">
       <div className="flex justify-between mx-10 pt-5">
         <StoreName store={TavernData} handleNameClick={handleNameClick} />
-        <ToggleSwitch onText="เปิดระบบ" offText="ปิดระบบ" />
+        {/* <ToggleSwitch onText="เปิดระบบ" offText="ปิดระบบ" /> */}
       </div>
       <div className="flex flex-row justify-between items-center mx-10 my-6 font-['kanit'] ">
         <RefreshIcon dateTime={refreshDateTime} />
@@ -292,11 +299,12 @@ const Dashboard: React.FC = () => {
           className="col-span-2 bg-white p-4 rounded-lg drop-shadow-md"
           style={{ height: "300px" }}
         >
-          <CurrentText
-            data={getData}
+          {Data&&<CurrentText
+            data={Data}
             onEditClick={handleEditClick}
             onRemoveClick={handleRemoveClick}
-          />
+            setRefresh={setRefresh}
+          />}
         </div>
 
         {/* Card 3 */}

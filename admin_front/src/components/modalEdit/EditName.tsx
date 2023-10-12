@@ -37,6 +37,19 @@ export default function EditName(props: ModalType) {
     const handleButtonClick = () => {
         if (marketName) {
             setDisplayText("");
+            axios({
+                method: 'patch',
+                url: `http://${ipAddress}:3000/admin/user/displayname/${marketName}`,
+      
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("JWT")}`
+                },
+            }).then((res) => {
+                console.log(res.data);
+                // localStorage.setItem("JWT",res.data.access_token);
+            }).catch((error) => {
+                console.log(error)
+            })
         } else {
             setDisplayText('*คุณยังไม่ได้ใส่ชื่อร้าน*');
         }
@@ -64,7 +77,7 @@ export default function EditName(props: ModalType) {
                         </form>
                         <div className="flex justify-center items-center font-normal text-xl py-7">
                             <div className="flex space-x-10 space-y-0 mt-5">
-                                <Link to="/">
+                                <Link to="/dashboard">
                                     <button className="w-full py-4 px-16  bg-purple-btn hover:bg-dark-purple-highlight  text-white font-bold text-4xl rounded-full" onClick={handleButtonClick}>ตกลง</button>
                                 </Link>
                                 <button className="w-full py-4 px-16 bg-red-500 hover:bg-red-700 text-white font-bold text-4xl rounded-full" onClick={props.toggle}>ยกเลิก</button>

@@ -14,57 +14,17 @@ interface StoreNameProps {
 }
 
 const StoreName: React.FC<StoreNameProps> = ({ store, handleNameClick }) => {
-  const [caption, setCaption] = useState("");
-    const ipAddress = '10.66.14.173';
-
-    useEffect(() => {
-        console.log(localStorage.getItem("JWT"));
-
-        axios({
-            method: 'get',
-            url: `http://${ipAddress}:3000/admin/user/displayname`,
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("JWT")}`
-            }
-        }).then((res) => {
-            // console.log("content : " + res.data.text);
-            console.log("name",res.data);
-            setCaption(res.data)
-            
-
-        });
-    }, []);
+  const [caption, setMarketName] = useState("");
+  const ipAddress = '10.66.14.173';
 
 
-    // const handleSave = () => {
-    //     // สร้างข้อมูลที่จะส่งไปยังเซิร์ฟเวอร์
-    //     const data = {
-    //       editText: caption,
-    // };
-
-    const handleSubmit = () => {
-        console.log("test")
-        axios({
-            method: 'patch',
-            url: `http://${ipAddress}:3000/admin/content/show/${caption}`,
-
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("JWT")}`
-            },
-        }).then((res) => {
-            console.log(res.data);
-            // localStorage.setItem("JWT",res.data.access_token);
-        }).catch((error) => {
-            console.log(error)
-        })
-    };
 
   return (
     <h1 className="text-4xl flex flex-row items-end">
       ร้าน
       <span className="text-5xl text-dark-purple-highlight">{store.name}</span>
       <span>({store.code})</span>
-      <div onClick={handleNameClick}>
+      <div className="cursor-pointer" onClick={handleNameClick} >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"

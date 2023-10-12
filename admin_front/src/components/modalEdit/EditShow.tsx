@@ -106,8 +106,8 @@ export default function EditName(props: ModalType) {
                             </div>
                             <div className=" justify-center items-end font-normal text-xl py-7">
                                 <div className="space-y-0 w-full justify-col items-end">
-                                    <button className="w-full  py-3 px-5 mb-8 bg-purple-btn hover:bg-dark-purple-highlight  text-white font-bold text-4xl rounded-full" onClick={() => { handleSubmit(); props.toggle(); window.location.reload(); }}>บันทึก</button>
-
+                                    <button className="w-full  py-3 px-5 mb-8 bg-purple-btn hover:bg-dark-purple-highlight  text-white font-bold text-4xl rounded-full"onClick={() => {handleSubmit();props.toggle(); window.location.reload();}}>บันทึก</button>
+                                    
                                     <button className="w-full py-3 px-5  bg-red-500 hover:bg-red-700 text-white font-bold text-4xl rounded-full" onClick={props.toggle}>ยกเลิก</button>
 
                                 </div>

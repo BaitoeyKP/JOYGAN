@@ -1,23 +1,29 @@
 import React from "react";
 
-interface QueueItem {
-  id: number;
+interface fetchdata {
+  id: string;
+  pic: string;
+  state: string;
   text: string;
-  time: number; // time in seconds
-  donate: number;
-  imageSrc?: string; // URL to the image (optional)
-  username?: string; // Username (optional)
+  time_display: number;
+  time_stamp: number;
+  donate:number;
+  user:{
+    id:number;
+    username:string;
+  }
 }
 
 interface QueueComponentProps {
-  queue: QueueItem[];
-  handleRemoveClick: (itemId: number) => void;
+  queue: fetchdata[];
+  handleRemoveClick: (itemId: string) => void;
 }
 
 const QueueComponent: React.FC<QueueComponentProps> = ({
   queue,
   handleRemoveClick,
 }) => {
+  console.log('queue',queue);
   return (
     <div>
       {queue.map((item) => (
@@ -26,12 +32,12 @@ const QueueComponent: React.FC<QueueComponentProps> = ({
           className="border-solid border-black border-2 rounded-md p-2 my-1 flex flex-row justify-around"
         >
           <div id="Username-Usertext">
-            {item.username && (
+            {item.user.username && (
               <h2
                 id="Username"
                 className="text-dark-purple-highlight font-bold "
               >
-                @{item.username}
+                @{item.user.username}
               </h2>
             )}
             <h3
@@ -41,12 +47,12 @@ const QueueComponent: React.FC<QueueComponentProps> = ({
               {item.text}
             </h3>
           </div>
-          {item.imageSrc && (
+          {item.pic && (
             <div id="image" className=" mx-4">
               <img
                 className="max-h-24 rounded-lg"
-                src={item.imageSrc}
-                alt={`${item.username} img`}
+                src={item.pic}
+                alt={`${item.user.username} img`}
               />
             </div>
           )}
@@ -64,10 +70,10 @@ const QueueComponent: React.FC<QueueComponentProps> = ({
                 />
               </svg>
               <div id="time-formatted" className="mx-2">
-                {`${Math.floor(item.time / 60)
+                {`${Math.floor(item.time_display / 60)
                   .toString()
                   .padStart(2, "0")} : 
-                ${(item.time % 60).toString().padStart(2, "0")}`}
+                ${(item.time_display%60 ).toString().padStart(2, "0")}`}
               </div>
             </div>
             <div id="Donate" className="flex flex-row my-1">
