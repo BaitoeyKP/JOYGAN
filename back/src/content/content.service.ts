@@ -54,9 +54,14 @@ export class ContentService {
   }
 
   async deleteQueueContent(uuid: string) {
+    const admin = await this.repositoryAdmin.findOne({
+      where: {
+        id: uuid
+      }
+    })
     const Content = await this.repositoryContent.findOne({
       where: {
-        id: uuid,
+        admin: admin,
       }
     });
     await this.repositoryContent.remove(Content);
@@ -90,6 +95,7 @@ export class ContentService {
     // console.log(Content,'getTopQueue_content');
     Content.sort((a, b) => a.time_stamp < b.time_stamp ? -1 : a.time_stamp < b.time_stamp ? 1 : 0)
     Content[0].state='show';
+    this.repositoryContent.save(Content[0]);
     return Content[0];
   }
 

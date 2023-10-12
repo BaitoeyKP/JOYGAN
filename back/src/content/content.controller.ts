@@ -60,9 +60,10 @@ async getDonateYesterday() {
     async getDonationsByDay(): Promise<{ date: string; totalDonations: number }[]> {
       return this.contentService.getDonationsByDay();
     }
-    
+    @UseGuards(AuthGuard)
     @Delete('show')
     async deleteShowContent(@Request() req){
+        
         await this.contentService.deleteShowContent(req.user.uuid);
     }
 
