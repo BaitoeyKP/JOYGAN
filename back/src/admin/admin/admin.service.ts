@@ -54,49 +54,49 @@ export class AdminService {
 
 
 
-  async calculateDailySummary(userId: number) {
+  // async calculateDailySummary(userId: number) {
    
-        const today = new Date();
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
+  //       const today = new Date();
+  //       const yesterday = new Date();
+  //       yesterday.setDate(yesterday.getDate() - 1);
         
-        const incomeToday = await this.LogUserRepository.find({
-        where: {
-            id: userId,
-            date: Equal(today)
-        },
-        });
+  //       const incomeToday = await this.LogUserRepository.find({
+  //       where: {
+  //           id: userId,
+  //           date: Equal(today)
+  //       },
+  //       });
         
-        const incomeYesterday = await this.LogUserRepository.find({
-        where: {
-            id: userId,
-            date: Equal(yesterday )
-        },
-        });
+  //       const incomeYesterday = await this.LogUserRepository.find({
+  //       where: {
+  //           id: userId,
+  //           date: Equal(yesterday )
+  //       },
+  //       });
 
         
-        let totalIncomeToday = 0;
-        for (const income of incomeToday) {
-        totalIncomeToday += income.amount;
-        }
+  //       let totalIncomeToday = 0;
+  //       for (const income of incomeToday) {
+  //       totalIncomeToday += income.amount;
+  //       }
 
         
-        let totalIncomeYesterday = 0;
-        for (const income of incomeYesterday) {
-        totalIncomeYesterday += income.amount;
-        }
+  //       let totalIncomeYesterday = 0;
+  //       for (const income of incomeYesterday) {
+  //       totalIncomeYesterday += income.amount;
+  //       }
 
         
-        const morethan = totalIncomeToday - totalIncomeYesterday;
-        const morethanper = (morethan / totalIncomeYesterday) * 100;
-        console.log(morethan);
+  //       const morethan = totalIncomeToday - totalIncomeYesterday;
+  //       const morethanper = (morethan / totalIncomeYesterday) * 100;
+  //       console.log(morethan);
         
-        return {
-        total: totalIncomeToday,
-        morethan: morethan,
-        morethanper: morethanper,
-        };
-    }
+  //       return {
+  //       total: totalIncomeToday,
+  //       morethan: morethan,
+  //       morethanper: morethanper,
+  //       };
+  //   }
 
     async getCodeById(adminId: string): Promise<string | null> {
       const admin = await this.adminRepository.findOne({where:{ id: adminId }});

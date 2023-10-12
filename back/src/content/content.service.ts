@@ -6,13 +6,16 @@ import { Repository ,MoreThanOrEqual, LessThan} from 'typeorm';
 @Injectable()
 export class ContentService {
   constructor(@InjectRepository(Content) private repositoryContent: Repository<Content>,
-               @InjectRepository(Content) private repositoryAdmin: Repository<Admin>,
-               @InjectRepository(Content) private logUserRepository: Repository<LogUser>,) 
+               @InjectRepository(Admin) private repositoryAdmin: Repository<Admin>,
+               @InjectRepository(LogUser) private logUserRepository: Repository<LogUser>,) 
                { }
 
   async getShowContent(uuid: string): Promise<Content> {
     try {
-      return await this.getTopQueue(uuid);
+      const res=await this.getTopQueue(uuid);
+      console.log(res);
+      
+      return res;
     } catch (error) {
       
     }
@@ -26,6 +29,8 @@ export class ContentService {
 
   async patchShowContent(uuid: string, text: string): Promise<Content> {
     const Content = await this.getTopQueue(uuid);
+    console.log(Content,11111111);
+    
     Content.text = text;
     return await this.repositoryContent.save(Content);
   }
@@ -60,13 +65,14 @@ export class ContentService {
   }
 
   async getTopQueue(uuid: string): Promise<Content> {
-    console.log(uuid);
+    console.log(uuid,555);
+    
     const admin = await this.repositoryAdmin.findOne({
       where: {
         id: uuid
       }
     })
-    console.log(admin);
+    console.log(admin,123);
     
     const Content = await this.repositoryContent.find({
       where: {
