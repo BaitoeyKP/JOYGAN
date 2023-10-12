@@ -13,14 +13,14 @@ interface ModalType {
 export default function EditName(props: ModalType) {
     const [marketName, setMarketName] = useState("");
     const [displayText, setDisplayText] = useState('');
-    const ipAddress = '10.66.14.173';
+    const ipAddress = '127.0.0.1';
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         axios({
-            method: 'post',
-            url: `http://${ipAddress}:3000/admin/user/login`,
-            data: {
+            method:'post',
+            url:'http://127.0.0.1:8000/admin/user/login',
+            data:{
                 marketName: marketName
             },
             headers: {

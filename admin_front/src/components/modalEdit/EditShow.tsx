@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 // import {useForm} from 'react-hook-form';
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { log } from "console";
-import { text } from "stream/consumers";
 
 interface ModalType {
     children?: ReactNode;
@@ -18,14 +16,14 @@ export default function EditName(props: ModalType) {
     // const{register,handleSubmit}=useForm<FormData>();
     // const [text, setText] = useState("");
     const [caption, setCaption] = useState("");
-    const ipAddress = '10.66.14.173';
+    const ipAddress = '127.0.0.1';
 
     useEffect(() => {
         console.log(localStorage.getItem("JWT"));
 
         axios({
             method: 'get',
-            url: `http://${ipAddress}:3000/admin/content/show`,
+            url: `http://${ipAddress}:8000/admin/content/show`,
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("JWT")}`
             }
@@ -52,7 +50,7 @@ export default function EditName(props: ModalType) {
         console.log("test")
         axios({
             method: 'patch',
-            url: `http://${ipAddress}:3000/admin/content/show/${caption}`,
+            url: `http://${ipAddress}:8000/admin/content/show/${caption}`,
 
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("JWT")}`
@@ -68,8 +66,8 @@ export default function EditName(props: ModalType) {
 
     // axios((
     // ))
-    // .patch("http://10.66.14.173:3000/admin/content/show", data)
-
+    // .patch("http://127.0.0.1:8000/admin/content/show", data)
+    
     // .then((res) => {
     //   console.log(res);
     //   // ทำอย่างอื่นตามที่คุณต้องการหลังจากส่งข้อมูลสำเร็จ
@@ -109,9 +107,8 @@ export default function EditName(props: ModalType) {
                             </div>
                             <div className=" justify-center items-end font-normal text-xl py-7">
                                 <div className="space-y-0 w-full justify-col items-end">
-                                    <Link to="/">
-                                        <button className="w-full  py-3 px-5 mb-8 bg-purple-btn hover:bg-dark-purple-highlight  text-white font-bold text-4xl rounded-full" onClick={handleSubmit}>บันทึก</button>
-                                    </Link>
+                                    <button className="w-full  py-3 px-5 mb-8 bg-purple-btn hover:bg-dark-purple-highlight  text-white font-bold text-4xl rounded-full"onClick={() => {handleSubmit();props.toggle(); window.location.reload();}}>บันทึก</button>
+                                    
                                     <button className="w-full py-3 px-5  bg-red-500 hover:bg-red-700 text-white font-bold text-4xl rounded-full" onClick={props.toggle}>ยกเลิก</button>
 
                                 </div>

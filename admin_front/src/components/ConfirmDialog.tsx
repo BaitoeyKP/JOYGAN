@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
+
+const ipAddress = '127.0.0.1';
 
 interface ConfirmDialogProps {
   message: string;
@@ -11,6 +14,23 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   onConfirm,
   onCancel,
 }) => {
+
+  const handleSubmit=()=>{
+    console.log("test")
+    axios({
+        method:'delete',
+        url:`http:///${ipAddress}:8000/admin/content/show`,
+        
+        headers:{
+            Authorization:`Bearer ${localStorage.getItem("JWT")}`
+        },
+    }).then((res)=>{
+        console.log(res.data);
+        // localStorage.setItem("JWT",res.data.access_token);
+    }).catch((error)=>{
+        console.log(error)
+    })
+};
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       {/* Semi-transparent overlay */}
@@ -24,7 +44,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
         <div className="flex justify-center items-center font-normal text-xl py-7">
         <button
             className="w-2/5 py-4 px-3 mb-5 bg-purple-btn hover:bg-dark-purple-highlight  text-white font-bold text-3xl rounded-[40px]"
-            onClick={onConfirm}
+            onClick={handleSubmit}
           >
             ตกลง
           </button>

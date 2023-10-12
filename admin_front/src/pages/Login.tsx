@@ -13,13 +13,13 @@ interface FormData {
 
 //http://10.66.11.55:3000/admin/user/login
 function Login() {
-    const ipAddress = '10.66.14.173';
+    const ipAddress = '127.0.0.1';
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         axios({
             method: 'post',
-            url: `http://${ipAddress}:3000/admin/user/login`,
+            url: `http://${ipAddress}:8000/admin/user/login`,
             data: {
                 username: username,
                 password: password

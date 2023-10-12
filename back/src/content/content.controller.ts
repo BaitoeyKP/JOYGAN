@@ -26,10 +26,12 @@ export class ContentController {
     @Get('summary-donate')
     async getDonateToday() {
     //console.log(this.contentService.getTodayTotalAmount);
-    const totalToday = await this.contentService.getTodayTotalAmount();
-    const totalYesterday = await this.contentService.getYesterdayTotalAmount();
+    const totalToday = await this.contentService.getTodayTotalAmount() || 0;
+    const totalYesterday = await this.contentService.getYesterdayTotalAmount()||0;
     const morethan  = totalToday -totalYesterday;
-    const percentage = ((totalToday  -totalYesterday)/totalYesterday)*100;
+    const percentage = totalYesterday !== 0 ? ((totalToday - totalYesterday) / totalYesterday) * 100 : 0;
+
+    
     return {
         totalToday,
         morethan,
@@ -53,9 +55,11 @@ export class ContentController {
       return this.contentService.getDonationsByDay();
     }
 
-    
+    @UseGuards(AuthGuard)
     @Delete('show')
     async deleteShowContent(@Request() req){
+        console.log(req.user);
+        
         await this.contentService.deleteShowContent(req.user.uuid);
     }
 
