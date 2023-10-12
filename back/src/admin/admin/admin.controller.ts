@@ -55,6 +55,11 @@ export class AdminController {
         async patchDisplayname(@Request() req,@Param('name')name:string):Promise<Admin>{
         return await this.adminService.patchDisplayname(req.user.uuid,name);
     }
+    @UseGuards(AuthGuard)
+    @Get('displayname')
+    async getDisplayname(@Request() req):Promise<String>{
+    return await this.adminService.getDisplayname(req.user.uuid);
+    }
        
 
        

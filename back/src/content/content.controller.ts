@@ -37,24 +37,29 @@ export class ContentController {
         morethan,
         percentage
     }
-    }
+}
 
-    @UseGuards(AuthGuard) 
-    @Get('summary-yesterday')
-    async getDonateYesterday() {
+@UseGuards(AuthGuard) 
+@Get('summary-yesterday')
+async getDonateYesterday() {
     //console.log(this.contentService.getTodayTotalAmount);
     
     return await this.contentService.getYesterdayTotalAmount() ; 
+}
+
+
+    @UseGuards(AuthGuard)
+    @Get('queue')
+    async getQueueContent(@Request() req):Promise<Content[]> {
+        return await this.contentService.getQueueContent(req.user.uuid);
     }
 
-    
 
     @UseGuards(AuthGuard)
     @Get('donations-by-day')
     async getDonationsByDay(): Promise<{ date: string; totalDonations: number }[]> {
       return this.contentService.getDonationsByDay();
     }
-
     
     @Delete('show')
     async deleteShowContent(@Request() req){
@@ -65,12 +70,6 @@ export class ContentController {
     @Patch('show/:text')
     async patchShowContent(@Request() req,@Param('text')text:string):Promise<Content>{
         return await this.contentService.patchShowContent(req.user.uuid,text);
-    }
-
-    @UseGuards(AuthGuard)
-    @Get('queue')
-    async getQueueContent(@Request() req):Promise<Content[]> {
-        return await this.contentService.getQueueContent(req.user.uuid);
     }
 
     @UseGuards(AuthGuard)

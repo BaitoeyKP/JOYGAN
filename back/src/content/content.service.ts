@@ -13,7 +13,7 @@ export class ContentService {
   async getShowContent(uuid: string): Promise<Content> {
     try {
       const res=await this.getTopQueue(uuid);
-      console.log(res);
+      // console.log(res,555555555555555555555555);
       
       return res;
     } catch (error) {
@@ -29,7 +29,7 @@ export class ContentService {
 
   async patchShowContent(uuid: string, text: string): Promise<Content> {
     const Content = await this.getTopQueue(uuid);
-    console.log(Content,11111111);
+    // console.log(Content,11111111);
     
     Content.text = text;
     return await this.repositoryContent.save(Content);
@@ -37,12 +37,19 @@ export class ContentService {
 
   async getQueueContent(uuid: string): Promise<Content[]> {
     this.getTopQueue(uuid);
+    console.log(uuid);
+    const admin = await this.repositoryAdmin.findOne({
+      where: {
+        id: uuid
+      }
+    })
     const Content = await this.repositoryContent.find({
       where: {
-        id: uuid,
+        admin:admin,
         state: "queue"
-      },relations:['User']
+      },relations:['user']
     });
+    
     return Content
   }
 
@@ -66,20 +73,21 @@ export class ContentService {
   }
 
   async getTopQueue(uuid: string): Promise<Content> {
-    console.log(uuid,555);
+    
     
     const admin = await this.repositoryAdmin.findOne({
       where: {
         id: uuid
       }
     })
-    console.log(admin,123);
+    // console.log(admin,'getTopQueue');
     
     const Content = await this.repositoryContent.find({
       where: {
         admin: admin,
-      },relations:['User']
+      },relations:['user']
     })
+    // console.log(Content,'getTopQueue_content');
     Content.sort((a, b) => a.time_stamp < b.time_stamp ? -1 : a.time_stamp < b.time_stamp ? 1 : 0)
     Content[0].state='show';
     return Content[0];
@@ -110,7 +118,7 @@ export class ContentService {
       GROUP BY date
       ORDER BY date DESC -- นี่คือการเรียงลำดับวันล่าสุดขึ้นก่อน
     `;
-  
+
     const result = await this.logUserRepository.query(query);
     return result;
   }
@@ -123,7 +131,7 @@ export class ContentService {
           FROM log_user logUser
           GROUP BY logUser.username
           ORDER BY totalAmount DESC
-          LIMIT 10
+          
         `;
         const topDonators = await this.logUserRepository.query(query);
         
@@ -138,12 +146,12 @@ export class ContentService {
 
           SELECT SUM(amount) AS totalAmount
           FROM log_user
-          WHERE date >= DATE_TRUNC('day', NOW()) AND date < DATE_TRUNC('day', NOW() + INTERVAL '1 day')
-        
+          WHERE date >= DATE_TRUNC('day', NOW()) 
+            AND date < DATE_TRUNC('day', NOW() + INTERVAL '1 day')
           `;
     
         const result = await this.logUserRepository.query(query);
-        console.log(result);
+        //console.log(result);
         
         return parseInt(result[0].totalamount);
       }
@@ -157,7 +165,7 @@ export class ContentService {
         `;
       
         const result = await this.logUserRepository.query(query);
-        console.log(result);
+       // console.log(result);
       
         return parseInt(result[0].totalamount);
       }
