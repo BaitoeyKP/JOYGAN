@@ -69,12 +69,12 @@ function Income() {
     const [title, setTitle] = useState("รายวัน");
     const [selectedValue, setSelectedValue] = useState("daily");
     const [content, setContent] = useState(<></>);
-    const ipAddress = '10.66.14.173';
+    const ipAddress = '127.0.0.1';
 
     useEffect(() => {
         axios({
             method: 'get',
-            url: `http://${ipAddress}:3000/admin/content/donations-by-day`,
+            url: `http://${ipAddress}:8000/admin/content/donations-by-day`,
             headers: {
                 Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
             }

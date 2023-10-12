@@ -53,9 +53,11 @@ export class ContentController {
       return this.contentService.getDonationsByDay();
     }
 
-    
+    @UseGuards(AuthGuard)
     @Delete('show')
     async deleteShowContent(@Request() req){
+        console.log(req.user);
+        
         await this.contentService.deleteShowContent(req.user.uuid);
     }
 

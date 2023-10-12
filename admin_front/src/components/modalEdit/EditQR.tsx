@@ -20,7 +20,7 @@ export default function EditQR(props: ModalType) {
         e.preventDefault();
         axios({
             method:'patch',
-            url:'http://10.66.14.173:3000/admin/user',
+            url:'http://127.0.0.1:8000/admin/user',
             data:{
                 phoneNume: phoneNume
             },

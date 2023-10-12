@@ -14,9 +14,10 @@ interface FormData{
 function Login(){
 
     const handleSubmit=(e: React.FormEvent<HTMLFormElement>)=>{e.preventDefault();
+        
         axios({
             method:'post',
-            url:'http://10.66.14.173:3000/admin/user/login',
+            url:'http://127.0.0.1:8000/admin/user/login',
             data:{
                 username: username,
                 password: password
@@ -28,6 +29,8 @@ function Login(){
         }).then((res)=>{
             console.log(res.data);
             localStorage.setItem("JWT",res.data.access_token);
+            console.log(res.data.access_token)
+
         }).catch((error)=>{
             console.log(error)
         })

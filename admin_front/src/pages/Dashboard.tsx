@@ -14,6 +14,7 @@ import EditQR from "../components/modalEdit/EditQR";
 import EditShow from "../components/modalEdit/EditShow";
 import EditName from "../components/modalEdit/EditName";
 import axios from "axios";
+import { time } from "console";
 
 
 const Dashboard: React.FC = () => {
@@ -25,12 +26,25 @@ const Dashboard: React.FC = () => {
   const [topSpender, setTopSpender] = useState(<></>);
 
   //outside grid
-  const ipAddress = '10.66.14.173';
+  const ipAddress = '127.0.0.1';
+
+  interface fetchdata {
+  
+    id:string;
+    pic:string;
+    state:string;
+    text:string;
+    time_display:number;
+    time_stamp:number;
+    
+    
+  }
+  const [Data, setData] = useState<fetchdata>();
 
   useEffect(() => {
     axios({
       method: 'get',
-      url: `http://${ipAddress}:3000/admin/user/getcode`,
+      url: `http://${ipAddress}:8000/admin/user/getcode`,
       headers: {
         Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
       }
@@ -49,7 +63,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     axios({
       method: 'get',
-      url: `http://${ipAddress}:3000/admin/user/expire`,
+      url: `http://${ipAddress}:8000/admin/user/expire`,
       headers: {
         Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
       }
@@ -91,15 +105,7 @@ const Dashboard: React.FC = () => {
   // State to control the visibility of the confirmation dialog
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
-  const exampleData = {
-    id: 1,
-    username: "JohnDoe",
-    text: "โอ๊ตรวยเลี้ยงชาบูหน่อย",
-    imagesrc:
-      "https://picsum.photos/304/650",
-    time: 45, // 45 minutes
-    donate: 1000,
-  };
+  
   const handleEditClick = () => {
     // Handle edit action here
     setShowModalShow(true)
@@ -141,7 +147,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     axios({
       method: 'get',
-      url: `http://${ipAddress}:3000/admin/content/top-donators`,
+      url: `http://${ipAddress}:8000/admin/content/top-donators`,
       headers: {
         Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
       }
@@ -159,6 +165,24 @@ const Dashboard: React.FC = () => {
       )
     });
   }, []);
+
+  useEffect(() => {
+    console.log(localStorage.getItem("JWT"));
+    
+      axios({
+          method: 'get',
+          url: 'http:///127.0.0.1:8000/admin/content/show',
+          headers: {
+            Authorization:`Bearer ${localStorage.getItem("JWT")}` 
+          }
+      }).then((res) => {
+          // console.log("content : " + res.data.text);
+          setData(res.data)
+          console.log("show",res.data);
+          
+      });
+      }, []);
+
 
   //card 5 data and function
   const queueData = [
@@ -200,7 +224,18 @@ const Dashboard: React.FC = () => {
   };
 
 
-
+  if(!Data)
+    return;
+  console.log(Data.time_display);
+  const getData = {
+    id: 1,
+    username: "nut",
+    text: "โอ๊ตรวยเลี้ยงชาบูหน่อย",
+    imagesrc:
+      "https://picsum.photos/304/650",
+    time: Data!.time_display, // 45 minutes
+    donate: 1000,
+  };
   return (
     <div className="bg-cream-bg font-kanit p-6 min-h-screen">
       <div className="flex justify-between mx-10 pt-5">
@@ -229,7 +264,7 @@ const Dashboard: React.FC = () => {
           style={{ height: "300px" }}
         >
           <CurrentText
-            data={exampleData}
+            data={getData}
             onEditClick={handleEditClick}
             onRemoveClick={handleRemoveClick}
           />

@@ -34,9 +34,8 @@ const CurrentText: React.FC<CurrentTextProps> = ({
 }) => {
   // Destructure the data object
   const { id, username, text, time, donate, imagesrc } = data;
-  // State to hold the remaining time
-  const [remainingTimeSeconds, setRemainingTime] = useState(time * 60);
-  const [caption, setCaption] = useState(null);
+  // State to hold the remaining tim
+  
   const [Data, setData] = useState<fetchdata>();
 
   useEffect(() => {
@@ -44,7 +43,7 @@ const CurrentText: React.FC<CurrentTextProps> = ({
     
       axios({
           method: 'get',
-          url: 'http://10.66.14.173:3000/admin/content/show',
+          url: 'http:///127.0.0.1:8000/admin/content/show',
           headers: {
             Authorization:`Bearer ${localStorage.getItem("JWT")}` 
           }
@@ -55,6 +54,9 @@ const CurrentText: React.FC<CurrentTextProps> = ({
           
       });
       }, []);
+    
+
+    const [remainingTimeSeconds, setRemainingTime] = useState(time);
 
   // Update the remaining time every second
   useEffect(() => {
@@ -74,6 +76,23 @@ const CurrentText: React.FC<CurrentTextProps> = ({
   const seconds = remainingTimeSeconds % 60;
   if (!Data) {
     return;
+  }
+
+  if (minutes==0 && seconds==0){
+    console.log("testDelete")
+    // axios({
+    //   method:'delete',
+    //   url:`http://127.0.0.1:8000/admin/content/show`,
+      
+    //   headers:{
+    //       Authorization:`Bearer ${localStorage.getItem("JWT")}`
+    //   },
+    //   }).then((res)=>{
+    //       console.log(res.data);
+    //       // localStorage.setItem("JWT",res.data.access_token);
+    //   }).catch((error)=>{
+    //       console.log(error)
+    //   })
   }
   return (
     <div className="flex flex-col space-y-4">
