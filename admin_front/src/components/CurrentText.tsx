@@ -35,29 +35,29 @@ const CurrentText: React.FC<CurrentTextProps> = ({
   // Destructure the data object
   const { id, username, text, time, donate, imagesrc } = data;
   // State to hold the remaining tim
-  
+
   const [Data, setData] = useState<fetchdata>();
-  const ipAddress = '127.0.0.1';
+  const ipAddress = '10.66.14.173';
 
   useEffect(() => {
     console.log(localStorage.getItem("JWT"));
-    
-      axios({
-          method: 'get',
-          url: `http:///${ipAddress}:8000/admin/content/show`,
-          headers: {
-            Authorization:`Bearer ${localStorage.getItem("JWT")}` 
-          }
-      }).then((res) => {
-          // console.log("content : " + res.data.text);
-          setData(res.data)
-          console.log(res.data);
-          
-      });
-      }, []);
-    
 
-    const [remainingTimeSeconds, setRemainingTime] = useState(time);
+    axios({
+      method: 'get',
+      url: `http:///${ipAddress}:8000/admin/content/show`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
+      }
+    }).then((res) => {
+      // console.log("content : " + res.data.text);
+      setData(res.data)
+      console.log(res.data);
+
+    });
+  }, []);
+
+
+  const [remainingTimeSeconds, setRemainingTime] = useState(time);
 
   // Update the remaining time every second
   useEffect(() => {
@@ -79,12 +79,12 @@ const CurrentText: React.FC<CurrentTextProps> = ({
     return;
   }
 
-  if (minutes==0 && seconds==0){
+  if (minutes == 0 && seconds == 0) {
     console.log("testDelete")
     // axios({
     //   method:'delete',
     //   url:`http://127.0.0.1:8000/admin/content/show`,
-      
+
     //   headers:{
     //       Authorization:`Bearer ${localStorage.getItem("JWT")}`
     //   },

@@ -16,7 +16,7 @@ export default function EditName(props: ModalType) {
     // const{register,handleSubmit}=useForm<FormData>();
     // const [text, setText] = useState("");
     const [caption, setCaption] = useState("");
-    const ipAddress = '127.0.0.1';
+    const ipAddress = '10.66.14.173';
 
     useEffect(() => {
         console.log(localStorage.getItem("JWT"));
@@ -67,7 +67,7 @@ export default function EditName(props: ModalType) {
     // axios((
     // ))
     // .patch("http://127.0.0.1:8000/admin/content/show", data)
-    
+
     // .then((res) => {
     //   console.log(res);
     //   // ทำอย่างอื่นตามที่คุณต้องการหลังจากส่งข้อมูลสำเร็จ
@@ -107,8 +107,8 @@ export default function EditName(props: ModalType) {
                             </div>
                             <div className=" justify-center items-end font-normal text-xl py-7">
                                 <div className="space-y-0 w-full justify-col items-end">
-                                    <button className="w-full  py-3 px-5 mb-8 bg-purple-btn hover:bg-dark-purple-highlight  text-white font-bold text-4xl rounded-full"onClick={() => {handleSubmit();props.toggle(); window.location.reload();}}>บันทึก</button>
-                                    
+                                    <button className="w-full  py-3 px-5 mb-8 bg-purple-btn hover:bg-dark-purple-highlight  text-white font-bold text-4xl rounded-full" onClick={() => { handleSubmit(); props.toggle(); window.location.reload(); }}>บันทึก</button>
+
                                     <button className="w-full py-3 px-5  bg-red-500 hover:bg-red-700 text-white font-bold text-4xl rounded-full" onClick={props.toggle}>ยกเลิก</button>
 
                                 </div>

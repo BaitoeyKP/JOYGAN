@@ -26,18 +26,18 @@ const Dashboard: React.FC = () => {
   const [topSpender, setTopSpender] = useState(<></>);
 
   //outside grid
-  const ipAddress = '127.0.0.1';
+  const ipAddress = '10.66.14.173';
 
   interface fetchdata {
-  
-    id:string;
-    pic:string;
-    state:string;
-    text:string;
-    time_display:number;
-    time_stamp:number;
-    
-    
+
+    id: string;
+    pic: string;
+    state: string;
+    text: string;
+    time_display: number;
+    time_stamp: number;
+
+
   }
   const [Data, setData] = useState<fetchdata>();
 
@@ -111,7 +111,7 @@ const Dashboard: React.FC = () => {
   // State to control the visibility of the confirmation dialog
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
-  
+
   const handleEditClick = () => {
     // Handle edit action here
     setShowModalShow(true)
@@ -174,20 +174,20 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     console.log(localStorage.getItem("JWT"));
-    
-      axios({
-          method: 'get',
-          url: `http:///${ipAddress}:8000/admin/content/show`,
-          headers: {
-            Authorization:`Bearer ${localStorage.getItem("JWT")}` 
-          }
-      }).then((res) => {
-          // console.log("content : " + res.data.text);
-          setData(res.data)
-          console.log("show",res.data);
-          
-      });
-      }, []);
+
+    axios({
+      method: 'get',
+      url: `http:///${ipAddress}:8000/admin/content/show`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
+      }
+    }).then((res) => {
+      // console.log("content : " + res.data.text);
+      setData(res.data)
+      console.log("show", res.data);
+
+    });
+  }, []);
 
 
   //card 5 data and function
@@ -236,7 +236,7 @@ const Dashboard: React.FC = () => {
     morethanper: percentage,
   };
 
-  if(!Data)
+  if (!Data)
     return 'no data';
   console.log(Data.time_display);
   const getData = {

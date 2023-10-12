@@ -15,7 +15,7 @@ export default function EditQR(props: ModalType) {
     // const{register,handleSubmit}=useForm<FormData>();
     const [phoneNume, setphoneNume] = useState(""); // ย้าย useState มาที่นี่
     const [displayText, setDisplayText] = useState('');
-    const ipAddress = '127.0.0.1';
+    const ipAddress = '10.66.14.173';
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

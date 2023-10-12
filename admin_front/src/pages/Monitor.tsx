@@ -10,7 +10,7 @@ function Monitor() {
     const [storeCode, setStoreCode] = useState(null);
     const [caption, setCaption] = useState(null);
     const [topSpender, setTopSpender] = useState(<></>);
-    const ipAddress = '127.0.0.1';
+    const ipAddress = '10.66.14.173';
 
     useEffect(() => {
         axios({
