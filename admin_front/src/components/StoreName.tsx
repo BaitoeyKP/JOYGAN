@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import IconButton from "./IconButton";
+import { Link } from "react-router-dom";
+import axios from 'axios';
 
 interface Store {
   name: string;
@@ -11,6 +14,51 @@ interface StoreNameProps {
 }
 
 const StoreName: React.FC<StoreNameProps> = ({ store, handleNameClick }) => {
+  const [caption, setCaption] = useState("");
+    const ipAddress = '10.66.14.173';
+
+    useEffect(() => {
+        console.log(localStorage.getItem("JWT"));
+
+        axios({
+            method: 'get',
+            url: `http://${ipAddress}:3000/admin/user/displayname`,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("JWT")}`
+            }
+        }).then((res) => {
+            // console.log("content : " + res.data.text);
+            console.log("name",res.data);
+            setCaption(res.data)
+            
+
+        });
+    }, []);
+
+
+    // const handleSave = () => {
+    //     // สร้างข้อมูลที่จะส่งไปยังเซิร์ฟเวอร์
+    //     const data = {
+    //       editText: caption,
+    // };
+
+    const handleSubmit = () => {
+        console.log("test")
+        axios({
+            method: 'patch',
+            url: `http://${ipAddress}:3000/admin/content/show/${caption}`,
+
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("JWT")}`
+            },
+        }).then((res) => {
+            console.log(res.data);
+            // localStorage.setItem("JWT",res.data.access_token);
+        }).catch((error) => {
+            console.log(error)
+        })
+    };
+
   return (
     <h1 className="text-4xl flex flex-row items-end">
       ร้าน

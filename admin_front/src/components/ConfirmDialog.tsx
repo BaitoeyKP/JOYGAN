@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const ipAddress = '127.0.0.1';
+const ipAddress = '10.66.14.173';
 
 interface ConfirmDialogProps {
   message: string;
@@ -19,7 +19,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
     console.log("test")
     axios({
         method:'delete',
-        url:`http:///${ipAddress}:8000/admin/content/show`,
+        url:`http:///${ipAddress}:3000/admin/content/show`,
         
         headers:{
             Authorization:`Bearer ${localStorage.getItem("JWT")}`

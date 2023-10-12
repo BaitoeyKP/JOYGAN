@@ -37,14 +37,14 @@ const CurrentText: React.FC<CurrentTextProps> = ({
   // State to hold the remaining tim
   
   const [Data, setData] = useState<fetchdata>();
-  const ipAddress = '127.0.0.1';
+  const ipAddress = '10.66.14.173';
 
   useEffect(() => {
     console.log(localStorage.getItem("JWT"));
     
       axios({
           method: 'get',
-          url: `http:///${ipAddress}:8000/admin/content/show`,
+          url: `http:///${ipAddress}:3000/admin/content/show`,
           headers: {
             Authorization:`Bearer ${localStorage.getItem("JWT")}` 
           }
@@ -83,7 +83,7 @@ const CurrentText: React.FC<CurrentTextProps> = ({
     console.log("testDelete")
     // axios({
     //   method:'delete',
-    //   url:`http://127.0.0.1:8000/admin/content/show`,
+    //   url:`http://10.66.14.173:3000/admin/content/show`,
       
     //   headers:{
     //       Authorization:`Bearer ${localStorage.getItem("JWT")}`
