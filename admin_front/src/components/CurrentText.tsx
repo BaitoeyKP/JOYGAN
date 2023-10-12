@@ -57,19 +57,7 @@ const CurrentText: React.FC<CurrentTextProps> = ({
       }, []);
     
 
-    axios({
-      method: 'get',
-      url: `http:///${ipAddress}:8000/admin/content/show`,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("JWT")}`
-      }
-    }).then((res) => {
-      // console.log("content : " + res.data.text);
-      setData(res.data)
-      console.log(res.data);
-
-    });
-  }, []);
+   
 
 
   const [remainingTimeSeconds, setRemainingTime] = useState(time);
