@@ -246,8 +246,7 @@ const Dashboard: React.FC = () => {
     name: "สุปรีญา อรุณฉาย",
     number: "7070148614333071",
   };
-  if (!totalToday)
-    return;
+ 
   const incomeData = {
     total: totalToday,
     morethan: morethan,

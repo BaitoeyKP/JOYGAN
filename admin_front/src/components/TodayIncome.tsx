@@ -12,8 +12,7 @@ interface TodayIncomeProps {
 
 const TodayIncome: React.FC<TodayIncomeProps> = ({ incomeData, onIncomehistoryClick }) => {
   const { total, morethan, morethanper } = incomeData;
-  if (!morethan)
-    return;
+  
   return (
     <div className="flex flex-col items-center justify-around h-full">
       <h1 className="text-xl font-bold">รายได้รวมวันนี้</h1>
