@@ -56,19 +56,19 @@ export class ContentController {
     
     @Delete('show')
     async deleteShowContent(@Request() req){
-        await this.contentService.deleteShowContent(req.user);
+        await this.contentService.deleteShowContent(req.user.uuid);
     }
 
     @UseGuards(AuthGuard)
     @Patch('show/:text')
     async patchShowContent(@Request() req,@Param('text')text:string):Promise<Content>{
-        return await this.contentService.patchShowContent(req.user,text);
+        return await this.contentService.patchShowContent(req.user.uuid,text);
     }
 
     @UseGuards(AuthGuard)
     @Get('queue')
     async getQueueContent(@Request() req):Promise<Content[]> {
-        return await this.contentService.getQueueContent(req.user);
+        return await this.contentService.getQueueContent(req.user.uuid);
     }
 
     @UseGuards(AuthGuard)
