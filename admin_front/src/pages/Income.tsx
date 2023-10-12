@@ -51,7 +51,6 @@ function Income() {
     const [selectedValue, setSelectedValue] = useState(localStorage.getItem("selectedValue") || "daily");
     const [content, setContent] = useState(<></>);
     const ipAddress = '10.66.14.173';
-    // const ipAddress = process.env.IP
 
     useEffect(() => {
         console.log("ip : " + process.env.IP);
@@ -59,7 +58,7 @@ function Income() {
         localStorage.setItem("selectedValue", selectedValue);
         axios({
             method: 'get',
-            url: `http://${ipAddress}:8000/admin/content/donations-by-day`,
+            url: `http://${ipAddress}:3000/admin/content/donations-by-day`,
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("JWT")}`
             }

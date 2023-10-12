@@ -19,7 +19,7 @@ function Login() {
         e.preventDefault();
         axios({
             method: 'post',
-            url: `http://${ipAddress}:8000/admin/user/login`,
+            url: `http://${ipAddress}:3000/admin/user/login`,
             data: {
                 username: username,
                 password: password
@@ -31,6 +31,7 @@ function Login() {
         }).then((res) => {
             console.log(res.data);
             localStorage.setItem("JWT", res.data.access_token);
+            console.log(res.data.access_token);
         }).catch((error) => {
             console.log(error)
         })
@@ -81,7 +82,7 @@ function Login() {
                     </div>
                     <div>
                         <Link to="/dashboard">
-                            <button className="w-full py-4 bg-purple-btn hover:bg-dark-purple-highlight mt-10  text-white text-bold text-3xl rounded-lg" onClick={handleButtonClick}>เข้าสู่ระบบ</button>
+                        <button className="w-full py-4 bg-purple-btn hover:bg-dark-purple-highlight mt-10  text-white text-bold text-3xl rounded-lg" onClick={handleButtonClick}>เข้าสู่ระบบ</button>
                         </Link>
                     </div>
                 </form>

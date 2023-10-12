@@ -44,7 +44,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     axios({
       method: 'get',
-      url: `http://${ipAddress}:8000/admin/user/getcode`,
+      url: `http://${ipAddress}:3000/admin/user/getcode`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
@@ -63,7 +63,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     axios({
       method: 'get',
-      url: `http://${ipAddress}:8000/admin/user/expire`,
+      url: `http://${ipAddress}:3000/admin/user/expire`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
@@ -89,7 +89,7 @@ const Dashboard: React.FC = () => {
 
     axios({
       method: 'get',
-      url: `http://${ipAddress}:8000/admin/content/summary-donate`,
+      url: `http://${ipAddress}:3000/admin/content/summary-donate`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
@@ -153,7 +153,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     axios({
       method: 'get',
-      url: `http://${ipAddress}:8000/admin/content/top-donators`,
+      url: `http://${ipAddress}:3000/admin/content/top-donators`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
@@ -174,20 +174,38 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     console.log(localStorage.getItem("JWT"));
+    
+      axios({
+          method: 'get',
+          url: `http:///${ipAddress}:3000/admin/content/show`,
+          headers: {
+            Authorization:`Bearer ${localStorage.getItem("JWT")}` 
+          }
+      }).then((res) => {
+          // console.log("content : " + res.data.text);
+          setData(res.data)
+          console.log("show",res);
+          
+      });
+      }, []);
 
-    axios({
-      method: 'get',
-      url: `http:///${ipAddress}:8000/admin/content/show`,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("JWT")}`
-      }
-    }).then((res) => {
-      // console.log("content : " + res.data.text);
-      setData(res.data)
-      console.log("show", res.data);
+      const [nameMaket, setNameMaket] = useState("");
 
-    });
-  }, []);
+      useEffect(() => {
+        console.log(localStorage.getItem("JWT"));
+
+        axios({
+            method: 'get',
+            url: `http://${ipAddress}:3000/admin/user/displayname`,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("JWT")}`
+            }
+        }).then((res) => {
+            // console.log("content : " + res.data.text);
+            console.log("nameMaket",res.data);
+            setNameMaket(res.data)
+        });
+    }, []);
 
 
   //card 5 data and function

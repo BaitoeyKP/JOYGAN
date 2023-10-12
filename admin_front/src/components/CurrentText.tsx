@@ -41,6 +41,21 @@ const CurrentText: React.FC<CurrentTextProps> = ({
 
   useEffect(() => {
     console.log(localStorage.getItem("JWT"));
+    
+      axios({
+          method: 'get',
+          url: `http:///${ipAddress}:3000/admin/content/show`,
+          headers: {
+            Authorization:`Bearer ${localStorage.getItem("JWT")}` 
+          }
+      }).then((res) => {
+          // console.log("content : " + res.data.text);
+          setData(res.data)
+          console.log(res.data);
+          
+      });
+      }, []);
+    
 
     axios({
       method: 'get',
@@ -83,8 +98,8 @@ const CurrentText: React.FC<CurrentTextProps> = ({
     console.log("testDelete")
     // axios({
     //   method:'delete',
-    //   url:`http://127.0.0.1:8000/admin/content/show`,
-
+    //   url:`http://10.66.14.173:3000/admin/content/show`,
+      
     //   headers:{
     //       Authorization:`Bearer ${localStorage.getItem("JWT")}`
     //   },

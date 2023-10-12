@@ -18,17 +18,17 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   const handleSubmit = () => {
     console.log("test")
     axios({
-      method: 'delete',
-      url: `http:///${ipAddress}:8000/admin/content/show`,
-
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("JWT")}`
-      },
-    }).then((res) => {
-      console.log(res.data);
-      // localStorage.setItem("JWT",res.data.access_token);
-    }).catch((error) => {
-      console.log(error)
+        method:'delete',
+        url:`http:///${ipAddress}:3000/admin/content/show`,
+        
+        headers:{
+            Authorization:`Bearer ${localStorage.getItem("JWT")}`
+        },
+    }).then((res)=>{
+        console.log(res.data);
+        // localStorage.setItem("JWT",res.data.access_token);
+    }).catch((error)=>{
+        console.log(error)
     })
   };
   return (

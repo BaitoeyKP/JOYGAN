@@ -19,7 +19,7 @@ export default function EditName(props: ModalType) {
         e.preventDefault();
         axios({
             method: 'post',
-            url: `http://${ipAddress}/admin/user/login`,
+            url: `http://${ipAddress}:3000/admin/user/login`,
             data: {
                 marketName: marketName
             },

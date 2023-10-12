@@ -15,7 +15,7 @@ function Monitor() {
     useEffect(() => {
         axios({
             method: 'get',
-            url: `http://${ipAddress}:8000/admin/content/top-donators`,
+            url: `http://${ipAddress}:3000/admin/content/top-donators`,
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("JWT")}`
             }
@@ -42,7 +42,7 @@ function Monitor() {
     useEffect(() => {
         axios({
             method: 'get',
-            url: `http://${ipAddress}:8000/admin/user/getcode`,
+            url: `http://${ipAddress}:3000/admin/user/getcode`,
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("JWT")}`
             }
@@ -55,7 +55,7 @@ function Monitor() {
     useEffect(() => {
         axios({
             method: 'get',
-            url: `http://${ipAddress}:8000/admin/content/show`,
+            url: `http://${ipAddress}:3000/admin/content/show`,
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("JWT")}`
             }
