@@ -69,16 +69,17 @@ function Income() {
     const [title, setTitle] = useState("รายวัน");
     const [selectedValue, setSelectedValue] = useState("daily");
     const [content, setContent] = useState(<></>);
+    const ipAddress = '10.66.14.173';
 
     useEffect(() => {
         axios({
             method: 'get',
-            url: 'http://10.66.5.253:3000/admin/content/donations-by-day',
+            url: `http://${ipAddress}:3000/admin/content/donations-by-day`,
             headers: {
                 Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOGUwNzNlYzktNGEwOS00NjI0LWJmOGQtMmRjMzE2MDZmZWEwIiwiaWF0IjoxNjk1ODkzMzY1fQ.vt1a_XFIEr8nZYjQwgEp0X9GG0Ni3jzf4XJVzG3kAtc'
             }
         }).then((res) => {
-            console.log(res.data)
+            // console.log(res.data)
             if (selectedValue === "daily") {
                 setTitle("รายวัน");
                 const dataDaily = [];
@@ -99,7 +100,8 @@ function Income() {
                         ))}
                     </div>
                 );
-            } else if (selectedValue === "weekly") {
+            }
+            else if (selectedValue === "weekly") {
                 setTitle("รายสัปดาห์");
                 setContent(
                     <div className="w-full flex flex-col items-center">
@@ -108,8 +110,53 @@ function Income() {
                         ))}
                     </div>
                 );
-            } else if (selectedValue === "monthly") {
+            }
+            else if (selectedValue === "monthly") {
                 setTitle("รายเดือน");
+                // const dataMonthly = [];
+                // for (let i = 0; i < res.data.length; i++) {
+                //     let ddmmyyyy = res.data[i].date.split("-");
+                //     let year = parseInt(ddmmyyyy[0]) + 543;
+                //     let month = monthName(ddmmyyyy[1]);
+                //     let currentMonth = ddmmyyyy[1];
+                //     let totalMonth += res.data[i].totaldonations;
+                //     // dataDaily.push({ day: day, month: month, year: year, income: res.data[i].totaldonations })
+
+                // }
+
+                // for (let i = 0; i < res.data.length; i++) {
+                //     let ddmmyyyy = res.data[i].date.split("-");
+                //     let year = parseInt(ddmmyyyy[0]) + 543;
+                //     let month = monthName(ddmmyyyy[1]);
+                //     let currentMonth = ddmmyyyy[1];
+                //     let totalMonth = 0;
+                //     while (ddmmyyyy[1] === currentMonth) {
+                //         totalMonth += parseInt(res.data[i].totaldonations)
+                //     }
+                //     // dataMonthly.push({ month: month, year: year, income: totalMonth })
+                // }
+
+                const dataMonthly = [];
+                let totalMonth = 0;
+                for (let i = 0; i < res.data.length; i++) {
+                    let ddmmyyyy = res.data[i].date.split("-");
+                    let year = parseInt(ddmmyyyy[0]) + 543;
+                    let month = monthName(ddmmyyyy[1]);
+
+                    let currentMonth = parseInt(ddmmyyyy[1]);
+                    let nextMonth = currentMonth + 1;
+                    // console.log("cur " + currentMonth);
+                    // console.log("next " + nextMonth);
+
+                    totalMonth += parseInt(res.data[i].totaldonations);
+                    // console.log("donation" + res.data[i].totaldonations);
+
+                    console.log("daily " + res.data[i].totaldonations + " toalMonth " + totalMonth);
+
+
+                    dataMonthly.push({ month: month, year: year, income: totalMonth })
+                    // console.log(res.data);
+                }
                 setContent(
                     <div className="w-full flex flex-col items-center">
                         {dataMonthly.map((info, index) => (
@@ -117,7 +164,8 @@ function Income() {
                         ))}
                     </div>
                 );
-            } else if (selectedValue === "annually") {
+            }
+            else if (selectedValue === "annually") {
                 setTitle("รายปี");
                 setContent(
                     <div className="w-full flex flex-col items-center">
