@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ToggleSwitch from "../components/ToggleSwitch";
 import DaysLeft from "../components/DaysLeft";
 import RefreshIcon from "../components/RefreshIcon";
@@ -13,27 +13,100 @@ import QueueComponent from "../components/Queue";
 import EditQR from "../components/modalEdit/EditQR";
 import EditShow from "../components/modalEdit/EditShow";
 import EditName from "../components/modalEdit/EditName";
+import axios from "axios";
+import { time } from "console";
 
 
 const Dashboard: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [showModalShow, setShowModalShow] = useState(false);
   const [showModalName, setShowModalName] = useState(false);
+  const [storeCode, setStoreCode] = useState(null);
+  const [expireDate, setExpireDate] = useState(0);
+  const [topSpender, setTopSpender] = useState(<></>);
+  const [refresh,setRefresh] = useState(0);
   //outside grid
-  const TavernData = {
-    name: "ABC",
-    code: "B394F7",
-  };
+  const ipAddress = '10.66.14.173';
+
+  interface fetchdata {
+
+    id: string;
+    pic: string;
+    state: string;
+    text: string;
+    time_display: number;
+    time_stamp: number;
+    donate: number;
+    user: {
+      id: number;
+      username: string;
+    }
+
+  }
+  const [deletequeue, setDeletequeue] = useState<string>('');
+  const [Data, setData] = useState<fetchdata>();
+  const [queueData, setDataQueue] = useState<fetchdata[]>([]);
+
+  useEffect(() => {
+    axios({
+      method: 'get',
+      url: `http://${ipAddress}:3000/admin/user/getcode`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
+      }
+    }).then((res) => {
+      setStoreCode(res.data.code)
+    });
+  }, []);
+
+
+
   const refreshDateTime = "15/09/2023 23:43"; // Replace with your actual date and time
+
+  useEffect(() => {
+    axios({
+      method: 'get',
+      url: `http://${ipAddress}:3000/admin/user/expire`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
+      }
+    }).then((res) => {
+      console.log(res.data.expire);
+      const currentDate = Math.floor(new Date().getTime() / 1000);
+      let dayleft = Math.round((res.data.expire - currentDate) / (60 * 60 * 24));
+      setExpireDate(dayleft);
+      console.log("dayleft : " + dayleft);
+    });
+  }, []);
+
   const license = {
-    expire: "45",
+    expire: `${expireDate}`,
   };
+
   //card 1
-  const incomeData = {
-    total: 120000,
-    morethan: +41500,
-    morethanper: +3.75,
-  };
+  const [totalToday, setTotalToday] = useState(0);
+  const [morethan, setMorethan] = useState(0);
+  const [percentage, setPercentage] = useState(0);
+
+  useEffect(() => {
+
+    axios({
+      method: 'get',
+      url: `http://${ipAddress}:3000/admin/content/summary-donate`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
+      }
+    }).then((res) => {
+      console.log(res.data, 1234567890);
+      setTotalToday(res.data.totalToday);
+      setMorethan(res.data.morethan);
+      setPercentage(res.data.percentage);
+    });
+  }, []);
+
+
+
+
   const handlehistoryClick = () => {
     console.log("Income History clicked!...");
   };
@@ -41,29 +114,41 @@ const Dashboard: React.FC = () => {
   // State to control the visibility of the confirmation dialog
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
-  const exampleData = {
-    id: 1,
-    username: "JohnDoe",
-    text: "ก็พบกันอีกเช่นเคยนะครับ สำหรับท่านที่เดินผ่านไปผ่านมานะครับ วันนี้ เฉาก๊วยชากังราวของเรานะครับ ก็ได้มาบริการท่านพ่อแม่พี่น้องอีกแล้วครับ อากาศร้อนร๊อนอย่างนี้นะครับ สำหรับท่านที่เดินผ่านไปผ่านมานะครับ ลองมาแวะชิมเฉาก๊วยแท้แท้กันก่อนนะครับ เฉาก๊วยชากังราวของเรานะครับ เป็นที่รู้จักไปทั่วนะครับ เฉาก๊วยนั้นนะครับ เป็นพืชสมุนไพรจีนนะครับ ที่นำเข้าจากประเทศจีนนะครับ เรานำเข้าจากประเทศจีน ก็ลองมาชิมเฉาก๊วยกันแท้ๆกัน ดูซิว่า เฉาก๊วยแท้เนี่ยกับเฉาก๊วยตามท้องตลาดนั้น มันแตกต่างกันยังไง นะครับ สำหรับท่านที่ยังไม่เคยรับประทานเฉาก๊วยแท้ๆ ก็ลองแวะมาชิมกันก่อน เฉาก๊วยนั้นน่ะครับนอกจากอร่อยแล้ว ก็ยังมีประโยชน์กับร่างกายด้วยนะครับ เช่น แก้ร้อนใน แก้ไข้หวัดนะครับ ลดความ ดันโลหิตสูง แก้กล้ามเนื้ออักเสบ ข้ออักเสบ ตับอักเสบ แล้วก็เบาหวาน อันนี้คือประโยชน์ของเฉาก๊วยนะครับ เราอยากให้ท่านได้กินของที่มีประโยชน์กับร่างกาย ก็ลองแวะมาชิมกันก่อนนะครับ อากาศร้อนร๊อน หรือว่าอากาศไม่ร้อนก็กินกันได้นะครับ บางคนบอกอากาศเย็นกินได้ไหม อากาศเย็นๆก็กินได้นะครับ คือเฉาก๊วยเนี่ยกินแล้วแก้ร้อนในได้นะครับ",
-    imagesrc:
-      "https://picsum.photos/304/650",
-    time: 45, // 45 minutes
-    donate: 1000,
-  };
+
   const handleEditClick = () => {
     // Handle edit action here
     setShowModalShow(true)
-    
+
   };
-  const handleRemoveClick = () => {
+  const handleRemoveClick = (itemId: string) => {
     // Handle remove action here
+    setDeletequeue(itemId);
     console.log("Remove button clicked!");
     // Display the confirmation dialog
     setShowConfirmDialog(true);
   };
   // Function to handle confirmation of removal
   const handleConfirmRemove = () => {
-    // Handle the removal action here
+
+    console.log(deletequeue, 'deletequeue');
+   
+      axios({
+        method: 'delete',
+        url: `http:///${ipAddress}:3000/admin/content/queue/${deletequeue}`,
+
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("JWT")}`
+        },
+      }).then((res) => {
+        console.log(res.data);
+        setRefresh((x)=>x+1)
+        // localStorage.setItem("JWT",res.data.access_token);
+      }).catch((error) => {
+        console.log(error)
+      })
+    
+
+
     console.log("Removing...");
     // Hide the confirmation dialog
     setShowConfirmDialog(false);
@@ -88,64 +173,110 @@ const Dashboard: React.FC = () => {
     yAxisData: [150, 134, 123, 111, 95, 90, 120],
   };
   //card 4
-  const topDonaters = [
-    { username: "user1", donate: 26000 },
-    { username: "user2", donate: 83000 },
-    { username: "user3", donate: 2000 },
-    { username: "user4", donate: 35000 },
-    { username: "user5", donate: 84000 },
-    { username: "user6", donate: 28000 },
-    { username: "user7", donate: 43000 },
-    { username: "user8", donate: 86000 },
-    { username: "user9", donate: 52000 },
-    { username: "user10", donate: 8000 },
-  ];
+  useEffect(() => {
+    axios({
+      method: 'get',
+      url: `http://${ipAddress}:3000/admin/content/top-donators`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
+      }
+    }).then((res) => {
+      const data = []
+      for (let i = 0; i < Math.min(10, res.data.length); i++) {
+        data.push({ username: res.data[i].username, totalamount: res.data[i].totalamount })
+      }
+      setTopSpender(
+        <div className="flex flex-col gap-y-3.5">
+          {data.map((info, index) => (
+            <TopDonaterList key={index} username={info.username} totalamount={info.totalamount}></TopDonaterList>
+          ))}
+        </div>
+      )
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log(localStorage.getItem("JWT"));
+
+    axios({
+      method: 'get',
+      url: `http:///${ipAddress}:3000/admin/content/show`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
+      }
+    }).then((res) => {
+      // console.log("content : " + res.data.text);
+      setData(res.data)
+      console.log("show", res);
+
+    });
+    axios({
+      method: 'get',
+      url: `http:///${ipAddress}:3000/admin/content/queue`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
+      }
+    }).then((res) => {
+      // console.log("content : " + res.data.text);
+      setDataQueue(res.data)
+      console.log("queuedata", res);
+
+    });
+  }, [refresh]);
+
+  const [nameMaket, setNameMaket] = useState("");
+
+  useEffect(() => {
+    console.log(localStorage.getItem("JWT"));
+
+    axios({
+      method: 'get',
+      url: `http://${ipAddress}:3000/admin/user/displayname`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
+      }
+    }).then((res) => {
+      // console.log("content : " + res.data.text);
+      console.log("nameMaket", res.data);
+      setNameMaket(res.data)
+    });
+  }, []);
+
+
+
   //card 5 data and function
-  const queueData = [
-    {
-      id: 2,
-      username: 'UsernameA', // Include the username here
-      text: 'Basic usage Showing content that overflows Use overflow-visible to prevent content within an element from being clipped. Note that any content that overflows the bounds of the element will then be visible.',
-      time: 120,
-      donate: 10000,
-      imageSrc: 'https://picsum.photos/200/300',
-    },
-    {
-      id: 3,
-      username: 'UsernameB', // Include the username here
-      text: 'ง่วงจังเลย',
-      time: 45,
-      donate: 1000,
-      imageSrc: 'https://picsum.photos/1080/720',
-    },
-    {
-      id: 4,
-      username: 'UsernameC', // Include the username here
-      text: 'ง่วงจังเลย',
-      time: 145,
-      donate: 1000,
-      imageSrc: 'https://picsum.photos/836/739',
-    },
-  ];
+
   //card 6 data and function
   const handleQrClick = () => {
-      setShowModal(true)
+    setShowModal(true)
   };
   const handleNameClick = () => {
     setShowModalName(true)
-};
+  };
   const account = {
     name: "สุปรีญา อรุณฉาย",
     number: "7070148614333071",
   };
 
+  const incomeData = {
+    total: totalToday,
+    morethan: morethan,
+    morethanper: percentage,
+  };
 
 
+
+
+
+  const TavernData = {
+    name: nameMaket,
+    code: storeCode,
+  };
   return (
-    <div className="bg-cream-bg font-kanit p-6 min-h-screen bg-cream-bg">
-      <div className="flex justify-between mx-1 pt-5">
-        <StoreName store={TavernData} handleNameClick={handleNameClick}/>
-        <ToggleSwitch onText="เปิดระบบ" offText="ปิดระบบ" />
+    <div className="bg-cream-bg font-kanit p-6 min-h-screen">
+      <div className="flex justify-between mx-10 pt-5">
+        <StoreName store={TavernData} handleNameClick={handleNameClick} />
+        {/* <ToggleSwitch onText="เปิดระบบ" offText="ปิดระบบ" /> */}
       </div>
       <div className="flex flex-row justify-between items-center mx-10 my-6 font-['kanit'] ">
         <RefreshIcon dateTime={refreshDateTime} />
@@ -157,10 +288,10 @@ const Dashboard: React.FC = () => {
       >
         {/* Card 1 */}
         <div
-          className="col-span-1 bg-white p-4 rounded-lg drop-shadow-md flex flex-col "
+          className="col-span-1 bg-white p-4 rounded-lg drop-shadow-md flex flex-col"
           style={{ height: "300px" }}
         >
-          <TodayIncome incomeData={incomeData} onIncomehistoryClick={handlehistoryClick}/>
+          <TodayIncome incomeData={incomeData} onIncomehistoryClick={handlehistoryClick} />
         </div>
 
         {/* Card 2 */}
@@ -168,11 +299,12 @@ const Dashboard: React.FC = () => {
           className="col-span-2 bg-white p-4 rounded-lg drop-shadow-md"
           style={{ height: "300px" }}
         >
-          <CurrentText
-            data={exampleData}
+          {Data&&<CurrentText
+            data={Data}
             onEditClick={handleEditClick}
             onRemoveClick={handleRemoveClick}
-          />
+            setRefresh={setRefresh}
+          />}
         </div>
 
         {/* Card 3 */}
@@ -184,21 +316,25 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Card 4 */}
+
         <div className="col-span-1 bg-white p-4 rounded-lg drop-shadow-md h-auto">
-          <TopDonaterList topDonaters={topDonaters} />
+          <div id="HeaderBox" className="flex flex-col items-center">
+            <h1 className="items-center my-2  text-2xl font-bold">ยอดผู้สนับสนุนสูงสุด</h1>
+          </div>
+          {topSpender}
         </div>
 
         {/* Card 5 */}
         <div className="col-span-2 bg-white p-4 rounded-lg drop-shadow-md h-auto">
           <div className=" flex flex-col items-center space-y-2">
             <h1 className=" text-xl font-bold  mt-2">ข้อความถัดไป</h1>
-            <QueueComponent queue={queueData} handleRemoveClick={handleRemoveClick}/>
+            <QueueComponent queue={queueData} handleRemoveClick={handleRemoveClick} />
           </div>
         </div>
 
         {/* Card 6 */}
         <div className="col-span-1 bg-white p-4 rounded-lg drop-shadow-md h-auto">
-          <QRCodeDisplay account={account} handleQrClick={handleQrClick}/>
+          <QRCodeDisplay account={account} handleQrClick={handleQrClick} />
         </div>
       </div>
       {/* ConfirmDialog component */}

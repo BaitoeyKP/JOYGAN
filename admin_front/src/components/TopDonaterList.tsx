@@ -1,32 +1,18 @@
 import React from "react";
 
-interface TopDonaterListProps {
-  topDonaters: TopDonator[];
-}
-
-interface TopDonator {
+interface type {
   username: string;
-  donate: number;
+  totalamount: number;
 }
 
-const TopDonaterList: React.FC<TopDonaterListProps> = ({ topDonaters }) => {
-  // Sort the topDonaters array in descending order based on the donate
-  const sortedDonaters = [...topDonaters].sort((a, b) => b.donate - a.donate);
-
+function TopDonaterList({ username, totalamount }: type) {
   return (
     <div>
-      <div id="HeaderBox" className="flex flex-col items-center">
-        <h1 className="items-center my-2  text-xl font-bold ">ยอดผู้สนับสนุนสูงสุด</h1>
-      </div>
-      <div id="TopDonaterLists" className="flex flex-col content-between">
-        {sortedDonaters.map((donator, index) => (
-          <div id="nameAmt" className="flex justify-between my-1" key={index}>
-            <h2 className="font-bold">@{donator.username}</h2>
-            <h3 className="text-purple-btn font-semibold">
-              {donator.donate.toLocaleString()} บาท
-            </h3>
-          </div>
-        ))}
+      <div className="text-black-text text-xl font-bold">
+        <p className="flex justify-between">
+          <span>@{username}</span>
+          <span className="font-normal text-dark-purple-highlight">{totalamount} บาท</span>
+        </p>
       </div>
     </div>
   );

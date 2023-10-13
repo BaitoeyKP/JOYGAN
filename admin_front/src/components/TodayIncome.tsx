@@ -12,13 +12,13 @@ interface TodayIncomeProps {
 
 const TodayIncome: React.FC<TodayIncomeProps> = ({ incomeData, onIncomehistoryClick }) => {
   const { total, morethan, morethanper } = incomeData;
-
+  
   return (
-    <div className="flex flex-col items-center content-evenly space-y-4 lg:space-y-14">
+    <div className="flex flex-col items-center justify-around h-full">
       <h1 className="text-xl font-bold">รายได้รวมวันนี้</h1>
       <div className="flex flex-col items-center">
-        <h2 className="text-3xl xl:text-5xl flex items-center">{total.toLocaleString()} บาท</h2>
-        <h3 className={`${morethan > 0 && morethanper > 0 ? "text-green-ok" : "text-red-cancel"}  text-xl xl:text-3xl `}>
+        <h2 className="text-3xl xl:text-4xl flex items-center">{total.toLocaleString()} บาท</h2>
+        <h3 className={`${morethan > 0 && morethanper > 0 ? "text-green-ok" : "text-red-cancel"}  text-xl xl:text-2xl `}>
           {morethan > 0 ? "+" : ""}{morethan.toLocaleString()} ({morethanper > 0 ? "+" : ""}{morethanper.toFixed(2)}%)
         </h3>
       </div>

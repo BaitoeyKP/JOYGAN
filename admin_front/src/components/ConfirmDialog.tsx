@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
+
+const ipAddress = '10.66.14.173';
 
 interface ConfirmDialogProps {
   message: string;
@@ -11,6 +14,8 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   onConfirm,
   onCancel,
 }) => {
+
+ 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       {/* Semi-transparent overlay */}
@@ -22,7 +27,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       <div className="bg-white w-2/6  p-1 rounded-[20px] flex flex-col justify-between shadow-md relative">
         <p className="text-center py-12 font-bold  text-5xl ">{message}</p>
         <div className="flex justify-center items-center font-normal text-xl py-7">
-        <button
+          <button
             className="w-2/5 py-4 px-3 mb-5 bg-purple-btn hover:bg-dark-purple-highlight  text-white font-bold text-3xl rounded-[40px]"
             onClick={onConfirm}
           >
@@ -34,7 +39,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           >
             ยกเลิก
           </button>
-          
+
         </div>
       </div>
     </div>

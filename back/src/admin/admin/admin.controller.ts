@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post, UseGuards, UsePipes, ValidationPipe ,Request, UnauthorizedException, Param } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards, UsePipes, ValidationPipe ,Request, UnauthorizedException, Param, Patch } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from '../admin/dto/CreateAdmin.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { Admin } from 'src/typeorm';
 
 
 @Controller('admin/user')
@@ -26,15 +27,6 @@ export class AdminController {
         }
 
        
-        // @Get(':id/code')
-        // async getAdminCodeByid(@Param('id') adminId: string) {
-        //     const code = await this.adminService.getCodeById(adminId);
-        //     if (code === null) {
-
-        //         return { error: 'Admin not found' };
-        //     }
-        //         return { code };
-        // }
         @UseGuards(AuthGuard) 
         @Get('getcode')
         async getAdminCode() {
@@ -47,15 +39,6 @@ export class AdminController {
         }
         
 
-        // @Get(':id/getExpireByid')
-        // async getExpireByid(@Param('id') adminId: string) {
-        //     const expire = await this.adminService.getCodeById(adminId);
-        //     if (expire === null) {
-
-        //         return { error: 'Admin not found' };
-        //     }
-        //         return { expire };
-        // }
         @UseGuards(AuthGuard) 
         @Get('Expire')
         async getExpire() {
@@ -67,17 +50,12 @@ export class AdminController {
                  return { expire };
         }
         
-        @UseGuards(AuthGuard) 
-        @Get('/daily-summary')
-        async getDailyIncomeSummary(@Request() req) {
-            const { total, morethan, morethanper } = await this.adminService.calculateDailySummary(req.user);
-
-            return {
-                    total,
-                    morethan,
-                    morethanper,
-                 };
-            }
+        @UseGuards(AuthGuard)
+        @Patch('displayname/:name')
+        async patchDisplayname(@Request() req,@Param('name')name:string):Promise<Admin>{
+        return await this.adminService.patchDisplayname(req.user.uuid,name);
+    }
+       
 
        
 

@@ -6,13 +6,16 @@ import { Repository ,MoreThanOrEqual, LessThan} from 'typeorm';
 @Injectable()
 export class ContentService {
   constructor(@InjectRepository(Content) private repositoryContent: Repository<Content>,
-               @InjectRepository(Content) private repositoryAdmin: Repository<Admin>,
-               @InjectRepository(Content) private logUserRepository: Repository<LogUser>,) 
+               @InjectRepository(Admin) private repositoryAdmin: Repository<Admin>,
+               @InjectRepository(LogUser) private logUserRepository: Repository<LogUser>,) 
                { }
 
   async getShowContent(uuid: string): Promise<Content> {
     try {
-      return await this.getTopQueue(uuid);
+      const res=await this.getTopQueue(uuid);
+      console.log(res);
+      
+      return res;
     } catch (error) {
       
     }
@@ -26,16 +29,19 @@ export class ContentService {
 
   async patchShowContent(uuid: string, text: string): Promise<Content> {
     const Content = await this.getTopQueue(uuid);
+    console.log(Content,11111111);
+    
     Content.text = text;
     return await this.repositoryContent.save(Content);
   }
 
   async getQueueContent(uuid: string): Promise<Content[]> {
+    this.getTopQueue(uuid);
     const Content = await this.repositoryContent.find({
       where: {
         id: uuid,
         state: "queue"
-      }
+      },relations:['User']
     });
     return Content
   }
@@ -60,20 +66,22 @@ export class ContentService {
   }
 
   async getTopQueue(uuid: string): Promise<Content> {
-    console.log(uuid);
+    console.log(uuid,555);
+    
     const admin = await this.repositoryAdmin.findOne({
       where: {
         id: uuid
       }
     })
-    console.log(admin);
+    console.log(admin,123);
     
     const Content = await this.repositoryContent.find({
       where: {
         admin: admin,
-      }
+      },relations:['User']
     })
     Content.sort((a, b) => a.time_stamp < b.time_stamp ? -1 : a.time_stamp < b.time_stamp ? 1 : 0)
+    Content[0].state='show';
     return Content[0];
   }
 
@@ -99,7 +107,6 @@ export class ContentService {
         DATE_TRUNC('day', date) as date,
         SUM(amount) as totalDonations
       FROM log_user
-      WHERE DATE_TRUNC('day', date) >= DATE_TRUNC('day', NOW() - INTERVAL '10 days')
       GROUP BY date
       ORDER BY date DESC -- นี่คือการเรียงลำดับวันล่าสุดขึ้นก่อน
     `;
