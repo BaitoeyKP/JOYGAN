@@ -64,8 +64,8 @@ const Dashboard: React.FC = () => {
   const [storeCode, setStoreCode] = useState(null);
   const [qrshop, setQRshop] = useState();
   const [expireDate, setExpireDate] = useState(0);
-  const [topSpender, setTopSpender] = useState<JSX.Element|undefined>();
-  const [refresh,setRefresh] = useState(0);
+  const [topSpender, setTopSpender] = useState<JSX.Element | undefined>();
+  const [refresh, setRefresh] = useState(0);
   //outside grid
   const ipAddress = '127.0.0.1';
 
@@ -86,7 +86,7 @@ const Dashboard: React.FC = () => {
   }
   const [deletequeue, setDeletequeue] = useState<string>('');
   const [Data, setData] = useState<fetchdata>();
-  const [queueData, setDataQueue] = useState<fetchdata[]|undefined>([]);
+  const [queueData, setDataQueue] = useState<fetchdata[] | undefined>([]);
 
   useEffect(() => {
     axios({
@@ -129,7 +129,7 @@ const Dashboard: React.FC = () => {
     let now = date.getDate() + "/" + month + "/" + date.getFullYear() + " " + hour + ":" + min
     console.log("now : " + now);
     setRefreshDateTime(now);
-  },[refresh])
+  }, [refresh])
 
   useEffect(() => {
     axios({
@@ -199,22 +199,22 @@ const Dashboard: React.FC = () => {
   const handleConfirmRemove = () => {
 
     console.log(deletequeue, 'deletequeue');
-   
-      axios({
-        method: 'delete',
-        url: `http:///${ipAddress}:8000/admin/content/queue/${deletequeue}`,
 
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("JWT")}`
-        },
-      }).then((res) => {
-        console.log(res.data);
-        window.location.reload();
-        // localStorage.setItem("JWT",res.data.access_token);
-      }).catch((error) => {
-        console.log(error)
-      })
-    
+    axios({
+      method: 'delete',
+      url: `http:///${ipAddress}:8000/admin/content/queue/${deletequeue}`,
+
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
+      },
+    }).then((res) => {
+      console.log(res.data);
+      window.location.reload();
+      // localStorage.setItem("JWT",res.data.access_token);
+    }).catch((error) => {
+      console.log(error)
+    })
+
 
 
     console.log("Removing...");
@@ -239,7 +239,7 @@ const Dashboard: React.FC = () => {
       }
     }).then((res) => {
       // console.log("income : ", res.data)
-      if (res.data.length==0) return setYAxisData(undefined);
+      if (res.data.length == 0) return setYAxisData(undefined);
       const yAxisData = [];
       let countx = 0;
       let county = 0;
@@ -287,7 +287,7 @@ const Dashboard: React.FC = () => {
       for (let i = 0; i < Math.min(10, res.data.length); i++) {
         data.push({ username: res.data[i].username, totalamount: res.data[i].totalamount })
       }
-      
+
       setTopSpender(
         <div className="flex flex-col gap-y-3.5">
           {data.map((info, index) => (
@@ -328,7 +328,7 @@ const Dashboard: React.FC = () => {
       setDataQueue(res.data)
       console.log("queuedata", res);
     });
-    
+
     axios({
       method: 'get',
       url: `http://${ipAddress}:8000/admin/user/displayname`,
@@ -381,7 +381,7 @@ const Dashboard: React.FC = () => {
     code: storeCode,
   }
 
-  
+
 
   return (
     <div className="bg-cream-bg font-kanit p-6 min-h-screen">
@@ -410,15 +410,15 @@ const Dashboard: React.FC = () => {
           className="col-span-2 bg-white p-4 rounded-lg drop-shadow-md"
           style={{ height: "300px" }}
         >
-          {Data?<CurrentText
+          {Data ? <CurrentText
             data={Data}
             onEditClick={handleEditClick}
             onRemoveClick={handleRemoveClick}
             setRefresh={setRefresh}
-          />:
-          <h1>
-            ไม่มีcontent
-          </h1>
+          /> :
+          <div className="flex w-full justify-center h-full  items-center">
+          ไม่พบข้อมูลที่ต้องการ
+        </div>
           }
         </div>
 
@@ -427,31 +427,52 @@ const Dashboard: React.FC = () => {
           className="col-span-1 bg-white p-4 rounded-lg drop-shadow-md"
           style={{ height: "300px" }}
         >
-          {yAxisData?<AreaChartCard xAxisLabels={xAxisLabels} yAxisData={yAxisData} />:<h1>ไม่มีdata</h1>}
-          
+          {yAxisData ? <AreaChartCard xAxisLabels={xAxisLabels} yAxisData={yAxisData} /> : 
+          <div className="flex w-full justify-center h-full  items-center">
+          ไม่พบข้อมูลที่ต้องการ
+        </div>}
+
         </div>
 
         {/* Card 4 */}
 
-        <div className="col-span-1 bg-white p-4 rounded-lg drop-shadow-md h-auto">
+        {/* <div className="col-span-1 bg-white p-4 rounded-lg drop-shadow-md h-auto">
           <div id="HeaderBox" className="flex flex-col items-center">
             <h1 className="items-center my-2  text-2xl font-bold">ยอดผู้สนับสนุนสูงสุด</h1>
           </div>
-          {topSpender?topSpender:<h1>ไม่มีdata</h1>}
+          {topSpender?topSpender:<>
+          <div className="flex w-full justify-center h-full  items-center">
+            ไม่พบข้อมูลที่ต้องการ
+          </div>
+          </>}
+        </div> */}
+
+        <div className="col-span-1 bg-white p-4 rounded-lg drop-shadow-md h-auto">
+          <div id="HeaderBox" className="flex flex-col h-full items-center">
+            <h1 className="items-center my-2  text-2xl font-bold">ยอดผู้สนับสนุนสูงสุด</h1>
+            {topSpender ? topSpender : <>
+              <div className="flex w-full justify-center h-full  items-center">
+                ไม่พบข้อมูลที่ต้องการ
+              </div>
+            </>}
+          </div>
         </div>
 
         {/* Card 5 */}
         <div className="col-span-2 bg-white p-4 rounded-lg drop-shadow-md h-auto">
-          <div className=" flex flex-col items-center space-y-2">
+          <div className=" flex flex-col items-center space-y-2  h-full">
             <h1 className=" text-xl font-bold  mt-2">ข้อความถัดไป</h1>
-            {queueData&&(queueData.length>0)?<QueueComponent queue={queueData} handleRemoveClick={handleRemoveClick} />:<h1>nodata</h1>}
-            
+            {queueData && (queueData.length > 0) ? <QueueComponent queue={queueData} handleRemoveClick={handleRemoveClick} /> : 
+            <div className="flex w-full justify-center h-full  items-center">
+                ไม่พบข้อมูลที่ต้องการ
+              </div>}
+
           </div>
         </div>
 
         {/* Card 6 */}
         <div className="col-span-1 bg-white p-4 rounded-lg drop-shadow-md h-auto">
-          {qrshop?<QRCodeDisplay qrshop={qrshop} handleQrClick={handleQrClick} />:<h1>nodata</h1>}
+          {qrshop ? <QRCodeDisplay qrshop={qrshop} handleQrClick={handleQrClick} /> : <h1>nodata</h1>}
         </div>
       </div>
       {/* ConfirmDialog component */}
@@ -462,9 +483,9 @@ const Dashboard: React.FC = () => {
           onCancel={handleCancelRemove}
         />
       )}
-      <EditQR isOpen={showModal} toggle={() => setShowModal(!showModal) }setRefresh={setRefresh}></EditQR>
+      <EditQR isOpen={showModal} toggle={() => setShowModal(!showModal)} setRefresh={setRefresh}></EditQR>
       <EditShow isOpenShow={showModalShow} toggle={() => setShowModalShow(!showModalShow)}></EditShow>
-      <EditName isOpenName={showModalName} toggle={() => setShowModalName(!showModalName)}setRefresh={setRefresh}></EditName>
+      <EditName isOpenName={showModalName} toggle={() => setShowModalName(!showModalName)} setRefresh={setRefresh}></EditName>
     </div>
   );
 };
