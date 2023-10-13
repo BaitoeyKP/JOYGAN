@@ -6,7 +6,7 @@ import { CreateAdminDto } from '../admin/dto/CreateAdmin.dto';
 import { JwtService } from '@nestjs/jwt';
 import { LogUser } from 'src/typeorm';
 import { access } from 'fs';
-
+import * as qrcode from 'qrcode';
 
 @Injectable()
 export class AdminService {
@@ -129,10 +129,28 @@ export class AdminService {
       admin.displayname = displayname;
       return await this.adminRepository.save(admin);
     }
+
+    async patchTel(uuid: string, Tel: string): Promise<Admin> {
+      const admin = await this.adminRepository.findOne({where:{id:uuid}});
+      
+      admin.tel = Tel;
+      return await this.adminRepository.save(admin);
+    }
+
     async getDisplayname(uuid: string): Promise<string> {
       const admin = await this.adminRepository.findOne({where:{id:uuid}});
       if (admin) {
         return admin.displayname;
+      } else {
+        return null; // หรือค่าเริ่มต้นที่คุณต้องการในกรณีที่ไม่พบผู้ดูแลระบบ
+      }
+    }
+
+    async getQR(uuid: string): Promise<{pic:string,tel:string}> {
+      const admin = await this.adminRepository.findOne({where:{id:uuid}});
+      if (admin) {
+        const qrcodeSrc = await qrcode.toDataURL(admin.tel);
+        return {pic:qrcodeSrc,tel:admin.tel};
       } else {
         return null; // หรือค่าเริ่มต้นที่คุณต้องการในกรณีที่ไม่พบผู้ดูแลระบบ
       }

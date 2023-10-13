@@ -3,47 +3,53 @@ import TopSpenderMonitor from "../components/TopSpenderMonitor"
 import monitorImg from "../assets/monitorPic.jpg"
 import { Link } from "react-router-dom";
 import axios from 'axios';
-import { useEffect, useState } from "react";
+import { Key, useEffect, useState } from "react";
 
 function Monitor() {
+    
     const [storeName, setStoreName] = useState("ABC");
     const [storeCode, setStoreCode] = useState(null);
     const [caption, setCaption] = useState(null);
     const [pic, setPic] = useState<string>();
     const [topSpender, setTopSpender] = useState(<></>);
-    const ipAddress = '10.66.14.173';
+    const ipAddress = '127.0.0.1';
+    const [TimeSeconds, setTime] = useState('0');
+    useEffect(() => {
+        const timer = setInterval(() => {
+          
+            setTime(TimeSeconds + 1);
+          
+        }, 5000);
+    
+        // Clean up the interval when the component unmounts
+        return () => clearInterval(timer);
+      }, [TimeSeconds]);
 
     useEffect(() => {
         axios({
             method: 'get',
-            url: `http://${ipAddress}:3000/admin/content/top-donators`,
+            url: `http://${ipAddress}:8000/admin/content/top-donators`,
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("JWT")}`
             }
         }).then((res) => {
-            console.log("top donator");
-            console.log(res.data[0].username)
-            const data = [
-                { username: res.data[0].username, totalamount: res.data[0].totalamount },
-                { username: res.data[1].username, totalamount: res.data[1].totalamount },
-                { username: res.data[2].username, totalamount: res.data[2].totalamount },
-                { username: res.data[3].username, totalamount: res.data[3].totalamount },
-                { username: res.data[4].username, totalamount: res.data[4].totalamount },
-            ]
+            const data = res.data.map((x: { username: any; totalamount: any; })=>{
+                return { username: x.username, totalamount: x.totalamount }
+            }) 
             setTopSpender(
                 <div className="w-full flex flex-col items-center gap-4">
-                    {data.map((info, index) => (
+                    {data.map((info: { username: string; totalamount: number; }, index: number ) => index<5?(
                         <TopSpenderMonitor key={index} username={info.username} totalamount={info.totalamount}></TopSpenderMonitor>
-                    ))}
+                    ):null)}
                 </div>
             )
         });
-    }, []);
+    }, [TimeSeconds]);
 
     useEffect(() => {
         axios({
             method: 'get',
-            url: `http://${ipAddress}:3000/admin/user/getcode`,
+            url: `http://${ipAddress}:8000/admin/user/getcode`,
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("JWT")}`
             }
@@ -51,12 +57,12 @@ function Monitor() {
             // console.log("code : " + res.data.code);
             setStoreCode(res.data.code)
         });
-    }, []);
+    }, [TimeSeconds]);
 
     useEffect(() => {
         axios({
             method: 'get',
-            url: `http://${ipAddress}:3000/admin/content/show`,
+            url: `http://${ipAddress}:8000/admin/content/show`,
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("JWT")}`
             }
@@ -66,12 +72,12 @@ function Monitor() {
             console.log("pic : " + res.data.pic);
             setPic(res.data.pic);
         });
-    }, []);
+    }, [TimeSeconds]);
 
     useEffect(() => {
         axios({
             method: 'get',
-            url: `http://${ipAddress}:3000/admin/user/displayname`,
+            url: `http://${ipAddress}:8000/admin/user/displayname`,
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("JWT")}`
             }
@@ -79,7 +85,7 @@ function Monitor() {
             // console.log("store name : " + res.data);
             setStoreName(res.data)
         });
-    }, []);
+    }, [TimeSeconds]);
 
     return (
         <div className="flex bg-cream-bg min-h-screen h-full w-screen">

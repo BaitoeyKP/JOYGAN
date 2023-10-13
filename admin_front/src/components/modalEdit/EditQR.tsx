@@ -8,6 +8,7 @@ interface ModalType {
     children?: ReactNode;
     isOpen: boolean;
     toggle: () => void;
+    setRefresh:React.Dispatch<React.SetStateAction<number>>;
 }
 
 
@@ -15,19 +16,22 @@ export default function EditQR(props: ModalType) {
     // const{register,handleSubmit}=useForm<FormData>();
     const [phoneNume, setphoneNume] = useState(""); // ย้าย useState มาที่นี่
     const [displayText, setDisplayText] = useState('');
-    const ipAddress = '10.66.14.173';
+    const ipAddress = '127.0.0.1';
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         axios({
             method: 'patch',
-            url: `http://${ipAddress}:3000/admin/user`,
-            data: {
-                phoneNume: phoneNume
+            url: `http://${ipAddress}:8000/admin/user/tel/${phoneNume}`,
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("JWT")}`
             },
+            
         })
             .then((res) => {
                 console.log(res);
+                props.setRefresh((x)=>x+1);
+                props.toggle();
             })
             .catch((error) => {
                 console.log(error);
@@ -63,9 +67,7 @@ export default function EditQR(props: ModalType) {
                             </div>
                             <div className="flex justify-center items-center font-normal text-xl ">
                                 <div className="flex space-x-10 space-y-0 mt-5">
-                                    <Link to="/">
-                                        <button className="w-full py-4 px-16  bg-purple-btn hover:bg-dark-purple-highlight  text-white font-bold text-4xl rounded-full" onClick={handleButtonClick}>ตกลง</button>
-                                    </Link>
+                                    <button className="w-full py-4 px-16  bg-purple-btn hover:bg-dark-purple-highlight  text-white font-bold text-4xl rounded-full" onClick={handleButtonClick}>ตกลง</button>
                                     <button className="w-full py-4 px-16 bg-red-500 hover:bg-red-700 text-white font-bold text-4xl rounded-full" onClick={props.toggle}>ยกเลิก</button>
 
                                 </div>

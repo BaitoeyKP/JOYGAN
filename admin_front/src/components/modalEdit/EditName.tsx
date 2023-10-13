@@ -7,45 +7,48 @@ interface ModalType {
     children?: ReactNode;
     isOpenName: boolean;
     toggle: () => void;
+    setRefresh:React.Dispatch<React.SetStateAction<number>>;
 }
 
 
 export default function EditName(props: ModalType) {
     const [marketName, setMarketName] = useState("");
     const [displayText, setDisplayText] = useState('');
-    const ipAddress = '10.66.14.173';
+    const ipAddress = '127.0.0.1';
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        axios({
-            method: 'post',
-            url: `http://${ipAddress}:3000/admin/user/login`,
-            data: {
-                marketName: marketName
-            },
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("JWT")}`
-            },
-        })
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    };
+    // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    //     e.preventDefault();
+    //     axios({
+    //         method: 'post',
+    //         url: `http://${ipAddress}:8000/admin/user/login`,
+    //         data: {
+    //             marketName: marketName
+    //         },
+    //         headers: {
+    //             Authorization: `Bearer ${localStorage.getItem("JWT")}`
+    //         },
+    //     })
+    //         .then((res) => {
+    //             console.log(res);
+    //         })
+    //         .catch((error) => {
+    //             console.log(error);
+    //         });
+    // };
     const handleButtonClick = () => {
         if (marketName) {
             setDisplayText("");
             axios({
                 method: 'patch',
-                url: `http://${ipAddress}:3000/admin/user/displayname/${marketName}`,
+                url: `http://${ipAddress}:8000/admin/user/displayname/${marketName}`,
       
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("JWT")}`
                 },
             }).then((res) => {
                 console.log(res.data);
+                props.setRefresh((x)=>x+1)
+                props.toggle()
                 // localStorage.setItem("JWT",res.data.access_token);
             }).catch((error) => {
                 console.log(error)
@@ -61,7 +64,7 @@ export default function EditName(props: ModalType) {
                 <div className="z-9999 w-full h-full fixed left-0 top-0 bg-black bg-opacity-70 flex justify-center items-center">
                     <div className="bg-white w-3/6 h-3/5 p-1 rounded-[20px]  flex-col justify-center items-center">
                         <h1 className="text-center py-12 font-bold  text-5xl ">แก้ไขชื่อร้าน</h1>
-                        <form className="space-y-6" onSubmit={handleSubmit}>
+                        <form className="space-y-6" >{/*onSubmit={handleSubmit}*/}
                             <div className="px-20 flex-col items-center space-y-0">
                                 <p className=" label text-2xl font-bold pr-4">ชื่อร้าน</p>
                                 <input

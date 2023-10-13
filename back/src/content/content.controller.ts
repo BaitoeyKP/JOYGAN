@@ -63,6 +63,7 @@ async getDonateYesterday() {
     @UseGuards(AuthGuard)
     @Delete('show')
     async deleteShowContent(@Request() req){
+        console.log('delete');
         
         await this.contentService.deleteShowContent(req.user.uuid);
     }

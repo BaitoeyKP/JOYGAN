@@ -3,18 +3,16 @@ import React from "react";
 import EditQR from "./modalEdit/EditQR";
 
 interface QRCodeDisplayProps {
-  account: {
-    name: string;
-    number: string;
+  qrshop:{
+    pic:string;
+    tel:string
   };
   handleQrClick: () => void;
 }
-const QRCodeDisplay: React.FC<QRCodeDisplayProps> = ({ account, handleQrClick }) => {
+const QRCodeDisplay: React.FC<QRCodeDisplayProps> = ({ qrshop, handleQrClick }) => {
   
   // Format the account number into sets of 4 characters
-  const formattedAccountNumber = account.number
-    ? account.number.match(/.{1,4}/g)?.join(" ") // Use optional chaining and nullish coalescing
-    : "1111";
+
   return (
     
     <div className="flex flex-col items-center">
@@ -24,19 +22,14 @@ const QRCodeDisplay: React.FC<QRCodeDisplayProps> = ({ account, handleQrClick })
       </div>
       <div id="QrCodeImg" className="flex flex-col">
         <img
-          src="https://adambrianbright.github.io/qrcode_styled/img/test.svg"
+          src={qrshop.pic}
           alt="QRcodeImage"
           className="h-40"
         />
       </div>
       <div id="Account" className="my-5 flex flex-col items-center">
-        <div id="AccountName" className="flex flex-row">
-          <h6>ชื่อบัญชี : </h6>
-          <h5>{account.name}</h5>
-        </div>
         <div id="Account number" className="flex flex-row text-sm xl:text-lg">
-          <h6>เลขที่บัญชี : </h6>
-          <h5>{formattedAccountNumber}</h5>
+          <h6>เลขที่พร้อมเพย์ : {qrshop.tel}</h6>
         </div>
       </div>
       <div id="button" className="flex flex-col items-center">

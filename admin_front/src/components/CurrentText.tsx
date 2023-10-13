@@ -32,13 +32,14 @@ const CurrentText: React.FC<CurrentTextProps> = ({
   // Destructure the data object
   // State to hold the remaining tim
 
-  const ipAddress = '10.66.14.173';
+  const ipAddress = '127.0.0.1';
 
 
 
 
 
-
+  const [run, setRun] = useState(0);
+  const [wait, setWait] = useState(false);
   const [remainingTimeSeconds, setRemainingTime] = useState(data.time_display);
 
   // Update the remaining time every second
@@ -55,31 +56,50 @@ const CurrentText: React.FC<CurrentTextProps> = ({
 
 
   // Format the remaining time as minutes and seconds
-  const minutes = Math.floor(remainingTimeSeconds / 60);
+  let minutes = Math.floor(remainingTimeSeconds / 60);
   const seconds = remainingTimeSeconds % 60;
 
 
-  if (minutes == 0 && seconds == 0) {
-    console.log("testDelete")
-    axios({
-      method: 'delete',
-      url: `http://10.66.14.173:3000/admin/content/show`,
-
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("JWT")}`
-      },
-    }).then((res) => {
-      console.log(res.data);
-      // localStorage.setItem("JWT",res.data.access_token);
-    }).catch((error) => {
-      console.log(error)
-    })
-    setRefresh((x) => x++)
+  if (minutes == 0 && seconds == 0 && !wait) {
+    setRun((x) => x + 1)
+    setWait(true);
+    minutes = 1;
   }
+  useEffect(() => {
+    if (run > 0) {
+      axios({
+        method: 'delete',
+        url: `http://${ipAddress}:8000/admin/content/show`,
+
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("JWT")}`
+        },
+      }).then((res) => {
+        console.log(res.data);
+        axios({
+          method: 'get',
+          url: `http:///${ipAddress}:8000/admin/content/show`,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("JWT")}`
+          }
+        }).then((res) => {
+          // console.log("content : " + res.data.text);
+          setRemainingTime(res.data.time_display)
+          setRefresh((x) => x + 1)
+          setWait(false);
+
+        });
+
+        // localStorage.setItem("JWT",res.data.access_token);
+      }).catch((error) => {
+        console.log(error)
+      })
+    }
+  }, [run])
   return (
     <div className="flex flex-col space-y-4">
       <div id="Header-box" className="flex flex-col items-center">
-        <Link to="/monitor">
+        <Link to="/monitor" target="_blank" >
           <h1 id="Header" className="text-xl font-bold flex items-center">
             <span>
               ข้อความที่กำลังแสดงบนจอ
@@ -185,7 +205,7 @@ const CurrentText: React.FC<CurrentTextProps> = ({
               <path d="M13.153 8.621C15.607 7.42 19.633 6 24.039 6c4.314 0 8.234 1.361 10.675 2.546l.138.067c.736.364 1.33.708 1.748.987L32.906 15C41.422 23.706 48 41.997 24.039 41.997S6.479 24.038 15.069 15l-3.67-5.4c.283-.185.642-.4 1.07-.628c.212-.114.44-.231.684-.35Zm17.379 6.307l2.957-4.323c-2.75.198-6.022.844-9.172 1.756c-2.25.65-4.75.551-7.065.124a25.167 25.167 0 0 1-1.737-.386l1.92 2.827c4.115 1.465 8.981 1.465 13.097.002ZM16.28 16.63c4.815 1.86 10.602 1.86 15.417-.002a29.255 29.255 0 0 1 4.988 7.143c1.352 2.758 2.088 5.515 1.968 7.891c-.116 2.293-1.018 4.252-3.078 5.708c-2.147 1.517-5.758 2.627-11.537 2.627c-5.785 0-9.413-1.091-11.58-2.591c-2.075-1.438-2.986-3.37-3.115-5.632c-.135-2.35.585-5.093 1.932-7.87c1.285-2.648 3.078-5.197 5.005-7.274Zm-1.15-6.714c.8.238 1.636.445 2.484.602c2.15.396 4.306.454 6.146-.079a54.097 54.097 0 0 1 6.53-1.471C28.45 8.414 26.298 8 24.038 8c-3.445 0-6.658.961-8.908 1.916Z" />
             </g>
           </svg>
-          <div className="mx-2"> บาท</div>
+          <div className="mx-2">{data.donate.toLocaleString()} บาท</div>
         </div>
       </div>
     </div>

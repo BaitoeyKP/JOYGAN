@@ -1,23 +1,22 @@
-import { Injectable ,Request } from '@nestjs/common';
+import { Injectable, Request } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Admin, Content, LogUser, User } from 'src/typeorm';
-import { Repository ,MoreThanOrEqual, LessThan} from 'typeorm';
+import { Repository, MoreThanOrEqual, LessThan } from 'typeorm';
 
 @Injectable()
 export class ContentService {
   constructor(@InjectRepository(Content) private repositoryContent: Repository<Content>,
-               @InjectRepository(Admin) private repositoryAdmin: Repository<Admin>,
-               @InjectRepository(LogUser) private logUserRepository: Repository<LogUser>,) 
-               { }
+    @InjectRepository(Admin) private repositoryAdmin: Repository<Admin>,
+    @InjectRepository(LogUser) private logUserRepository: Repository<LogUser>,) { }
 
   async getShowContent(uuid: string): Promise<Content> {
     try {
-      const res=await this.getTopQueue(uuid);
+      const res = await this.getTopQueue(uuid);
       // console.log(res,555555555555555555555555);
-      
+
       return res;
     } catch (error) {
-      
+
     }
   }
 
@@ -30,7 +29,7 @@ export class ContentService {
   async patchShowContent(uuid: string, text: string): Promise<Content> {
     const Content = await this.getTopQueue(uuid);
     // console.log(Content,11111111);
-    
+
     Content.text = text;
     return await this.repositoryContent.save(Content);
   }
@@ -45,23 +44,18 @@ export class ContentService {
     })
     const Content = await this.repositoryContent.find({
       where: {
-        admin:admin,
+        admin: admin,
         state: "queue"
-      },relations:['user']
+      }, relations: ['user']
     });
-    
+    Content.sort((a,b)=>a.time_stamp>b.time_stamp?1:0)
     return Content
   }
 
   async deleteQueueContent(uuid: string) {
-    const admin = await this.repositoryAdmin.findOne({
-      where: {
-        id: uuid
-      }
-    })
     const Content = await this.repositoryContent.findOne({
       where: {
-        admin: admin,
+        id: uuid,
       }
     });
     await this.repositoryContent.remove(Content);
@@ -78,25 +72,29 @@ export class ContentService {
   }
 
   async getTopQueue(uuid: string): Promise<Content> {
-    
-    
-    const admin = await this.repositoryAdmin.findOne({
-      where: {
-        id: uuid
-      }
-    })
-    // console.log(admin,'getTopQueue');
-    
-    const Content = await this.repositoryContent.find({
-      where: {
-        admin: admin,
-      },relations:['user']
-    })
-    // console.log(Content,'getTopQueue_content');
-    Content.sort((a, b) => a.time_stamp < b.time_stamp ? -1 : a.time_stamp < b.time_stamp ? 1 : 0)
-    Content[0].state='show';
-    this.repositoryContent.save(Content[0]);
-    return Content[0];
+
+
+    try {
+      const admin = await this.repositoryAdmin.findOne({
+        where: {
+          id: uuid
+        }
+      })
+      // console.log(admin,'getTopQueue');
+
+      const Content = await this.repositoryContent.find({
+        where: {
+          admin: admin,
+        }, relations: ['user']
+      })
+      // console.log(Content,'getTopQueue_content');
+      Content.sort((a, b) => a.time_stamp < b.time_stamp ? -1 : a.time_stamp < b.time_stamp ? 1 : 0)
+      Content[0].state = 'show';
+      this.repositoryContent.save(Content[0]);
+      return Content[0];
+    } catch (error) {
+      return null
+    }
   }
 
   async getQueue(uuid: string, idcontent: string): Promise<number> {
@@ -129,53 +127,53 @@ export class ContentService {
     return result;
   }
 
- 
-      
-      async getTopDonators(): Promise<{ username: string; totalAmount: number }[]> {
-        const query = `
+
+
+  async getTopDonators(): Promise<{ username: string; totalAmount: number }[]> {
+    const query = `
           SELECT logUser.username, SUM(logUser.amount) as totalAmount
           FROM log_user logUser
           GROUP BY logUser.username
           ORDER BY totalAmount DESC
           
         `;
-        const topDonators = await this.logUserRepository.query(query);
-        
-       
-    
-        return topDonators;
-      }
+    const topDonators = await this.logUserRepository.query(query);
 
-      
-      async getTodayTotalAmount(): Promise<number> {
-        const query = `
+
+
+    return topDonators;
+  }
+
+
+  async getTodayTotalAmount(): Promise<number> {
+    const query = `
 
           SELECT SUM(amount) AS totalAmount
           FROM log_user
           WHERE date >= DATE_TRUNC('day', NOW()) 
             AND date < DATE_TRUNC('day', NOW() + INTERVAL '1 day')
           `;
-    
-        const result = await this.logUserRepository.query(query);
-        //console.log(result);
-        
-        return parseInt(result[0].totalamount);
-      }
 
-      async getYesterdayTotalAmount(): Promise<number> {
-        const query = `
+    const result = await this.logUserRepository.query(query);
+    //console.log(result);
+
+    return parseInt(result[0].totalamount);
+  }
+
+  async getYesterdayTotalAmount(): Promise<number> {
+    const query = `
           SELECT SUM(amount) AS totalAmount
           FROM log_user
           WHERE date >= DATE_TRUNC('day', NOW() - INTERVAL '1 day')
             AND date < DATE_TRUNC('day', NOW())
         `;
-      
-        const result = await this.logUserRepository.query(query);
-       // console.log(result);
-      
-        return parseInt(result[0].totalamount);
-      }
-      
+
+    const result = await this.logUserRepository.query(query);
+    // console.log(result);
+
+    return parseInt(result[0].totalamount);
+  }
+
 }
 
 

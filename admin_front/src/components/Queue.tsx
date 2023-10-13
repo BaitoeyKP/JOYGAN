@@ -26,7 +26,7 @@ const QueueComponent: React.FC<QueueComponentProps> = ({
   console.log('queue',queue);
   return (
     <div>
-      {queue.map((item) => (
+      {queue.map((item,key) => key>2?null:(
         <div
           key={item.id}
           className="border-solid border-black border-2 rounded-md p-2 my-1 flex flex-row justify-around"

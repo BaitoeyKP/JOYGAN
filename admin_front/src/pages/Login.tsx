@@ -13,17 +13,16 @@ interface FormData {
 
 //http://10.66.11.55:3000/admin/user/login
 function Login() {
-    const ipAddress = '10.66.14.173';
+    const ipAddress = '127.0.0.1';
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         axios({
             method: 'post',
-            url: `http://${ipAddress}:3000/admin/user/login`,
+            url: `http://${ipAddress}:8000/admin/user/login`,
             data: {
                 username: username,
                 password: password
-
             },
             // headers:{
             //     Authorization:`Bearer ${localStorage.getItem("JWT")}`
@@ -32,6 +31,7 @@ function Login() {
             console.log(res.data);
             localStorage.setItem("JWT", res.data.access_token);
             console.log(res.data.access_token);
+            window.location.href = "/dashboard";
         }).catch((error) => {
             console.log(error)
         })
@@ -81,9 +81,9 @@ function Login() {
                         <p>{displayTextPass}</p>
                     </div>
                     <div>
-                        <Link to="/dashboard">
+                     
                         <button className="w-full py-4 bg-purple-btn hover:bg-dark-purple-highlight mt-10  text-white text-bold text-3xl rounded-lg" onClick={handleButtonClick}>เข้าสู่ระบบ</button>
-                        </Link>
+                  
                     </div>
                 </form>
                 <div className="text-1xl font-sm mt-2 justify-center text-center">มีปัญหาในการเข้าสู่ระบบ? <a href="#" className="font-medium text-black underline  hover:no-underline">ติดต่อผู้ขาย</a></div>

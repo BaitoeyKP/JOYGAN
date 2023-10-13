@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const ipAddress = '10.66.14.173';
+const ipAddress = '127.0.0.1';
 
 interface ConfirmDialogProps {
   message: string;

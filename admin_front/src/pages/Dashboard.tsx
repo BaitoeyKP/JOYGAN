@@ -62,11 +62,12 @@ const Dashboard: React.FC = () => {
   const [showModalShow, setShowModalShow] = useState(false);
   const [showModalName, setShowModalName] = useState(false);
   const [storeCode, setStoreCode] = useState(null);
+  const [qrshop, setQRshop] = useState();
   const [expireDate, setExpireDate] = useState(0);
-  const [topSpender, setTopSpender] = useState(<></>);
+  const [topSpender, setTopSpender] = useState<JSX.Element|undefined>();
   const [refresh,setRefresh] = useState(0);
   //outside grid
-  const ipAddress = '10.66.14.173';
+  const ipAddress = '127.0.0.1';
 
   interface fetchdata {
 
@@ -85,12 +86,12 @@ const Dashboard: React.FC = () => {
   }
   const [deletequeue, setDeletequeue] = useState<string>('');
   const [Data, setData] = useState<fetchdata>();
-  const [queueData, setDataQueue] = useState<fetchdata[]>([]);
+  const [queueData, setDataQueue] = useState<fetchdata[]|undefined>([]);
 
   useEffect(() => {
     axios({
       method: 'get',
-      url: `http://${ipAddress}:3000/admin/user/getcode`,
+      url: `http://${ipAddress}:8000/admin/user/getcode`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
@@ -128,12 +129,12 @@ const Dashboard: React.FC = () => {
     let now = date.getDate() + "/" + month + "/" + date.getFullYear() + " " + hour + ":" + min
     console.log("now : " + now);
     setRefreshDateTime(now);
-  })
+  },[refresh])
 
   useEffect(() => {
     axios({
       method: 'get',
-      url: `http://${ipAddress}:3000/admin/user/expire`,
+      url: `http://${ipAddress}:8000/admin/user/expire`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
@@ -159,7 +160,7 @@ const Dashboard: React.FC = () => {
 
     axios({
       method: 'get',
-      url: `http://${ipAddress}:3000/admin/content/summary-donate`,
+      url: `http://${ipAddress}:8000/admin/content/summary-donate`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
@@ -201,14 +202,14 @@ const Dashboard: React.FC = () => {
    
       axios({
         method: 'delete',
-        url: `http:///${ipAddress}:3000/admin/content/queue/${deletequeue}`,
+        url: `http:///${ipAddress}:8000/admin/content/queue/${deletequeue}`,
 
         headers: {
           Authorization: `Bearer ${localStorage.getItem("JWT")}`
         },
       }).then((res) => {
         console.log(res.data);
-        setRefresh((x)=>x+1)
+        window.location.reload();
         // localStorage.setItem("JWT",res.data.access_token);
       }).catch((error) => {
         console.log(error)
@@ -232,12 +233,13 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     axios({
       method: 'get',
-      url: `http://${ipAddress}:3000/admin/content/donations-by-day`,
+      url: `http://${ipAddress}:8000/admin/content/donations-by-day`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
     }).then((res) => {
       // console.log("income : ", res.data)
+      if (res.data.length==0) return setYAxisData(undefined);
       const yAxisData = [];
       let countx = 0;
       let county = 0;
@@ -273,15 +275,19 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     axios({
       method: 'get',
-      url: `http://${ipAddress}:3000/admin/content/top-donators`,
+      url: `http://${ipAddress}:8000/admin/content/top-donators`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
     }).then((res) => {
+      if (!res.data.length) {
+        return setTopSpender(undefined);
+      }
       const data = []
       for (let i = 0; i < Math.min(10, res.data.length); i++) {
         data.push({ username: res.data[i].username, totalamount: res.data[i].totalamount })
       }
+      
       setTopSpender(
         <div className="flex flex-col gap-y-3.5">
           {data.map((info, index) => (
@@ -297,7 +303,7 @@ const Dashboard: React.FC = () => {
 
     axios({
       method: 'get',
-      url: `http:///${ipAddress}:3000/admin/content/show`,
+      url: `http:///${ipAddress}:8000/admin/content/show`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
@@ -307,28 +313,25 @@ const Dashboard: React.FC = () => {
       console.log("show", res);
 
     });
+
     axios({
       method: 'get',
-      url: `http:///${ipAddress}:3000/admin/content/queue`,
+      url: `http:///${ipAddress}:8000/admin/content/queue`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
     }).then((res) => {
       // console.log("content : " + res.data.text);
+      if (res.data) {
+        setDataQueue(undefined)
+      }
       setDataQueue(res.data)
       console.log("queuedata", res);
-
     });
-  }, [refresh]);
-
-  const [nameMaket, setNameMaket] = useState("");
-
-  useEffect(() => {
-    console.log(localStorage.getItem("JWT"));
-
+    
     axios({
       method: 'get',
-      url: `http://${ipAddress}:3000/admin/user/displayname`,
+      url: `http://${ipAddress}:8000/admin/user/displayname`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
@@ -337,9 +340,20 @@ const Dashboard: React.FC = () => {
       console.log("nameMaket", res.data);
       setNameMaket(res.data)
     });
-  }, []);
 
+    axios({
+      method: 'get',
+      url: `http://${ipAddress}:8000/admin/user/QR`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("JWT")}`
+      }
+    }).then((res) => {
+      // console.log("content : " + res.data.text);
+      setQRshop(res.data)
+    });
+  }, [refresh]);
 
+  const [nameMaket, setNameMaket] = useState("");
 
   //card 5 data and function
 
@@ -350,10 +364,7 @@ const Dashboard: React.FC = () => {
   const handleNameClick = () => {
     setShowModalName(true)
   };
-  const account = {
-    name: "สุปรีญา อรุณฉาย",
-    number: "7070148614333071",
-  };
+
 
   const incomeData = {
     total: totalToday,
@@ -399,12 +410,16 @@ const Dashboard: React.FC = () => {
           className="col-span-2 bg-white p-4 rounded-lg drop-shadow-md"
           style={{ height: "300px" }}
         >
-          {Data&&<CurrentText
+          {Data?<CurrentText
             data={Data}
             onEditClick={handleEditClick}
             onRemoveClick={handleRemoveClick}
             setRefresh={setRefresh}
-          />}
+          />:
+          <h1>
+            ไม่มีcontent
+          </h1>
+          }
         </div>
 
         {/* Card 3 */}
@@ -412,7 +427,8 @@ const Dashboard: React.FC = () => {
           className="col-span-1 bg-white p-4 rounded-lg drop-shadow-md"
           style={{ height: "300px" }}
         >
-          <AreaChartCard xAxisLabels={xAxisLabels} yAxisData={yAxisData} />
+          {yAxisData?<AreaChartCard xAxisLabels={xAxisLabels} yAxisData={yAxisData} />:<h1>ไม่มีdata</h1>}
+          
         </div>
 
         {/* Card 4 */}
@@ -421,20 +437,21 @@ const Dashboard: React.FC = () => {
           <div id="HeaderBox" className="flex flex-col items-center">
             <h1 className="items-center my-2  text-2xl font-bold">ยอดผู้สนับสนุนสูงสุด</h1>
           </div>
-          {topSpender}
+          {topSpender?topSpender:<h1>ไม่มีdata</h1>}
         </div>
 
         {/* Card 5 */}
         <div className="col-span-2 bg-white p-4 rounded-lg drop-shadow-md h-auto">
           <div className=" flex flex-col items-center space-y-2">
             <h1 className=" text-xl font-bold  mt-2">ข้อความถัดไป</h1>
-            <QueueComponent queue={queueData} handleRemoveClick={handleRemoveClick} />
+            {queueData&&(queueData.length>0)?<QueueComponent queue={queueData} handleRemoveClick={handleRemoveClick} />:<h1>nodata</h1>}
+            
           </div>
         </div>
 
         {/* Card 6 */}
         <div className="col-span-1 bg-white p-4 rounded-lg drop-shadow-md h-auto">
-          <QRCodeDisplay account={account} handleQrClick={handleQrClick} />
+          {qrshop?<QRCodeDisplay qrshop={qrshop} handleQrClick={handleQrClick} />:<h1>nodata</h1>}
         </div>
       </div>
       {/* ConfirmDialog component */}
@@ -445,9 +462,9 @@ const Dashboard: React.FC = () => {
           onCancel={handleCancelRemove}
         />
       )}
-      <EditQR isOpen={showModal} toggle={() => setShowModal(!showModal)}></EditQR>
+      <EditQR isOpen={showModal} toggle={() => setShowModal(!showModal) }setRefresh={setRefresh}></EditQR>
       <EditShow isOpenShow={showModalShow} toggle={() => setShowModalShow(!showModalShow)}></EditShow>
-      <EditName isOpenName={showModalName} toggle={() => setShowModalName(!showModalName)}></EditName>
+      <EditName isOpenName={showModalName} toggle={() => setShowModalName(!showModalName)}setRefresh={setRefresh}></EditName>
     </div>
   );
 };

@@ -49,8 +49,8 @@ function monthName(monthNum: string) {
 function Income() {
     const [title, setTitle] = useState("รายวัน");
     const [selectedValue, setSelectedValue] = useState(localStorage.getItem("selectedValue") || "daily");
-    const [content, setContent] = useState(<></>);
-    const ipAddress = '10.66.14.173';
+    const [content, setContent] = useState<JSX.Element|undefined>(<></>);
+    const ipAddress = '127.0.0.1';
 
     useEffect(() => {
         console.log("ip : " + process.env.IP);
@@ -58,7 +58,7 @@ function Income() {
         localStorage.setItem("selectedValue", selectedValue);
         axios({
             method: 'get',
-            url: `http://${ipAddress}:3000/admin/content/donations-by-day`,
+            url: `http://${ipAddress}:8000/admin/content/donations-by-day`,
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("JWT")}`
             }
@@ -77,6 +77,8 @@ function Income() {
                     // console.log(day + " " + month + " " + year);
                     // console.log(res.data);
                 }
+                if(dataDaily.length==0)
+                    return setContent(undefined);
                 setContent(
                     <div className="w-full flex flex-col items-center">
                         {dataDaily.map((info, index) => (
@@ -101,6 +103,8 @@ function Income() {
                         dataMonthly[j].income += parseInt(res.data[i].totaldonations)
                     // console.log(res.data);
                 }
+                if(dataMonthly.length==0)
+                return setContent(undefined);
                 setContent(
                     <div className="w-full flex flex-col items-center">
                         {dataMonthly.map((info, index) => (
@@ -124,6 +128,8 @@ function Income() {
                         dataYear[j].income += parseInt(res.data[i].totaldonations)
                     // console.log(res.data);
                 }
+                if(dataYear.length==0)
+                return setContent(undefined);
                 setContent(
                     <div className="w-full flex flex-col items-center">
                         {dataYear.map((info, index) => (
@@ -158,7 +164,7 @@ function Income() {
                 </div>
             </div>
             <div>
-                {content}
+                {content?content:<h1>nodata</h1>}
             </div>
         </div>
     )
