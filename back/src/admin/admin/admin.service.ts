@@ -129,6 +129,13 @@ export class AdminService {
       admin.displayname = displayname;
       return await this.adminRepository.save(admin);
     }
-
+    async getDisplayname(uuid: string): Promise<string> {
+      const admin = await this.adminRepository.findOne({where:{id:uuid}});
+      if (admin) {
+        return admin.displayname;
+      } else {
+        return null; // หรือค่าเริ่มต้นที่คุณต้องการในกรณีที่ไม่พบผู้ดูแลระบบ
+      }
+    }
 
 }
