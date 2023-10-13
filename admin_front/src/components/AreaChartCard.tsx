@@ -2,14 +2,14 @@ import React from "react";
 import Chart from "react-apexcharts";
 
 interface AreaChartCardProps {
-  chartData: {
+  // chartData: {
     xAxisLabels: string[];
     yAxisData: number[];
-  };
+  // };
 }
 
-const AreaChartCard: React.FC<AreaChartCardProps> = ({ chartData }) => {
-  const { xAxisLabels, yAxisData } = chartData;
+const AreaChartCard: React.FC<AreaChartCardProps> = ({ xAxisLabels, yAxisData}) => {
+  // const { xAxisLabels, yAxisData } = chartData;
 
   const options = {
     chart: {
@@ -43,7 +43,7 @@ const AreaChartCard: React.FC<AreaChartCardProps> = ({ chartData }) => {
         <div></div>
         <h1 className="flex text-xl font-bold ">กราฟแสดงยอดเงินย้อนหลัง</h1>
       </div>
-      <h2 className="text-sm">ยอดเงิน : พันบาท</h2>
+      <h2 className="text-sm">ยอดเงิน : บาท</h2>
       <div id="chart" className="mt-4">
         <Chart
           options={options}
