@@ -139,7 +139,7 @@ function Income() {
         <div className="bg-cream-bg min-h-screen h-full w-screen">
             <div className="flex justify-center pt-20">
                 <div className="w-4/5 flex justify-between py-6">
-                    <Link to="/" className="flex items-center justify-center bg-purple-btn py-3 w-44 rounded-xl hover:opacity-80 drop-shadow-md">
+                    <Link to="/dashboard" className="flex items-center justify-center bg-purple-btn py-3 w-44 rounded-xl hover:opacity-80 drop-shadow-md">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                             <path d="M12.5 5L7.5 10L12.5 15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
