@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/typeorm';
 import { Admin } from 'src/typeorm';
@@ -51,7 +51,7 @@ export class UsersService {
       const existingUser = await this.userRepository.findOne({ where: { username } });
     
       if (existingUser) {
-        throw new Error('Username is already taken'); // Username is already used
+        throw new ConflictException('Username is already taken'); // Username is already used
       }
     
       // Create a new user since the username is not taken
