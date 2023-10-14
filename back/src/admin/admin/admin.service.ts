@@ -166,9 +166,13 @@ export class AdminService {
           
         })
         //const imagePath = path.join(__dirname, '/QRpic/qr_${stramount}_${tel}.png')
-        const imageBuffer = fs.readFileSync(qrname, {encoding: 'base64'})
+        try {
+          const imageBuffer = fs.readFileSync(qrname, {encoding: 'base64'})
+          return {pic:imageBuffer,tel:admin.tel}
+        } catch (error) {
+          return {pic:'',tel:admin.tel}
+        }
         //console.log(imageBuffer)
-        return {pic:imageBuffer,tel:admin.tel}
       
       // return {pic:qrcodeSrc,tel:admin.tel};
     } else {
