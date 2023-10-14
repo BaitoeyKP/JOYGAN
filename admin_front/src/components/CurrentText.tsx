@@ -56,17 +56,19 @@ const CurrentText: React.FC<CurrentTextProps> = ({
 
 
   // Format the remaining time as minutes and seconds
-  let minutes = Math.floor(remainingTimeSeconds / 60);
-  const seconds = remainingTimeSeconds % 60;
-
-
-  if (minutes == 0 && seconds == 0 && !wait) {
-    setRun((x) => x + 1)
-    setWait(true);
-    minutes = 1;
-  }
+  let seconds = remainingTimeSeconds;
+  useEffect(()=>{
+    if ( seconds == 0 && !wait) {
+      setRun((x) => x + 1)
+      console.log('time out');
+      setWait(true);
+      seconds = 30;
+    }
+   
+  },[remainingTimeSeconds])
   useEffect(() => {
     if (run > 0) {
+      console.log('time out2');
       axios({
         method: 'delete',
         url: `http://${ipAddress}:8000/admin/content/show`,
@@ -75,7 +77,7 @@ const CurrentText: React.FC<CurrentTextProps> = ({
           Authorization: `Bearer ${localStorage.getItem("JWT")}`
         },
       }).then((res) => {
-        console.log(res.data);
+        //console.log(res.data);
         axios({
           method: 'get',
           url: `http:///${ipAddress}:8000/admin/content/show`,
@@ -83,16 +85,16 @@ const CurrentText: React.FC<CurrentTextProps> = ({
             Authorization: `Bearer ${localStorage.getItem("JWT")}`
           }
         }).then((res) => {
-          // console.log("content : " + res.data.text);
+          // //console.log("content : " + res.data.text);
           setRemainingTime(res.data.time_display)
           setRefresh((x) => x + 1)
           setWait(false);
-
+          
         });
 
         // localStorage.setItem("JWT",res.data.access_token);
       }).catch((error) => {
-        console.log(error)
+        //console.log(error)
       })
     }
   }, [run])
@@ -122,7 +124,7 @@ const CurrentText: React.FC<CurrentTextProps> = ({
         </div>
         <img
           className="max-h-48 rounded-lg mx-10"
-          src={data!.pic}
+          src={`data:image/jpeg;base64,${data!.pic}`}
           alt="current displaying"
         />
         <div id="buttons" className="flex flex-col self-center xl:mx-5">
@@ -189,7 +191,7 @@ const CurrentText: React.FC<CurrentTextProps> = ({
             />
           </svg>
           <p>เวลาที่เหลือ</p>
-          <span>{`${minutes.toString().padStart(2, "0")}:${seconds
+          <span>{seconds&&`00:${seconds
             .toString()
             .padStart(2, "0")}`}</span>
         </div>

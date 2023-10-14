@@ -28,12 +28,12 @@ function Login() {
             //     Authorization:`Bearer ${localStorage.getItem("JWT")}`
             // },
         }).then((res) => {
-            console.log(res.data);
+            //console.log(res.data);
             localStorage.setItem("JWT", res.data.access_token);
-            console.log(res.data.access_token);
+            //console.log(res.data.access_token);
             window.location.href = "/dashboard";
         }).catch((error) => {
-            console.log(error)
+            //console.log(error)
         })
     };
     const [username, setUsername] = useState("");

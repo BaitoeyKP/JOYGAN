@@ -53,7 +53,7 @@ function Income() {
     const ipAddress = '127.0.0.1';
 
     useEffect(() => {
-        console.log("ip : " + process.env.IP);
+        //console.log("ip : " + process.env.IP);
 
         localStorage.setItem("selectedValue", selectedValue);
         axios({
@@ -63,19 +63,26 @@ function Income() {
                 Authorization: `Bearer ${localStorage.getItem("JWT")}`
             }
         }).then((res) => {
-            console.log(res.data)
+            //console.log(res.data)
             if (selectedValue === "daily") {
                 setTitle("รายวัน");
                 const dataDaily = [];
                 for (let i = 0; i < res.data.length; i++) {
-                    let ddmmyyyy = res.data[i].date.split("-");
+                    let ddmmyyyy = res.data[i].timezone.split("-");
                     let year = parseInt(ddmmyyyy[0]) + 543;
                     let month = monthName(ddmmyyyy[1]);
                     let dd = ddmmyyyy[2].split("");
                     let day = dd[0] + dd[1];
-                    dataDaily.push({ day: day, month: month, year: year, income: res.data[i].totaldonations })
-                    // console.log(day + " " + month + " " + year);
-                    // console.log(res.data);
+              
+                    const j = dataDaily.findIndex((x) => x.year === year && x.month === month&&x.day===day);
+                    //console.log(j);
+                    if (j === -1) {
+                        dataDaily.push({ day: day, month: month, year: year, income: parseInt(res.data[i].totaldonations) })
+                    }
+                    else
+                    dataDaily[j].income += parseInt(res.data[i].totaldonations)
+                    // //console.log(day + " " + month + " " + year);
+                    // //console.log(res.data);
                 }
                 if (dataDaily.length == 0)
                     return setContent(undefined);
@@ -91,17 +98,17 @@ function Income() {
                 setTitle("รายเดือน");
                 const dataMonthly = [];
                 for (let i = 0; i < res.data.length; i++) {
-                    let ddmmyyyy = res.data[i].date.split("-");
+                    let ddmmyyyy = res.data[i].timezone.split("-");
                     let year = parseInt(ddmmyyyy[0]) + 543;
                     let month = monthName(ddmmyyyy[1]);
                     const j = dataMonthly.findIndex((x) => x.year === year && x.month === month);
-                    console.log(j);
+                    //console.log(j);
                     if (j === -1) {
                         dataMonthly.push({ month: month, year: year, income: parseInt(res.data[i].totaldonations) })
                     }
                     else
                         dataMonthly[j].income += parseInt(res.data[i].totaldonations)
-                    // console.log(res.data);
+                    // //console.log(res.data);
                 }
                 if (dataMonthly.length == 0)
                     return setContent(undefined);
@@ -117,16 +124,16 @@ function Income() {
                 setTitle("รายปี");
                 const dataYear = [];
                 for (let i = 0; i < res.data.length; i++) {
-                    let ddmmyyyy = res.data[i].date.split("-");
+                    let ddmmyyyy = res.data[i].timezone.split("-");
                     let year = parseInt(ddmmyyyy[0]) + 543;
                     const j = dataYear.findIndex((x) => x.year === year);
-                    console.log(j);
+                    //console.log(j);
                     if (j === -1) {
                         dataYear.push({ year: year, income: parseInt(res.data[i].totaldonations) })
                     }
                     else
                         dataYear[j].income += parseInt(res.data[i].totaldonations)
-                    // console.log(res.data);
+                    // //console.log(res.data);
                 }
                 if (dataYear.length == 0)
                     return setContent(undefined);

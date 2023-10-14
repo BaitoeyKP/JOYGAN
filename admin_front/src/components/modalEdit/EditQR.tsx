@@ -29,12 +29,12 @@ export default function EditQR(props: ModalType) {
             
         })
             .then((res) => {
-                console.log(res);
+                //console.log(res);
                 props.setRefresh((x)=>x+1);
                 props.toggle();
             })
             .catch((error) => {
-                console.log(error);
+                //console.log(error);
             });
     };
 

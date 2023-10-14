@@ -23,7 +23,7 @@ const QueueComponent: React.FC<QueueComponentProps> = ({
   queue,
   handleRemoveClick,
 }) => {
-  console.log('queue',queue);
+  //console.log('queue',queue);
   return (
     <div>
       {queue.map((item,key) => key>2?null:(
@@ -51,7 +51,7 @@ const QueueComponent: React.FC<QueueComponentProps> = ({
             <div id="image" className=" mx-4">
               <img
                 className="max-h-24 rounded-lg"
-                src={item.pic}
+                src={`data:image/jpeg;base64,${item.pic}`}
                 alt={`${item.user.username} img`}
               />
             </div>

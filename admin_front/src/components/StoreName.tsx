@@ -18,7 +18,7 @@ const StoreName: React.FC<StoreNameProps> = ({ store, handleNameClick }) => {
     const ipAddress = '127.0.0.1';
 
     useEffect(() => {
-        // console.log(localStorage.getItem("JWT"));
+        // //console.log(localStorage.getItem("JWT"));
 
         axios({
             method: 'get',
@@ -27,8 +27,8 @@ const StoreName: React.FC<StoreNameProps> = ({ store, handleNameClick }) => {
                 Authorization: `Bearer ${localStorage.getItem("JWT")}`
             }
         }).then((res) => {
-            // console.log("content : " + res.data.text);
-            // console.log("name",res.data);
+            // //console.log("content : " + res.data.text);
+            // //console.log("name",res.data);
             setCaption(res.data)
             
 
@@ -43,7 +43,7 @@ const StoreName: React.FC<StoreNameProps> = ({ store, handleNameClick }) => {
     // };
 
     const handleSubmit = () => {
-        // console.log("test")
+        // //console.log("test")
         axios({
             method: 'patch',
             url: `http://${ipAddress}:8000/admin/content/show/${caption}`,
@@ -52,10 +52,10 @@ const StoreName: React.FC<StoreNameProps> = ({ store, handleNameClick }) => {
                 Authorization: `Bearer ${localStorage.getItem("JWT")}`
             },
         }).then((res) => {
-            // console.log(res.data);
+            // //console.log(res.data);
             // localStorage.setItem("JWT",res.data.access_token);
         }).catch((error) => {
-            // console.log(error)
+            // //console.log(error)
         })
     };
 

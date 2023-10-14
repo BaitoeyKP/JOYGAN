@@ -29,10 +29,10 @@ export default function EditName(props: ModalType) {
     //         },
     //     })
     //         .then((res) => {
-    //             console.log(res);
+    //             //console.log(res);
     //         })
     //         .catch((error) => {
-    //             console.log(error);
+    //             //console.log(error);
     //         });
     // };
     const handleButtonClick = () => {
@@ -46,12 +46,12 @@ export default function EditName(props: ModalType) {
                     Authorization: `Bearer ${localStorage.getItem("JWT")}`
                 },
             }).then((res) => {
-                console.log(res.data);
+                //console.log(res.data);
                 props.setRefresh((x)=>x+1)
                 props.toggle()
                 // localStorage.setItem("JWT",res.data.access_token);
             }).catch((error) => {
-                console.log(error)
+                //console.log(error)
             })
         } else {
             setDisplayText('*คุณยังไม่ได้ใส่ชื่อร้าน*');

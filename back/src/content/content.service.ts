@@ -48,16 +48,12 @@ export class ContentService {
         state: "queue"
       }, relations: ['user']
     });
-    Content.sort((a,b)=>a.time_stamp>b.time_stamp?1:0)
+
     return Content
   }
 
   async deleteQueueContent(uuid: string) {
-    const Content = await this.repositoryContent.findOne({
-      where: {
-        id: uuid,
-      }
-    });
+    const Content = await this.getTopQueue(uuid);
     await this.repositoryContent.remove(Content);
   }
 
@@ -116,7 +112,7 @@ export class ContentService {
   async getDonationsByDay(): Promise<{ date: string; totalDonations: number }[]> {
     const query = `
       SELECT
-        DATE_TRUNC('day', date) as date,
+        date AT TIME ZONE 'UTC' AT TIME ZONE '+7',
         SUM(amount) as totalDonations
       FROM log_user
       GROUP BY date

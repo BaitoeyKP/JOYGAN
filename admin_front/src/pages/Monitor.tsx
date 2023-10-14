@@ -19,7 +19,7 @@ function Monitor() {
 
             setTime(TimeSeconds + 1);
 
-        }, 5000);
+        }, 3000);
 
         // Clean up the interval when the component unmounts
         return () => clearInterval(timer);
@@ -54,7 +54,7 @@ function Monitor() {
                 Authorization: `Bearer ${localStorage.getItem("JWT")}`
             }
         }).then((res) => {
-            // console.log("code : " + res.data.code);
+            // //console.log("code : " + res.data.code);
             setStoreCode(res.data.code)
         });
     }, [TimeSeconds]);
@@ -67,9 +67,9 @@ function Monitor() {
                 Authorization: `Bearer ${localStorage.getItem("JWT")}`
             }
         }).then((res) => {
-            // console.log("content : " + res.data.text);
+            // //console.log("content : " + res.data.text);
             setCaption(res.data.text);
-            console.log("pic : " + res.data.pic);
+            //console.log("pic : " + res.data.pic);
             setPic(res.data.pic);
         });
     }, [TimeSeconds]);
@@ -82,11 +82,11 @@ function Monitor() {
                 Authorization: `Bearer ${localStorage.getItem("JWT")}`
             }
         }).then((res) => {
-            // console.log("store name : " + res.data);
+            // //console.log("store name : " + res.data);
             setStoreName(res.data)
         });
     }, [TimeSeconds]);
-
+    
     return (
         // <div className="flex bg-cream-bg min-h-screen h-full w-screen">
         //     <div className="flex basis-1/2 justify-center items-center flex-col gap-7">
@@ -188,7 +188,7 @@ function Monitor() {
                 <div className="grid grid-cols-2 w-full items-end pt-5 ">
                     <div className="flex basis-1/2 justify-center items-center flex-col">
                         {
-                            pic ? <img src={pic!} alt="" className="w-[555px] h-[555px] object-cover rounded-xl pt-5" /> : null
+                            pic ? <img src={`data:image/jpeg;base64,${pic!}`} alt="" className="w-[555px] h-[555px] object-cover rounded-xl pt-5" /> : null
                         }
                         <p className="text-5xl font-normal text-center w-[555px] text-black-text h-[23%] flex items-center justify-center flex-wrap break-all">{caption}</p>
 

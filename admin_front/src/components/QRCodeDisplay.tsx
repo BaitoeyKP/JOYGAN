@@ -22,7 +22,7 @@ const QRCodeDisplay: React.FC<QRCodeDisplayProps> = ({ qrshop, handleQrClick }) 
       </div>
       <div id="QrCodeImg" className="flex flex-col">
         <img
-          src={qrshop.pic}
+          src={`data:image/jpeg;base64,${qrshop.pic}`}
           alt="QRcodeImage"
           className="h-40"
         />

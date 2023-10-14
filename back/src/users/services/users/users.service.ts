@@ -90,10 +90,19 @@ export class UsersService {
         //console.log(currentTime.getHours);
         //createcontentDto.time_stamp = +(String(currentTime.getHours)+String(currentTime.getMinutes)+String(currentTime.getSeconds));
         createcontentDto.time_stamp = Math.floor(currentTime / 1000);
-        console.log(createcontentDto.adminId);
-        console.log(createcontentDto.userId);
-
         const newCon = await this.contentRepository.create(createcontentDto);
+        const admin = await this.adminRepository.findOne({
+          where: {
+            id: createcontentDto.adminId
+          }
+        })
+        newCon.admin=admin;
+        const user = await this.userRepository.findOne({
+          where: {
+            id: parseInt(createcontentDto.userId)
+          }
+        })
+        newCon.user=user;
         return await this.contentRepository.save(newCon);
       }      //Save Log to Database  palm ok 
 

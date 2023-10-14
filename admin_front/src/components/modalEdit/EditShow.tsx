@@ -19,7 +19,7 @@ export default function EditName(props: ModalType) {
     const ipAddress = '127.0.0.1';
 
     useEffect(() => {
-        // console.log(localStorage.getItem("JWT"));
+        // //console.log(localStorage.getItem("JWT"));
 
         axios({
             method: 'get',
@@ -28,9 +28,9 @@ export default function EditName(props: ModalType) {
                 Authorization: `Bearer ${localStorage.getItem("JWT")}`
             }
         }).then((res) => {
-            // console.log("content : " + res.data.text);
+            // //console.log("content : " + res.data.text);
             setCaption(res.data.text)
-            // console.log(res.data);
+            // //console.log(res.data);
 
         });
     }, []);
@@ -55,10 +55,10 @@ export default function EditName(props: ModalType) {
                 Authorization: `Bearer ${localStorage.getItem("JWT")}`
             },
         }).then((res) => {
-            // console.log(res.data);
+            // //console.log(res.data);
             // localStorage.setItem("JWT",res.data.access_token);
         }).catch((error) => {
-            // console.log(error)
+            // //console.log(error)
         })
     };
 
@@ -68,11 +68,11 @@ export default function EditName(props: ModalType) {
     // .patch("http://127.0.0.1:3000/admin/content/show", data)
 
     // .then((res) => {
-    //   console.log(res);
+    //   //console.log(res);
     //   // ทำอย่างอื่นตามที่คุณต้องการหลังจากส่งข้อมูลสำเร็จ
     // })
     // .catch((error) => {
-    //   console.log(error);
+    //   //console.log(error);
     //   // จัดการข้อผิดพลาด (error handling) ตามที่คุณต้องการ
     // });
 

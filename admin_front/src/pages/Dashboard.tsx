@@ -14,44 +14,45 @@ import EditQR from "../components/modalEdit/EditQR";
 import EditShow from "../components/modalEdit/EditShow";
 import EditName from "../components/modalEdit/EditName";
 import axios from "axios";
-import { time } from "console";
+import { error, time } from "console";
+import { type } from "os";
 
-function monthName(monthNum: string) {
+function monthName(monthNum: number) {
   let monthName = "";
-  if (monthNum === "01") {
+  if (monthNum === 1) {
     monthName = "ม.ค."
   }
-  else if (monthNum === "02") {
+  else if (monthNum === 2) {
     monthName = "ก.พ."
   }
-  else if (monthNum === "03") {
+  else if (monthNum === 3) {
     monthName = "ม.ค."
   }
-  else if (monthNum === "04") {
+  else if (monthNum === 4) {
     monthName = "เม.ย."
   }
-  else if (monthNum === "05") {
+  else if (monthNum === 5) {
     monthName = "พ.ค."
   }
-  else if (monthNum === "06") {
+  else if (monthNum === 6) {
     monthName = "มิ.ย."
   }
-  else if (monthNum === "07") {
+  else if (monthNum === 7) {
     monthName = "ก.ค."
   }
-  else if (monthNum === "08") {
+  else if (monthNum === 8) {
     monthName = "ส.ค."
   }
-  else if (monthNum === "09") {
+  else if (monthNum === 9) {
     monthName = "ก.ย."
   }
-  else if (monthNum === "10") {
+  else if (monthNum === 10) {
     monthName = "ต.ค."
   }
-  else if (monthNum === "11") {
+  else if (monthNum === 11) {
     monthName = "พ.ย."
   }
-  else if (monthNum === "12") {
+  else if (monthNum === 12) {
     monthName = "ธ.ค."
   }
   return monthName;
@@ -87,7 +88,17 @@ const Dashboard: React.FC = () => {
   const [deletequeue, setDeletequeue] = useState<string>('');
   const [Data, setData] = useState<fetchdata>();
   const [queueData, setDataQueue] = useState<fetchdata[] | undefined>([]);
+  const [TimeSeconds, setTime] = useState('0');
+  useEffect(() => {
+    const timer = setInterval(() => {
 
+      setTime(TimeSeconds + 1);
+
+    }, 5000);
+
+    // Clean up the interval when the component unmounts
+    return () => clearInterval(timer);
+  }, [TimeSeconds]);
   useEffect(() => {
     axios({
       method: 'get',
@@ -127,9 +138,9 @@ const Dashboard: React.FC = () => {
       min = date.getMinutes().toString();
     }
     let now = date.getDate() + "/" + month + "/" + date.getFullYear() + " " + hour + ":" + min
-    console.log("now : " + now);
+    //console.log("now : " + now);
     setRefreshDateTime(now);
-  }, [refresh])
+  }, [refresh, TimeSeconds])
 
   useEffect(() => {
     axios({
@@ -139,11 +150,11 @@ const Dashboard: React.FC = () => {
         Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
     }).then((res) => {
-      // console.log(res.data.expire);
+      // //console.log(res.data.expire);
       const currentDate = Math.floor(new Date().getTime() / 1000);
       let dayleft = Math.round((res.data.expire - currentDate) / (60 * 60 * 24));
       setExpireDate(dayleft);
-      // console.log("dayleft : " + dayleft);
+      // //console.log("dayleft : " + dayleft);
     });
   }, []);
 
@@ -165,18 +176,18 @@ const Dashboard: React.FC = () => {
         Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
     }).then((res) => {
-      // console.log(res.data, 1234567890);
+      // //console.log(res.data, 1234567890);
       setTotalToday(res.data.totalToday);
       setMorethan(res.data.morethan);
       setPercentage(res.data.percentage);
     });
-  }, []);
+  }, [refresh, TimeSeconds]);
 
 
 
 
   const handlehistoryClick = () => {
-    // console.log("Income History clicked!...");
+    // //console.log("Income History clicked!...");
   };
   //card 2
   // State to control the visibility of the confirmation dialog
@@ -191,14 +202,14 @@ const Dashboard: React.FC = () => {
   const handleRemoveClick = (itemId: string) => {
     // Handle remove action here
     setDeletequeue(itemId);
-    console.log("Remove button clicked!");
+    //console.log("Remove button clicked!");
     // Display the confirmation dialog
     setShowConfirmDialog(true);
   };
   // Function to handle confirmation of removal
   const handleConfirmRemove = () => {
 
-    console.log(deletequeue, 'deletequeue');
+    //console.log(deletequeue, 'deletequeue');
 
     axios({
       method: 'delete',
@@ -208,22 +219,22 @@ const Dashboard: React.FC = () => {
         Authorization: `Bearer ${localStorage.getItem("JWT")}`
       },
     }).then((res) => {
-      console.log(res.data);
+      //console.log(res.data);
       window.location.reload();
       // localStorage.setItem("JWT",res.data.access_token);
     }).catch((error) => {
-      console.log(error)
+      //console.log(error)
     })
 
 
 
-    console.log("Removing...");
+    //console.log("Removing...");
     // Hide the confirmation dialog
     setShowConfirmDialog(false);
   };
   // Function to handle canceling removal
   const handleCancelRemove = () => {
-    // console.log("Canceling...");
+    // //console.log("Canceling...");
     // Hide the confirmation dialog
     setShowConfirmDialog(false);
   };
@@ -238,38 +249,61 @@ const Dashboard: React.FC = () => {
         Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
     }).then((res) => {
-      // console.log("income : ", res.data)
+      // //console.log("income : ", res.data)
       if (res.data.length == 0) return setYAxisData(undefined);
       const yAxisData = [];
-      let countx = 0;
-      let county = 0;
-      for (let index = res.data.length - 1; index >= 0; index--) {
-        county++;
-        yAxisData.push(res.data[index].totaldonations);
-        if (county == 7) {
-          break;
-        }
-      }
-      setYAxisData(yAxisData);
-      // console.log("y : " + yAxisData);
       const xAxisLabels = [];
-      for (let index = res.data.length - 1; index >= 0; index--) {
-        let ddmmyyyy = res.data[index].date.split("-");
-        let year = parseInt(ddmmyyyy[0]) + 543;
-        let month = monthName(ddmmyyyy[1]);
-        let dd = ddmmyyyy[2].split("");
-        let day = dd[0] + dd[1];
+      const now = new Date();
+      
+
+      now.setTime(now.getTime() - 86400000 * 7);
+      for (let index = 0; index < 7; index++) {
+        now.setTime(now.getTime() + 86400000);
+
+        let year = now.getFullYear() + 543;
+        let month = monthName(now.getMonth() + 1);
+        let day = now.getDate()
         let date = day + " " + month + " " + year;
         xAxisLabels.push(date);
-        countx++;
-        if (countx == 7) {
-          break;
-        }
+        const filterdata = res.data.filter((x: { timezone: string, totaldonations: string }) => {
+          let ddmmyyyy = x.timezone.split("-");
+          let year = parseInt(ddmmyyyy[0]);
+          let month = parseInt(ddmmyyyy[1]);
+          let dd = ddmmyyyy[2].split("");
+          let day = parseInt(dd[0] + dd[1]);
+          if (day == now.getDate() && month == now.getMonth() + 1 && year == now.getFullYear()) {
+            return 1
+          }
+          else
+            return 0;
+        })
+        // console.log(filterdata,now.getDate());
+        let sum=0;
+        filterdata.forEach((x: { timezone: string, totaldonations: string }) => {
+          sum+=parseInt(x.totaldonations);
+        });
+        yAxisData.push(sum);
       }
-      // console.log("x : " + xAxisLabels);
+      // //console.log("y : " + yAxisData);
+
+      // for (let index = res.data.length - 1; index >= 0; index--) {
+      //   let ddmmyyyy = res.data[index].date.split("-");
+      //   let year = parseInt(ddmmyyyy[0]) + 543;
+      //   let month = monthName(ddmmyyyy[1]);
+      //   let dd = ddmmyyyy[2].split("");
+      //   let day = dd[0] + dd[1];
+      //   let date = day + " " + month + " " + year;
+      //   xAxisLabels.push(date);
+      //   countx++;
+      //   if (countx == 7) {
+      //     break;
+      //   }
+      // }
+      // //console.log("x : " + xAxisLabels);
+      setYAxisData(yAxisData);
       setXAxisLabels(xAxisLabels);
     });
-  }, []);
+  }, [refresh, TimeSeconds]);
 
   //card 4
   useEffect(() => {
@@ -296,10 +330,10 @@ const Dashboard: React.FC = () => {
         </div>
       )
     });
-  }, []);
+  }, [refresh, TimeSeconds]);
 
   useEffect(() => {
-    console.log(localStorage.getItem("JWT"));
+    //console.log(localStorage.getItem("JWT"));
 
     axios({
       method: 'get',
@@ -308,9 +342,9 @@ const Dashboard: React.FC = () => {
         Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
     }).then((res) => {
-      // console.log("content : " + res.data.text);
+      // //console.log("content : " + res.data.text);
       setData(res.data)
-      console.log("show", res);
+      //console.log("show", res);
 
     });
 
@@ -321,12 +355,12 @@ const Dashboard: React.FC = () => {
         Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
     }).then((res) => {
-      // console.log("content : " + res.data.text);
+      // //console.log("content : " + res.data.text);
       if (res.data) {
         setDataQueue(undefined)
       }
       setDataQueue(res.data)
-      console.log("queuedata", res);
+      //console.log("queuedata", res);
     });
 
     axios({
@@ -336,8 +370,8 @@ const Dashboard: React.FC = () => {
         Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
     }).then((res) => {
-      // console.log("content : " + res.data.text);
-      console.log("nameMaket", res.data);
+      // //console.log("content : " + res.data.text);
+      //console.log("nameMaket", res.data);
       setNameMaket(res.data)
     });
 
@@ -348,10 +382,10 @@ const Dashboard: React.FC = () => {
         Authorization: `Bearer ${localStorage.getItem("JWT")}`
       }
     }).then((res) => {
-      // console.log("content : " + res.data.text);
+      // //console.log("content : " + res.data.text);
       setQRshop(res.data)
     });
-  }, [refresh]);
+  }, [refresh, TimeSeconds]);
 
   const [nameMaket, setNameMaket] = useState("");
 
@@ -380,6 +414,7 @@ const Dashboard: React.FC = () => {
     name: nameMaket,
     code: storeCode,
   }
+
 
 
 
@@ -416,9 +451,9 @@ const Dashboard: React.FC = () => {
             onRemoveClick={handleRemoveClick}
             setRefresh={setRefresh}
           /> :
-          <div className="flex w-full justify-center h-full  items-center">
-          ไม่พบข้อมูลที่ต้องการ
-        </div>
+            <div className="flex w-full justify-center h-full  items-center">
+              ไม่พบข้อมูลที่ต้องการ
+            </div>
           }
         </div>
 
@@ -427,10 +462,10 @@ const Dashboard: React.FC = () => {
           className="col-span-1 bg-white p-4 rounded-lg drop-shadow-md"
           style={{ height: "300px" }}
         >
-          {yAxisData ? <AreaChartCard xAxisLabels={xAxisLabels} yAxisData={yAxisData} /> : 
-          <div className="flex w-full justify-center h-full  items-center">
-          ไม่พบข้อมูลที่ต้องการ
-        </div>}
+          {yAxisData ? <AreaChartCard xAxisLabels={xAxisLabels} yAxisData={yAxisData} /> :
+            <div className="flex w-full justify-center h-full  items-center">
+              ไม่พบข้อมูลที่ต้องการ
+            </div>}
 
         </div>
 
@@ -462,8 +497,8 @@ const Dashboard: React.FC = () => {
         <div className="col-span-2 bg-white p-4 rounded-lg drop-shadow-md h-auto">
           <div className=" flex flex-col items-center space-y-2  h-full">
             <h1 className=" text-xl font-bold  mt-2">ข้อความถัดไป</h1>
-            {queueData && (queueData.length > 0) ? <QueueComponent queue={queueData} handleRemoveClick={handleRemoveClick} /> : 
-            <div className="flex w-full justify-center h-full  items-center">
+            {queueData && (queueData.length > 0) ? <QueueComponent queue={queueData} handleRemoveClick={handleRemoveClick} /> :
+              <div className="flex w-full justify-center h-full  items-center">
                 ไม่พบข้อมูลที่ต้องการ
               </div>}
 
